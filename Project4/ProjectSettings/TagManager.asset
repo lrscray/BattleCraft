@@ -12,6 +12,7 @@ TagManager:
   - MiningSpot4
   - Deposite
   - Collector
+  - Building
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Ground
   - 
   - 
   - 
