@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class Civilian : MonoBehaviour
 {
+    //TODO: Need to implement health, and decrementing from the CivilianManager.
+    //TODO: Change hiding method to use SetActive(false); and change manager/house they are assigned to, to set that active again.
+
     //list of points to patrol through
     public GameObject[] wanderPoints;
     //list of houses
