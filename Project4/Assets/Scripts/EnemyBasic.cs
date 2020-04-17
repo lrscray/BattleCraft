@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyBasic : MonoBehaviour
 {
+    private EnemyBasicPopulation enemyManager;
+
     //list of houses
     public GameObject[] houses;
     int state = 1;
@@ -13,6 +15,7 @@ public class EnemyBasic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<EnemyBasicPopulation>();
         houses = GameObject.FindGameObjectsWithTag("House");
     }
 
@@ -52,6 +55,8 @@ public class EnemyBasic : MonoBehaviour
     {
         if(health <= 0)
         {
+            //Update enemy manager to subtract total num enemies.
+            enemyManager.DecrementNumCurrentEnemies();
             Destroy(gameObject);
         }
     }
