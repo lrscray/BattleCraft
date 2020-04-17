@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBasic : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class EnemyBasic : MonoBehaviour
     public GameObject[] houses;
     int state = 1;
     int health = 100;
+    int maxHealth = 100;
+
+    
+    [SerializeField]
+    private HealthBarScript healthBar;
 
 
     // Start is called before the first frame update
@@ -17,6 +23,7 @@ public class EnemyBasic : MonoBehaviour
     {
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<EnemyBasicPopulation>();
         houses = GameObject.FindGameObjectsWithTag("House");
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -24,14 +31,14 @@ public class EnemyBasic : MonoBehaviour
     {
         if (state == 1)
             enemyEngageBattle();
-        
+
     }
 
     //state 1. Enemies move towards the nearest structures
     void enemyEngageBattle()
     {
         checkHealth();
-        
+
         //locate nearest house to bring the sitizen to
         float closestHouseDist = Vector3.Distance(transform.position, houses[0].transform.position);
         float nextDistance;
@@ -53,7 +60,7 @@ public class EnemyBasic : MonoBehaviour
     }
     void checkHealth()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             //Update enemy manager to subtract total num enemies.
             enemyManager.DecrementNumCurrentEnemies();
@@ -67,8 +74,18 @@ public class EnemyBasic : MonoBehaviour
         if (collision.gameObject.tag == "Defender")
         {
             health = health - 10;
+            healthBar.SetHealth(health);
         }
     }
 
 
 }
+
+
+
+
+
+
+
+
+
