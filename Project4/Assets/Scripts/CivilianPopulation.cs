@@ -12,22 +12,22 @@ public class CivilianPopulation : MonoBehaviour
     public GameObject tempCivilian;
 
     //Population size. This acts as the health for the base (Civilian)
-    int popSize;
-    int currentPop;
+    private int maxPopSize;
+    [SerializeField] private int numCurrentCivilians = 0;
 
-    void Start()
+    [SerializeField] private int numStartingCivilians = 5;
+
+    private void Start()
     {
-        currentPop = 0;
-        popSize = 5;
-        SpawnCivilians();
+        SpawnStartingCivilians();
     }
 
-    public void SpawnCivilians()
+    public void SpawnStartingCivilians()
     {
-        while(currentPop < popSize)
+        for(int i = 0; i < numStartingCivilians; i++)
         {
             //update population
-            currentPop++;
+            numCurrentCivilians++;
             //find the prefab in resources
             tempCivilian = (GameObject)Resources.Load("Civilian", typeof(GameObject));
             //Create a random spawn location for the new civilian
@@ -35,5 +35,15 @@ public class CivilianPopulation : MonoBehaviour
             //Instantiate
             GameObject.Instantiate(tempCivilian, spawnLocations[spawn].transform.position, Quaternion.identity);
         }
+    }
+
+    public int GetNumCurrentCivilians()
+    {
+        return numCurrentCivilians;
+    }
+
+    public void DecrementNumCurrentCivilians()
+    {
+        numCurrentCivilians--;
     }
 }
