@@ -166,6 +166,51 @@ MonoBehaviour:
   waveManager: {fileID: 1233611663}
   enemyManager: {fileID: 711279567}
   civilianManager: {fileID: 1249849712}
+--- !u!1 &70350194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 70350195}
+  - component: {fileID: 70350196}
+  m_Layer: 0
+  m_Name: PlayerResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &70350195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70350194}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 236990671}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &70350196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70350194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a344394a8ea6c5d4cbf9b7c36fca0bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numResources: -1
+  numResourceLabel: {fileID: 2129772363}
 --- !u!1 &83962087
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +401,7 @@ Transform:
   m_Children:
   - {fileID: 10518343}
   - {fileID: 1233611662}
+  - {fileID: 70350195}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -496,7 +542,6 @@ GameObject:
   - component: {fileID: 357638952}
   - component: {fileID: 357638951}
   - component: {fileID: 357638950}
-  - component: {fileID: 357638949}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -504,20 +549,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &357638949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357638948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a344394a8ea6c5d4cbf9b7c36fca0bd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numResources: -1
-  numResourceLabel: {fileID: 2129772363}
 --- !u!114 &357638950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +586,7 @@ MonoBehaviour:
   placingKey: 323
   worldUp: {fileID: 1701856262}
   buildingToolSelector: {fileID: 357638950}
-  resourceManager: {fileID: 357638949}
+  resourceManager: {fileID: 70350196}
 --- !u!81 &357638952
 AudioListener:
   m_ObjectHideFlags: 0

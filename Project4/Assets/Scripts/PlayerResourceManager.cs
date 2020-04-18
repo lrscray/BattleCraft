@@ -13,7 +13,7 @@ public class PlayerResourceManager : MonoBehaviour
     void Start()
     {
         numResources = 0;
-        StartCoroutine(IncrementResourcesAfterTime());
+        //StartCoroutine(IncrementResourcesAfterTime());
     }
 
     IEnumerator IncrementResourcesAfterTime()
@@ -29,6 +29,12 @@ public class PlayerResourceManager : MonoBehaviour
     public int GetNumResources()
     {
         return numResources;
+    }
+
+    public void IncrementNumResources(int resourceAmmount)
+    {
+        numResources += resourceAmmount;
+        numResourceLabel.text = numResources.ToString();
     }
 
     public void BuildBuilding(int buildingCost)
