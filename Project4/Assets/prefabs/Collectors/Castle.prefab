@@ -38,7 +38,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6089364932452909739}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72cac19e2a986cd4fbaacc78927b4200, type: 3}
   m_Name: 
@@ -241,17 +241,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446aa3c64a810564883320368fe0df20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingMaxHealth: -1
-  buildingCurrentHealth: -1
-  healAmount: -1
-  buildingCreationCost: -1
-  upKeepWaitPeriod: -1
-  buildingUpKeepCost: -1
-  upKeepDamageAmount: -1
-  maxTroopCapacity: -1
-  currentNumTroops: -1
-  spawningWaitPeriod: -1
-  troopTypePrefab: {fileID: 0}
+  buildingMaxHealth: 10
+  buildingCurrentHealth: 10
+  healAmount: 1
+  buildingCreationCost: 2
+  upKeepWaitPeriod: 7
+  buildingUpKeepCost: 2
+  upKeepDamageAmount: 1
+  maxTroopCapacity: 4
+  currentNumTroops: 0
+  spawningWaitPeriod: 2
+  spawnPlacementObject: {fileID: 6089364932452909739}
+  troopTypePrefab: {fileID: 3419640903934524307, guid: 1551371764eeff34ca422425a34291de,
+    type: 3}
 --- !u!1 &8634408065946995810
 GameObject:
   m_ObjectHideFlags: 0
