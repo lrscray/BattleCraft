@@ -36,4 +36,14 @@ public class Enemy2Population : MonoBehaviour
             GameObject.Instantiate(Enemy2, spawnLocations[spawn].transform.position, Quaternion.identity);
         }
     }
+
+    public void DecrementCurrentPop()
+    {
+        currentPop--;
+    }
+
+    public int getCurrentPop()
+    {
+        return currentPop;
+    }
 }
