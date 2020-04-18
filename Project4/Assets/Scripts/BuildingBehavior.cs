@@ -19,16 +19,19 @@ public class BuildingBehavior : MonoBehaviour
 
     private bool spawningEnabled = true;
     [SerializeField] private float spawningWaitPeriod = -1f; //The time to wait before attempting to spawn troops.
+    [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
     //TODO Prepare this futher for game.
     private List<GameObject> troopsArray;
 
     //TODO Consider changing how this is found.
+    private CivilianPopulation civilianManager = null;
     private PlayerResourceManager resourceManager = null;
 
     private void Start()
     {
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         troopsArray = new List<GameObject>();
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());
@@ -65,10 +68,14 @@ public class BuildingBehavior : MonoBehaviour
     }
 
     //TODO Change where the troops spawn.
-    //TODO Add troops to troopsArray list of building to keep track of them.
+    //TODO Add troops to troopsArray list of building to keep track of them?
     private void SpawnTroop()
     {
-        Instantiate(troopTypePrefab, gameObject.transform.position, gameObject.transform.rotation);
+        Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
+        if(troopTypePrefab.tag == "Civilian")
+        {
+            civilianManager.IncrementNumCurrentCivilians();
+        }
         currentNumTroops++;
     }
 
