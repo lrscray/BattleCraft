@@ -12,6 +12,20 @@ TagManager:
   - MiningSpot4
   - Deposite
   - Collector
+  - Building
+  - Enemy2
+  - Civilian
+  - Defender
+  - EnemyBasic
+  - CivilianWanderPoint
+  - DefenderWanderPoint
+  - House
+  - EnemyManager
+  - DefenderManager
+  - CivilianManager
+  - CollectorManager
+  - ResourceManager
+  - Enemy2Manager
   layers:
   - Default
   - TransparentFX
@@ -21,7 +35,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Ground
   - 
   - 
   - 
