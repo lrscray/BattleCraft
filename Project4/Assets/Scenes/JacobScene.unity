@@ -2817,6 +2817,8 @@ MonoBehaviour:
   - {fileID: 2056629723}
   - {fileID: 239305328}
   tempEnemyBasic: {fileID: 0}
+  numCurrentEnemies: 0
+  numEnemiesInWave: 9
 --- !u!1 &2032236867
 GameObject:
   m_ObjectHideFlags: 0
@@ -2918,6 +2920,8 @@ MonoBehaviour:
   - {fileID: 1377558005}
   - {fileID: 72118254}
   tempCivilian: {fileID: 0}
+  numCurrentCivilians: 0
+  numStartingCivilians: 5
 --- !u!4 &2051710731
 Transform:
   m_ObjectHideFlags: 0
