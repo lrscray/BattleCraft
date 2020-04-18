@@ -43,12 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72cac19e2a986cd4fbaacc78927b4200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collectors:
-  - {fileID: 531993431368346434, guid: 0f5bb6b49d5b9d545928e97029878bc1, type: 3}
-  - {fileID: 531993431368346434, guid: 0f5bb6b49d5b9d545928e97029878bc1, type: 3}
-  - {fileID: 531993431368346434, guid: 0f5bb6b49d5b9d545928e97029878bc1, type: 3}
-  - {fileID: 531993431368346434, guid: 0f5bb6b49d5b9d545928e97029878bc1, type: 3}
+  Collectors: {fileID: 3419640903934524307, guid: 1551371764eeff34ca422425a34291de,
+    type: 3}
   Delay: 10
+  CollectionCheck: {fileID: 1713677914020411108, guid: 9f850273a66bacf469713615b3b0b369,
+    type: 3}
   cap: 5
 --- !u!1 &6387808178477757707
 GameObject:
