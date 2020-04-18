@@ -77,7 +77,7 @@ public class Defender: MonoBehaviour
         if (state == 4)
             Attack2();
 
-        // checkHealth();
+         checkHealth();
     }
     //state 1
     void Wander()
