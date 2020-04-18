@@ -15,16 +15,18 @@ public class Enemy2Population : MonoBehaviour
     int popSize;
     int currentPop;
 
+    [SerializeField] private int numEnemiesInWave = 1;
+
     void Start()
     {
-        currentPop = 0;
-        popSize = 3;
-        SpawnEnemy2();
+        //currentPop = 0;
+        //popSize = 3;
+        //SpawnEnemy2();
     }
 
     public void SpawnEnemy2()
     {
-        while (currentPop < popSize)
+        for(int i = 0; i < numEnemiesInWave; i++)
         {
             //update population
             currentPop++;
@@ -42,7 +44,7 @@ public class Enemy2Population : MonoBehaviour
         currentPop--;
     }
 
-    public int getCurrentPop()
+    public int GetCurrentPop()
     {
         return currentPop;
     }

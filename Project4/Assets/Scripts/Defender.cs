@@ -209,7 +209,7 @@ public class Defender: MonoBehaviour
     void Attack2()
     {
 
-        if (enemyManager.GetComponent<Enemy2Population>().getCurrentPop() == 0)
+        if (enemyManager.GetComponent<Enemy2Population>().GetCurrentPop() == 0)
         {
             state = 5;
         }
