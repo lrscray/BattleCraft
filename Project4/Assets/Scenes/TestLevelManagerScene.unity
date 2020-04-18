@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 125293880}
   m_Layer: 0
   m_Name: Enemy2Manager
-  m_TagString: Untagged
+  m_TagString: Enemy2Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1582,7 +1582,7 @@ MonoBehaviour:
   - {fileID: 1273581194}
   tempEnemyBasic: {fileID: 0}
   numCurrentEnemies: 0
-  numEnemiesInWave: 5
+  numEnemiesInWave: 10
 --- !u!1 &729985479
 GameObject:
   m_ObjectHideFlags: 0

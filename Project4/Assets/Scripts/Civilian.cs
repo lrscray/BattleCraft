@@ -83,7 +83,7 @@ public class Civilian : MonoBehaviour
 
         //move towards the closest civilian
         transform.LookAt(houses[closestHouse].transform);
-        GetComponent<Rigidbody>().AddForce(transform.forward * 5);
+        GetComponent<Rigidbody>().AddForce(transform.forward * 10);
         //Once contact is made with the citizen. move them to the nearest house
     }
     //state 3
