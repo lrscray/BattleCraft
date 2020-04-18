@@ -25,6 +25,7 @@ TagManager:
   - CivilianManager
   - CollectorManager
   - ResourceManager
+  - Enemy2Manager
   layers:
   - Default
   - TransparentFX

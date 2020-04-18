@@ -2,19 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Priorities: attack civilians -> defenders -> structures
 public class Enemy2 : MonoBehaviour
 {
+
+    private Enemy2Population enemyManager;
+
     //list of houses
     public GameObject[] houses;
     public GameObject[] civilians;
     int state = 1;
     int health = 100;
+    int maxHealth = 100;
+
+    [SerializeField]
+    private HealthBarScript healthBar;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyManager = GameObject.FindGameObjectWithTag("Enemy2Manager").GetComponentInChildren<Enemy2Population>();
         houses = GameObject.FindGameObjectsWithTag("House");
         civilians = GameObject.FindGameObjectsWithTag("Civilian");
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -102,6 +113,7 @@ public class Enemy2 : MonoBehaviour
     {
         if (health <= 0)
         {
+            enemyManager.DecrementCurrentPop();
             Destroy(gameObject);
         }
     }
@@ -112,7 +124,7 @@ public class Enemy2 : MonoBehaviour
         if (collision.gameObject.tag == "Defender")
         {
             health = health - 10;
-            // print("ouch, health is " + health);
+            healthBar.SetHealth(health);
         }
     }
 
