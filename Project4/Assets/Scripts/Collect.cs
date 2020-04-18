@@ -104,7 +104,11 @@ public class Collect : MonoBehaviour
         {
             StartCoroutine(JustWait());
         }
-        Debug.DrawLine(this.transform.position, closestSpot.transform.position);
+        else
+        {
+            Debug.DrawLine(this.transform.position, closestSpot.transform.position);
+        }
+        
         return;
 
     }
@@ -133,8 +137,10 @@ public class Collect : MonoBehaviour
         {
             StartCoroutine(JustWait());
         }
-
-        Debug.DrawLine(this.transform.position, closestSpot.transform.position);
+        else
+        {
+            Debug.DrawLine(this.transform.position, closestSpot.transform.position);
+        }
         return;
 
     }
