@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 1696996738719633854}
   - component: {fileID: 5378549657338212481}
   - component: {fileID: 1855486538857422265}
+  - component: {fileID: 2194830462071195649}
   m_Layer: 0
   m_Name: Castle
   m_TagString: Home
@@ -228,6 +229,29 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.885875, y: 6.4585137, z: 6.885875}
   m_Center: {x: -0.00052809727, y: 3.2421973, z: -0.041340362}
+--- !u!114 &2194830462071195649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6687814046880232697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446aa3c64a810564883320368fe0df20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingMaxHealth: -1
+  buildingCurrentHealth: -1
+  healAmount: -1
+  buildingCreationCost: -1
+  upKeepWaitPeriod: -1
+  buildingUpKeepCost: -1
+  upKeepDamageAmount: -1
+  maxTroopCapacity: -1
+  currentNumTroops: -1
+  spawningWaitPeriod: -1
+  troopTypePrefab: {fileID: 0}
 --- !u!1 &8634408065946995810
 GameObject:
   m_ObjectHideFlags: 0
