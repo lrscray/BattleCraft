@@ -105,7 +105,7 @@ public class Defender: MonoBehaviour
         {
             state = 4;
         }
-
+        civilians = GameObject.FindGameObjectsWithTag("Civilian");
         //find the nearest civilian that is not in a house
         float closestCivilianDist = 0;
         int closestCivilian = 0;

@@ -23,13 +23,11 @@ public class Civilian : MonoBehaviour
     private NavMeshAgent agent;
     bool hasADefender;
     bool inAHouse;
-    bool aLock;
 
     int state = 1;
 
     void Start()
     {
-        aLock = false;
         setInAHouse(false);
         //find all of the wander points when the object is created
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
@@ -110,9 +108,8 @@ public class Civilian : MonoBehaviour
                 state = 2;
             }
         }
-        if (collision.gameObject.tag == "Enemy2" && !aLock)
+        if (collision.gameObject.tag == "Enemy2")
         {
-            aLock = true;
             civilianManager.DecrementNumCurrentCivilians();
             Destroy(gameObject);
         }

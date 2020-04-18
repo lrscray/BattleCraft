@@ -1551,7 +1551,7 @@ MonoBehaviour:
   - {fileID: 1273581194}
   tempEnemyBasic: {fileID: 0}
   numCurrentEnemies: 0
-  numEnemiesInWave: 1
+  numEnemiesInWave: 5
 --- !u!1 &729985479
 GameObject:
   m_ObjectHideFlags: 0
