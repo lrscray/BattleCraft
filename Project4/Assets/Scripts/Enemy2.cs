@@ -6,6 +6,7 @@ public class Enemy2 : MonoBehaviour
 {
     //list of houses
     public GameObject[] houses;
+    public GameObject[] civilians;
     int state = 1;
     int health = 100;
 
@@ -13,39 +14,89 @@ public class Enemy2 : MonoBehaviour
     void Start()
     {
         houses = GameObject.FindGameObjectsWithTag("House");
+        civilians = GameObject.FindGameObjectsWithTag("Civilian");
     }
 
     // Update is called once per frame
     void Update()
     {
         if (state == 1)
-            enemyEngageBattle();
+            civilianEngageBattle();
     }
 
     //state 1. Enemies move towards the nearest structures
-    void enemyEngageBattle()
+    void civilianEngageBattle()
     {
 
         checkHealth();
-
-        //locate nearest house to bring the sitizen to
-        float closestHouseDist = Vector3.Distance(transform.position, houses[0].transform.position);
-        float nextDistance;
-        int closestHouse = 0; ;
-        for (int i = 1; i < houses.Length; i++)
+        bool searchCivilian = false;
+        //There must me a civilian outside of a house.Loop through all of them to see
+        civilians = GameObject.FindGameObjectsWithTag("Civilian");
+        for (int i = 0; i < civilians.Length; i++)
         {
-            nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
-            if (nextDistance < closestHouseDist)
+            if (!civilians[i].GetComponent<Civilian>().getInAHouse())
             {
-                closestHouseDist = nextDistance;
-                closestHouse = i;
+                searchCivilian = true;
             }
         }
 
-        //move towards the closest civilian
-        transform.LookAt(houses[closestHouse].transform);
-        GetComponent<Rigidbody>().AddForce(transform.forward * 3);
-        //Once contact is made with the citizen. move them to the nearest house
+        if (searchCivilian)
+        {
+            float closestCivilianDist = 0;
+            int closestCivilian = 0;
+            float nextDistance;
+            for (int j = 0; j < civilians.Length; j++)
+            {
+                if (civilians[j].gameObject.GetComponent<Renderer>().enabled == true) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
+                {
+                    if (!civilians[j].GetComponent<Civilian>().getHasADefender())
+                    {
+                        closestCivilianDist = Vector3.Distance(transform.position, civilians[j].transform.position);
+                        closestCivilian = j;
+                    }
+                }
+            }
+
+            for (int i = 1; i < civilians.Length; i++)
+            {
+                nextDistance = Vector3.Distance(transform.position, civilians[i].transform.position);
+                if (nextDistance < closestCivilianDist && civilians[i].gameObject.GetComponent<Renderer>().enabled == true)   //&& civilians[j].GetComponent<Civilian>().getHasADefender() == false
+                {
+                    if (!civilians[i].GetComponent<Civilian>().getHasADefender())
+                    {
+                        closestCivilianDist = nextDistance;
+                        closestCivilian = i;
+                    }
+                }
+            }
+            //move towards the closest civilian
+            transform.LookAt(civilians[closestCivilian].transform);
+            GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            //Once contact is made with the citizen. move them to the nearest house
+        }
+
+
+        //If there are no Civilians, attack the houses
+        int closestHouse = 0; ;
+        if (!searchCivilian)
+        {
+
+            //locate nearest house to bring the sitizen to
+            float closestHouseDist = Vector3.Distance(transform.position, houses[0].transform.position);
+            float nextDistance;
+            for (int i = 1; i < houses.Length; i++)
+            {
+                nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
+                if (nextDistance < closestHouseDist)
+                {
+                    closestHouse = i;
+                    closestHouseDist = nextDistance;
+                }
+            }
+            //move towards the closest house
+            transform.LookAt(houses[closestHouse].transform);
+            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+        }
     }
     void checkHealth()
     {

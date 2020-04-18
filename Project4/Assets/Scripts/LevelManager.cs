@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CivilianPopulation civilianManager = null;
 
     private bool inStartingPeriod = true;
-    private float warmupTimeLeft = 10f;//180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
+    private float warmupTimeLeft = 1f;//180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
 
     private bool waveActive = false;
 
