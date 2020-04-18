@@ -41,6 +41,14 @@ public class CivilianPopulation : MonoBehaviour
         }
     }
 
+    public void IncrementNumCurrentCivilians()
+    {
+        numCurrentCivilians++;
+        numStartingCivilians++;//TODO: Consider changing how this works.
+        healthBar.SetMaxHealth(numStartingCivilians + 1);
+        healthBar.SetHealth(GetNumCurrentCivilians());
+    }
+
     public int GetNumCurrentCivilians()
     {
         return numCurrentCivilians;
