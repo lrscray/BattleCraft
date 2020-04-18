@@ -24,7 +24,6 @@ public class EnemyBasicPopulation : MonoBehaviour
 
     public void SpawnWaveEnemies() //TODO: Change this to work with a parameter for num of enemies to spawn?
     {
-            print("HERERE ");
         for(int i = 0; i < numEnemiesInWave; i++)
         {
             //update population
