@@ -13,6 +13,8 @@ public class Civilian : MonoBehaviour
     //list of houses
     public GameObject[] houses;
 
+    private CivilianPopulation civilianManager;
+
     //Distance in which the Civilian locates their new point to wonder to
     //Solves issue with civilians bumping into each other at a point
     [SerializeField] private float minRemainingDistance = 0.5f;
@@ -20,12 +22,17 @@ public class Civilian : MonoBehaviour
     private int destinationPoint = 0;
     private NavMeshAgent agent;
     bool hasADefender;
+    bool inAHouse;
+    bool aLock;
 
     int state = 1;
 
     void Start()
     {
+        aLock = false;
+        setInAHouse(false);
         //find all of the wander points when the object is created
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         wanderPoints = GameObject.FindGameObjectsWithTag("CivilianWanderPoint");
         houses = GameObject.FindGameObjectsWithTag("House");
 
@@ -87,6 +94,7 @@ public class Civilian : MonoBehaviour
         //GetComponent(MeshRenderer).enabled = false;
         //renderer.enabled = false;
         gameObject.GetComponent<Renderer>().enabled = false;
+        setInAHouse(true);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -102,7 +110,12 @@ public class Civilian : MonoBehaviour
                 state = 2;
             }
         }
-
+        if (collision.gameObject.tag == "Enemy2" && !aLock)
+        {
+            aLock = true;
+            civilianManager.DecrementNumCurrentCivilians();
+            Destroy(gameObject);
+        }
         //collision with house while in state 1. Change to state 2
         if (collision.gameObject.tag == "House" && state == 2)
         {
@@ -115,5 +128,13 @@ public class Civilian : MonoBehaviour
     }
     public bool getHasADefender() {
         return hasADefender;
+    }
+    public bool getInAHouse()
+    {
+        return inAHouse;
+    }
+    public void setInAHouse(bool val)
+    {
+        inAHouse = val;
     }
 }

@@ -17,9 +17,13 @@ public class CivilianPopulation : MonoBehaviour
 
     [SerializeField] private int numStartingCivilians = 5;
 
+    [SerializeField]
+    private HealthBarScript healthBar;
+
     private void Start()
     {
         SpawnStartingCivilians();
+        healthBar.SetMaxHealth(numStartingCivilians);
     }
 
     public void SpawnStartingCivilians()
@@ -45,5 +49,6 @@ public class CivilianPopulation : MonoBehaviour
     public void DecrementNumCurrentCivilians()
     {
         numCurrentCivilians--;
+        healthBar.SetHealth(GetNumCurrentCivilians());
     }
 }

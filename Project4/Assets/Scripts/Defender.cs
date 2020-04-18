@@ -51,6 +51,7 @@ public class Defender: MonoBehaviour
     void Update()
     {
         enemiesBasic = GameObject.FindGameObjectsWithTag("EnemyBasic");
+        civilians = GameObject.FindGameObjectsWithTag("Civilian");
 
         if (state == 1)
             Wander();
