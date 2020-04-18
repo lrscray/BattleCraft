@@ -7,28 +7,38 @@ using UnityEngine.AI;
 public class SpotManager : MonoBehaviour
 {
 
-    public bool isOccupied;
-    public bool notOccupied;
+    private bool isOccupied;
+    //public bool notOccupied;
+
     GameObject Collector;
     // Start is called before the first frame update
     void Start()
     {
         Collector = GameObject.FindGameObjectWithTag("Collector");
         isOccupied = false;
-        
+
     }
 
+    public bool GetIsOccupied()
+    {
+        return isOccupied;
+    }
+
+    /*
     public void Check()
     {
         if (isOccupied)
         {
-            notOccupied = false;
+            //notOccupied = false;
+            isOccupied = false;
         }
         else
         {
-            notOccupied = true;
+            //notOccupied = true;
+            isOccupied = true;
         }
     }
+    */
 
     public void OnTriggerStay(Collider other)
     {
@@ -43,7 +53,7 @@ public class SpotManager : MonoBehaviour
             isOccupied = false;
         }
 
-        Check();
+        //Check();
     }
 
     public void OnTriggerExit(Collider other)
@@ -51,7 +61,8 @@ public class SpotManager : MonoBehaviour
 
         if (other.CompareTag("Collector"))
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            isOccupied = false;
         }
     }
 

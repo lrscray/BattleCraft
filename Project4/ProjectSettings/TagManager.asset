@@ -13,6 +13,18 @@ TagManager:
   - Deposite
   - Collector
   - Building
+  - Enemy2
+  - Civilian
+  - Defender
+  - EnemyBasic
+  - CivilianWanderPoint
+  - DefenderWanderPoint
+  - House
+  - EnemyManager
+  - DefenderManager
+  - CivilianManager
+  - CollectorManager
+  - ResourceManager
   layers:
   - Default
   - TransparentFX

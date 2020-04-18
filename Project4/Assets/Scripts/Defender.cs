@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Defender: MonoBehaviour
 {
+    //TODO: Consider adding a detection collider for finding enemies.
+
     //list of points to patrol through
     public GameObject[] wanderPoints;
     //list of basic enemies
@@ -33,7 +35,7 @@ public class Defender: MonoBehaviour
     {
         //find all of the wander points when the object is created
         wanderPoints = GameObject.FindGameObjectsWithTag("DefenderWanderPoint");
-        enemiesBasic = GameObject.FindGameObjectsWithTag("EnemyBasic");
+        //enemiesBasic = GameObject.FindGameObjectsWithTag("EnemyBasic");
         houses = GameObject.FindGameObjectsWithTag("House");
         civilians = GameObject.FindGameObjectsWithTag("Civilian");
         defenders = GameObject.FindGameObjectsWithTag("Defender");
@@ -48,6 +50,8 @@ public class Defender: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        enemiesBasic = GameObject.FindGameObjectsWithTag("EnemyBasic");
+
         if (state == 1)
             Wander();
         if (state == 2)

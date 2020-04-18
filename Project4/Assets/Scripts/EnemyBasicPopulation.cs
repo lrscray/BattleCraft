@@ -11,23 +11,23 @@ public class EnemyBasicPopulation : MonoBehaviour
     //Stores our new civilian
     public GameObject tempEnemyBasic;
 
-    //Population size. This acts as the health for the base (Civilian)
-    int popSize;
-    int currentPop;
+    //Enemy Population size. 
+    private int maxPopSize; //DESIGN: Do we want to cap the number of enemies that can come at once?
+    [SerializeField] private int numCurrentEnemies = 0;
 
-    void Start()
-    {
-        currentPop = 0;
-        popSize = 9;
-        SpawnEnemyBasic();
-    }
+    [SerializeField] private int numEnemiesInWave = 9; //The number of enemies in a wave. TODO: Change this to increase/change over time with difficulty.
 
-    public void SpawnEnemyBasic()
+    //private void Start()//TODO: Remove this and rely on WaveManager to call methods instead.
+    //{
+    //    SpawnWaveEnemies();        
+    //}
+
+    public void SpawnWaveEnemies() //TODO: Change this to work with a parameter for num of enemies to spawn?
     {
-        while (currentPop < popSize)
+        for(int i = 0; i < numEnemiesInWave; i++)
         {
             //update population
-            currentPop++;
+            numCurrentEnemies++;
             //find the prefab in resources
             tempEnemyBasic = (GameObject)Resources.Load("EnemyBasic", typeof(GameObject));
             //Create a random spawn location for the new civilian
@@ -35,5 +35,15 @@ public class EnemyBasicPopulation : MonoBehaviour
             //Instantiate
             GameObject.Instantiate(tempEnemyBasic, spawnLocations[spawn].transform.position, Quaternion.identity);
         }
+    }
+
+    public int GetNumCurrentEnemies()
+    {
+        return numCurrentEnemies;
+    }
+
+    public void DecrementNumCurrentEnemies()
+    {
+        numCurrentEnemies--;
     }
 }
