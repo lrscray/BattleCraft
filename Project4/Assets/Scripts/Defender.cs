@@ -5,18 +5,27 @@ using UnityEngine.AI;
 
 public class Defender: MonoBehaviour
 {
+
     //TODO: Consider adding a detection collider for finding enemies.
 
     //list of points to patrol through
     public GameObject[] wanderPoints;
     //list of basic enemies
     public GameObject[] enemiesBasic;
+    public GameObject[] enemies2;
     //list of houses
     public GameObject[] houses;
     //list of civilians
     public GameObject[] civilians;
     //list of defenders
     public GameObject[] defenders;
+    private Enemy2Population enemyManager;
+
+    int health = 100;
+    int maxHealth = 100;
+
+    [SerializeField]
+    private HealthBarScript healthBar;
 
     public int currentCivilian = 0;
 
@@ -29,7 +38,6 @@ public class Defender: MonoBehaviour
     private float distance;
 
     int state = 1;
-    int health = 100;
 
     void Start()
     {
@@ -39,12 +47,15 @@ public class Defender: MonoBehaviour
         houses = GameObject.FindGameObjectsWithTag("House");
         civilians = GameObject.FindGameObjectsWithTag("Civilian");
         defenders = GameObject.FindGameObjectsWithTag("Defender");
+        enemies2 = GameObject.FindGameObjectsWithTag("Enemy2");
+        enemyManager = GameObject.FindGameObjectWithTag("Enemy2Manager").GetComponentInChildren<Enemy2Population>();
 
         agent = GetComponent<NavMeshAgent>();
         //agent.autoBraking = false;
 
         int nextPoint = Random.Range(0, wanderPoints.Length);
         agent.destination = wanderPoints[nextPoint].transform.position;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -59,10 +70,14 @@ public class Defender: MonoBehaviour
             searchForCitizens();
         if (state == 3)
             Escort();
-        if (state == 4)
+        //attacks regular enemies
+        if (state == 5)
             Attack();
+        //attacks enemy2
+        if (state == 4)
+            Attack2();
 
-       // checkHealth();
+        // checkHealth();
     }
     //state 1
     void Wander()
@@ -191,6 +206,42 @@ public class Defender: MonoBehaviour
         }
     }
 
+    void Attack2()
+    {
+
+        if (enemyManager.GetComponent<Enemy2Population>().getCurrentPop() == 0)
+        {
+            state = 5;
+        }
+
+        float tempDistance = 1000;
+        float finalDistance = 1000;
+        int closestEnemy = 0;
+
+        enemies2 = null;
+        enemies2 = GameObject.FindGameObjectsWithTag("Enemy2");
+        int length = enemies2.Length;
+        if (enemies2 != null)
+        {
+            //find the nearest enemy to attack
+            for (int i = 1; i < enemies2.Length; i++)
+            {
+                tempDistance = Vector3.Distance(transform.position, enemies2[i].transform.position);
+                if (tempDistance < finalDistance)
+                {
+                    finalDistance = tempDistance;
+                    closestEnemy = i;
+                }
+            }
+            //attack the enemy
+            if (length != 0)
+            {
+                transform.LookAt(enemies2[closestEnemy].transform);
+                GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            }
+        }
+    }
+
     void checkHealth()
     {
         if (health <= 0)
@@ -212,9 +263,15 @@ public class Defender: MonoBehaviour
             state = 2;
         }
         //Attacked by Enemy
-        if (collision.gameObject.tag == "Defender")
+        if (collision.gameObject.tag == "Enemy2")
         {
             health = health - 5;
+            healthBar.SetHealth(health);
+        }
+        if (collision.gameObject.tag == "EnemyBasic")
+        {
+            health = health - 5;
+            healthBar.SetHealth(health);
         }
     }
     public int getState()
