@@ -28,7 +28,7 @@ public class BuildingBehavior : MonoBehaviour
 
     private void Start()
     {
-        resourceManager = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<PlayerResourceManager>();
+        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
         troopsArray = new List<GameObject>();
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());

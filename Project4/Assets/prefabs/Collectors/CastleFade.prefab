@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1765309481782051158}
   - component: {fileID: 4996498040151842921}
   - component: {fileID: 1599711598744915281}
+  - component: {fileID: -8850757156937124694}
   m_Layer: 0
   m_Name: CastleFade
   m_TagString: Home
@@ -95,6 +96,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.885875, y: 6.4585137, z: 6.885875}
   m_Center: {x: -0.00052809727, y: 3.2421973, z: -0.041340362}
+--- !u!114 &-8850757156937124694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997863852114912273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed0665f34d4cea4a93751e8588a1395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6293041219477874147
 GameObject:
   m_ObjectHideFlags: 0
