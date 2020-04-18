@@ -14,10 +14,10 @@ public class Collect : MonoBehaviour
     [SerializeField] private GameObject MineSpot2;
     [SerializeField] private GameObject MineSpot3;
     [SerializeField] private GameObject MineSpot4;
-    [SerializeField] private GameObject MineSpot5;
+    /*[SerializeField] private GameObject MineSpot5;
     [SerializeField] private GameObject MineSpot6;
     [SerializeField] private GameObject MineSpot7;
-    [SerializeField] private GameObject MineSpot8;
+    [SerializeField] private GameObject MineSpot8;*/
     [SerializeField] private bool isCollecting;
     [SerializeField] private bool isDepositing;
     [SerializeField] private float startWait = 5.0f;
@@ -195,10 +195,10 @@ public class Collect : MonoBehaviour
         MineSpot2.SetActive(true);
         MineSpot3.SetActive(true);
         MineSpot4.SetActive(true);
-        MineSpot5.SetActive(true);
+       /* MineSpot5.SetActive(true);
         MineSpot6.SetActive(true);
         MineSpot7.SetActive(true);
-        MineSpot8.SetActive(true);
+        MineSpot8.SetActive(true);*/
     }
 
     IEnumerator Collected()
