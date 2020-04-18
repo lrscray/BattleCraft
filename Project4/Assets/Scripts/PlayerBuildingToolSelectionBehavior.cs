@@ -21,9 +21,12 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
         { 
             if (Input.GetKeyDown(buildingTypeKeyCodeSelectors[i])) //If player pressed input button/key for that building type.
             {
+                //TODO Design: Get it so that you dont have to deselect a house before you can place a different type.
+
                 currentSelectedBuilding = buildingTypePrefabs[i];
                 //Debug.Log("Pressed button: " + buildingTypeKeyCodeSelectors[i]);
                 buildingEnabled = true;
+                //Have hotbar button look selected!
             }
         }
         if(Input.GetKeyDown(unSelectBuildingKey)) //If the player clicked the button for unselecting the build tool.
@@ -39,6 +42,11 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
         return currentSelectedBuilding;
     }
 
+    public void SetCurrentSelectedBuilding(int listIndex)
+    {
+        currentSelectedBuilding = buildingTypePrefabs[listIndex];
+    }
+
     public GameObject GetCurrentSelectedGhostBuilding()
     {
         return buildingTypeGhostPrefabs[buildingTypePrefabs.IndexOf(currentSelectedBuilding)];
@@ -47,6 +55,11 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
     public bool IsBuildingEnabled()
     {
         return buildingEnabled;
+    }
+
+    public void SetBuildingEnabled()
+    {
+        buildingEnabled = true;
     }
 
     //Deselects the building tool after an object is placed.
