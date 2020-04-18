@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 7123170248664718564}
   - component: {fileID: 279735189738595832}
   - component: {fileID: 4354847556066628591}
+  - component: {fileID: 1776236264}
   m_Layer: 0
   m_Name: DepositeSpot (1)
   m_TagString: Deposite
@@ -120,8 +121,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
+--- !u!114 &1776236264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6387808178477757707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6ea12b5fa15d247a7775dc348033ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6687814046880232697
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +240,7 @@ GameObject:
   - component: {fileID: 1924937264417400278}
   - component: {fileID: 7402229858775344231}
   - component: {fileID: 872180464243427682}
+  - component: {fileID: 53328247}
   m_Layer: 0
   m_Name: DepositeSpot
   m_TagString: Deposite
@@ -288,5 +300,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
+--- !u!114 &53328247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634408065946995810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6ea12b5fa15d247a7775dc348033ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
