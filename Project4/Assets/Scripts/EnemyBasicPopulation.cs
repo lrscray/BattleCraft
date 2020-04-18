@@ -15,7 +15,7 @@ public class EnemyBasicPopulation : MonoBehaviour
     private int maxPopSize; //DESIGN: Do we want to cap the number of enemies that can come at once?
     [SerializeField] private int numCurrentEnemies = 0;
 
-    [SerializeField] private int numEnemiesInWave = 9; //The number of enemies in a wave. TODO: Change this to increase/change over time with difficulty.
+    [SerializeField] private int numEnemiesInWave = 1; //The number of enemies in a wave. TODO: Change this to increase/change over time with difficulty.
 
     //private void Start()//TODO: Remove this and rely on WaveManager to call methods instead.
     //{
