@@ -15,7 +15,7 @@ public class PlayerResourceManager : MonoBehaviour
         numResources = 0;
         //StartCoroutine(IncrementResourcesAfterTime());
     }
-
+    /*
     IEnumerator IncrementResourcesAfterTime()
     {
         while (true)
@@ -25,7 +25,7 @@ public class PlayerResourceManager : MonoBehaviour
             numResourceLabel.text = numResources.ToString();
         }
     }
-
+    */
     public int GetNumResources()
     {
         return numResources;
