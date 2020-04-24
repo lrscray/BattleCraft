@@ -11,10 +11,11 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private WaveManager waveManager = null;
     [SerializeField] private EnemyBasicPopulation enemyManager = null;
+    [SerializeField] private Enemy2Population enemyManager2 = null;
     [SerializeField] private CivilianPopulation civilianManager = null;
 
     private bool inStartingPeriod = true;
-    private float warmupTimeLeft = 1f;//180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
+    [SerializeField] private float warmupTimeLeft = 60f;//180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
 
     private bool waveActive = false;
 
@@ -53,12 +54,12 @@ public class LevelManager : MonoBehaviour
             //Check win/lose conitions.
             //Win = all enemies dead.
             //Check enemy manager for number of alive enemies?
-            if(enemyManager.GetNumCurrentEnemies() <= 0)
+            if(enemyManager.GetNumCurrentEnemies() <= 0 && enemyManager2.GetCurrentPop() <= 0)
             {
                 //Won wave/game.
                 Debug.Log("Won Game!");
                 //Set wonGameData in GameManager. This data will be used to display in game over scene.
-                //SceneManager.LoadScene("GameOverScene");//MAYBE: Consider using number of scene?
+                SceneManager.LoadScene("EndScene");//MAYBE: Consider using number of scene?
                 waveActive = false;
             }
             //Lose = all civilians dead.
@@ -68,7 +69,7 @@ public class LevelManager : MonoBehaviour
                 //Lost wave/game.
                 Debug.Log("Lost Game!");
                 //Set lostGameData in GameManager. This data will be used to display in game over scene.
-                //SceneManager.LoadScene("GameOverScene");//MAYBE: Consider using number of scene?
+                SceneManager.LoadScene("EndScene");//MAYBE: Consider using number of scene?
                 waveActive = false;
             }
         }
