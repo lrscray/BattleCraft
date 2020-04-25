@@ -15,7 +15,7 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
     private bool ghostObjectAlreadyCreated;
     private bool placingEnabled;
 
-    [SerializeField] private Transform createdBuildingsFolder = null;
+    //[SerializeField] private Transform createdBuildingsFolder = null;
 
     private void Update()
     {
@@ -44,7 +44,7 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
                     //Spawn building.
                     resourceManager.BuildBuilding(buildingToolSelector.GetCurrentSelectedBuilding().GetComponentInChildren<BuildingBehavior>().GetBuildingCreationCost());
                     GameObject building = Instantiate(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
-                    building.transform.SetParent(createdBuildingsFolder);
+                    //building.transform.SetParent(createdBuildingsFolder);
                     placingEnabled = false;
                     CallGhostBuster();
                     buildingToolSelector.PlaceBuilding();

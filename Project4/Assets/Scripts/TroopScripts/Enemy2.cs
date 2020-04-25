@@ -120,7 +120,7 @@ public class Enemy2 : MonoBehaviour
     {
         if (health <= 0)
         {
-            enemyManager.DecrementCurrentPop();
+            enemyManager.DestroyAnEnemy(gameObject);
             Destroy(gameObject);
         }
     }
