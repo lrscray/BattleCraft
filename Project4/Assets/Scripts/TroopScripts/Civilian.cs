@@ -68,22 +68,29 @@ public class Civilian : MonoBehaviour
     void Escort()
     {
         //locate nearest house to go to
-        float closestHouseDist = Vector3.Distance(transform.position, houses[0].transform.position);
+        //locate nearest house to bring the sitizen to
+        float closestHouseDist = Mathf.Infinity;//Vector3.Distance(transform.position, houses[0].transform.position);
         float nextDistance;
-        int closestHouse = 0; ;
-        for (int i = 1; i < houses.Length; i++)
+        int closestHouse = -1;
+        for (int i = 0; i < houses.Length; i++)
         {
-            nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
-            if (nextDistance < closestHouseDist)
+            if (houses[i] != null) //TODO: See if this works as a patch. Really we need a better solution than this.
             {
-                closestHouseDist = nextDistance;
-                closestHouse = i;
+                nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
+                if (nextDistance < closestHouseDist)
+                {
+                    closestHouseDist = nextDistance;
+                    closestHouse = i;
+                }
             }
         }
 
         //move towards the closest civilian
-        transform.LookAt(houses[closestHouse].transform);
-        GetComponent<Rigidbody>().AddForce(transform.forward * 10);
+        if (closestHouse != -1 && houses[closestHouse] != null)
+        {
+            transform.LookAt(houses[closestHouse].transform);
+            GetComponent<Rigidbody>().AddForce(transform.forward * 10);
+        }
         //Once contact is made with the citizen. move them to the nearest house
     }
     //state 3
