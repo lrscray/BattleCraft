@@ -22,7 +22,7 @@ public class BuildingBehavior : MonoBehaviour
     [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
     //TODO Prepare this futher for game.
-    private List<GameObject> troopsArray;
+    //private List<GameObject> troopsArray;
 
     //TODO Consider changing how this is found.
     private DefenderPopulation defenderManager = null;
@@ -37,7 +37,7 @@ public class BuildingBehavior : MonoBehaviour
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
         collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
-        troopsArray = new List<GameObject>();
+        //troopsArray = new List<GameObject>();
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());
     }
@@ -167,5 +167,17 @@ public class BuildingBehavior : MonoBehaviour
     public int GetCurrentNumTroops()
     {
         return currentNumTroops;
+    }
+
+    //TODO: Consider changing how attacking works with enemies and buildings. Maybe use a distance system?
+    void OnCollisionEnter(Collision collision)
+    {
+        //Attacked by defender
+        if (collision.gameObject.tag == "EnemyBasic")
+        {
+            TakeDamage(10);
+
+            //print("House health: " + buildingCurrentHealth);
+        }
     }
 }
