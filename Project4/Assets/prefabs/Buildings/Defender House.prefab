@@ -137,8 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446aa3c64a810564883320368fe0df20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingMaxHealth: 10
-  buildingCurrentHealth: 10
+  buildingMaxHealth: 100
+  buildingCurrentHealth: 100
   healAmount: 1
   buildingCreationCost: 2
   upKeepWaitPeriod: 7

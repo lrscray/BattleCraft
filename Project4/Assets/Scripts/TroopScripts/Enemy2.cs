@@ -87,25 +87,33 @@ public class Enemy2 : MonoBehaviour
 
 
         //If there are no Civilians, attack the houses
-        int closestHouse = 0; ;
+        int closestHouse = -1;
         if (!searchCivilian)
         {
 
             //locate nearest house to bring the sitizen to
-            float closestHouseDist = Vector3.Distance(transform.position, houses[0].transform.position);
+            float closestHouseDist = Mathf.Infinity;//Vector3.Distance(transform.position, houses[0].transform.position);
             float nextDistance;
-            for (int i = 1; i < houses.Length; i++)
+            
+            for (int i = 0; i < houses.Length; i++)
             {
-                nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
-                if (nextDistance < closestHouseDist)
+                if (houses[i] != null) //TODO: See if this works as a patch. Really we need a better solution than this.
                 {
-                    closestHouse = i;
-                    closestHouseDist = nextDistance;
+                    nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
+                    if (nextDistance < closestHouseDist)
+                    {
+                        closestHouseDist = nextDistance;
+                        closestHouse = i;
+                    }
                 }
             }
-            //move towards the closest house
-            transform.LookAt(houses[closestHouse].transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+
+            //move towards the closest civilian
+            if (closestHouse != -1 && houses[closestHouse] != null)
+            {
+                transform.LookAt(houses[closestHouse].transform);
+                GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+            }
         }
     }
     void checkHealth()
