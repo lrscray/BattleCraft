@@ -72,8 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
 --- !u!114 &2136855081471218194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,8 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
 --- !u!114 &3688125722686228587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,8 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
 --- !u!114 &4779334115411088009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,8 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3597cfa08637f641b8396145b8f89c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
-  notOccupied: 0
 --- !u!114 &2444422462283108507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,6 +864,7 @@ GameObject:
   - component: {fileID: 8901430814416590053}
   - component: {fileID: 8901430814416590054}
   - component: {fileID: 8901430814416590055}
+  - component: {fileID: 6806217999830471163}
   m_Layer: 0
   m_Name: SmallFormation 1
   m_TagString: Crystal
@@ -986,6 +979,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 6}
   m_Center: {x: 0, y: 0, z: 2.5}
+--- !u!54 &6806217999830471163
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901430814416590048}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8901430814499266912
 GameObject:
   m_ObjectHideFlags: 0

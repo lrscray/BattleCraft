@@ -25,6 +25,9 @@ public class BuildingBehavior : MonoBehaviour
     private List<GameObject> troopsArray;
 
     //TODO Consider changing how this is found.
+    private DefenderPopulation defenderManager = null;
+    //MAYBE: Make a collector manager script?
+    private GameObject collectorManager = null;
     private CivilianPopulation civilianManager = null;
     private PlayerResourceManager resourceManager = null;
 
@@ -32,6 +35,8 @@ public class BuildingBehavior : MonoBehaviour
     {
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
+        defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
+        collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
         troopsArray = new List<GameObject>();
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());
@@ -67,14 +72,22 @@ public class BuildingBehavior : MonoBehaviour
         }
     }
 
-    //TODO Change where the troops spawn.
     //TODO Add troops to troopsArray list of building to keep track of them?
     private void SpawnTroop()
     {
-        Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
+        GameObject troop = Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
         if(troopTypePrefab.tag == "Civilian")
         {
+            troop.transform.SetParent(civilianManager.transform);
             civilianManager.IncrementNumCurrentCivilians();
+        }
+        else if(troopTypePrefab.tag == "Collector")
+        {
+            troop.transform.SetParent(collectorManager.transform);
+        }
+        else if(troopTypePrefab.tag == "Defender")
+        {
+            troop.transform.SetParent(defenderManager.transform);
         }
         currentNumTroops++;
     }

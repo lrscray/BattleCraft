@@ -7,9 +7,9 @@ using UnityEngine;
 public class CivilianPopulation : MonoBehaviour
 {
     //Store spawn locations for civilians
-    public GameObject[] spawnLocations;
+    [SerializeField] private GameObject[] spawnLocations;
     //Stores our new civilian
-    public GameObject tempCivilian;
+    [SerializeField] private GameObject tempCivilian;
 
     //Population size. This acts as the health for the base (Civilian)
     private int maxPopSize;
@@ -33,7 +33,7 @@ public class CivilianPopulation : MonoBehaviour
             //update population
             numCurrentCivilians++;
             //find the prefab in resources
-            tempCivilian = (GameObject)Resources.Load("Civilian", typeof(GameObject));
+            //tempCivilian = (GameObject)Resources.Load("Civilian", typeof(GameObject));
             //Create a random spawn location for the new civilian
             int spawn = Random.Range(0, spawnLocations.Length);
             //Instantiate

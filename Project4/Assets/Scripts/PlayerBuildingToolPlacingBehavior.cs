@@ -13,7 +13,9 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
 
     private GameObject ghostObject;
     private bool ghostObjectAlreadyCreated;
-    private bool placingEnabled;    
+    private bool placingEnabled;
+
+    [SerializeField] private Transform createdBuildingsFolder = null;
 
     private void Update()
     {
@@ -41,7 +43,8 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
                 {
                     //Spawn building.
                     resourceManager.BuildBuilding(buildingToolSelector.GetCurrentSelectedBuilding().GetComponentInChildren<BuildingBehavior>().GetBuildingCreationCost());
-                    Instantiate(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
+                    GameObject building = Instantiate(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
+                    building.transform.SetParent(createdBuildingsFolder);
                     placingEnabled = false;
                     CallGhostBuster();
                     buildingToolSelector.PlaceBuilding();
@@ -70,19 +73,13 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
             //TODO This isnt working. Can still place within other buildings.
             if (ghostObject.GetComponentInChildren<BuildingGhostBehavior>().IsCollidingWBuilding() == true)
             {
-                if (placingEnabled == true)
-                {
-                    Debug.Log("Cannot place here!");
-                    placingEnabled = false;
-                }
+                //Debug.Log("Cannot place here!");
+                placingEnabled = false;
             }
             else
             {
-                if (placingEnabled == false)
-                {
-                    Debug.Log("Can place here!");
-                    placingEnabled = true;
-                }
+                //Debug.Log("Can place here!");
+                placingEnabled = true;
             }
         }
     }
