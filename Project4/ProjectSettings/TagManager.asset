@@ -26,6 +26,7 @@ TagManager:
   - CollectorManager
   - ResourceManager
   - Enemy2Manager
+  - CreatedBuildings
   layers:
   - Default
   - TransparentFX
