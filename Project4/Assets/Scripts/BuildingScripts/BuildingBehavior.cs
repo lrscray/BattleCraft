@@ -31,26 +31,25 @@ public class BuildingBehavior : MonoBehaviour
     //[SerializeField] private int currentNumTroops = -1; //The current number of troops assigned to this building.
 
 
-
+    private BuildingManager buildingManager = null;
     //TODO Consider changing how this is found.
     private DefenderPopulation defenderManager = null;
     //MAYBE: Make a collector manager script?
     private GameObject collectorManager = null;
     private CivilianPopulation civilianManager = null;
-    private PlayerResourceManager resourceManager = null;
-    private BuildingManager buildingManager = null;
+    private PlayerResourceManager resourceManager = null;   
 
     private void Start()
     {
         numTroopsSpawned = 0;
 
+        buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
+        transform.SetParent(buildingManager.gameObject.transform);
+        buildingManager.MakeBuilding(this.gameObject);
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
         collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
-        buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
-        transform.SetParent(buildingManager.gameObject.transform);
-        buildingManager.MakeBuilding(gameObject);
 
         insideTroops = new List<GameObject>();
 
