@@ -595,6 +595,7 @@ MonoBehaviour:
   - {fileID: 1458610622}
   tempCivilian: {fileID: 4153700141558374214, guid: be6b3a39ff829704687e081b5d340f2f,
     type: 3}
+  numCurrentCivilians: 0
   numStartingCivilians: 5
   healthBar: {fileID: 116672402}
 --- !u!1 &189840984
@@ -4156,6 +4157,7 @@ MonoBehaviour:
   worldUp: {fileID: 213922178}
   buildingToolSelector: {fileID: 1693655286}
   resourceManager: {fileID: 1585823944}
+  createdBuildingsFolder: {fileID: 2000374022}
 --- !u!81 &1693655288
 AudioListener:
   m_ObjectHideFlags: 0
