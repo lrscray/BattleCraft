@@ -15,31 +15,42 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CivilianPopulation civilianManager = null;
 
     private bool inStartingPeriod = true;
-    [SerializeField] private float warmupTimeLeft = 60f;//180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
+    //The amount of time before enemies spawn, when the level begins.
+    [SerializeField] private float startPeriodTime = 60f; //180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
+    private float startPeriodTimeLeft = 60f;
 
+    //Whether the player has lost the game.
+    private bool lostGame = false;
+
+    //Whether a wave is currently active.
     private bool waveActive = false;
 
     private void Start()
     {
+        //Set system variables.
+        startPeriodTimeLeft = startPeriodTime;
+
         //Set starting resources to 0.
         //Have starting troops.
 
         //Start tick down time for 3 minutes.
-        StartCoroutine(TickTimeDown());
+        StartCoroutine(StartPeriodTickDown());
     }
 
-    IEnumerator TickTimeDown()
+    //The grace period before enemies start at the beginning of the game.
+    //MAYBE: Consider moving this to WaveManager and merging this with the BreakPeriodTickDown() method to save a bit of code/memory.
+    IEnumerator StartPeriodTickDown()
     {
         while(inStartingPeriod)
         {
             yield return new WaitForSeconds(1);
-            warmupTimeLeft -= 1;
+            startPeriodTimeLeft -= 1;
             //Can change timeLeftText display here if we have one.
-            if(warmupTimeLeft <= 0)
+            if(startPeriodTimeLeft <= 0)
             {
                 inStartingPeriod = false;
                 //End warmup period. Wave starts.
-                waveManager.StartWave();
+                waveManager.StartWaves();
                 yield return new WaitForSeconds(3); //Allow some time for enemies to spawn.
                 StartCoroutine(CheckWinLoseConditions());
             }
@@ -48,31 +59,29 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator CheckWinLoseConditions()
     {
-        while(waveActive)
+        while(!lostGame)
         {
-            yield return 0; //MAYBE: Consider waiting a certain number of time before checking win/lose conditions?
-            //Check win/lose conitions.
-            //Win = all enemies dead.
-            //Check enemy manager for number of alive enemies?
-            if(enemyManager.GetNumCurrentEnemies() <= 0 && enemyManager2.GetCurrentPop() <= 0)
-            {
-                //Won wave/game.
-                Debug.Log("Won Game!");
-                //Set wonGameData in GameManager. This data will be used to display in game over scene.
-                SceneManager.LoadScene("EndScene");//MAYBE: Consider using number of scene?
-                waveActive = false;
-            }
-            //Lose = all civilians dead.
+            yield return 0; //MAYBE: Consider waiting a certain number of time before checking win/lose conditions? Would save some performance.
+            //Check lose conditions. Lose = all civilians dead.
             //Check civilian manager for number of alive civilians.
-            else if(civilianManager.GetNumCurrentCivilians() <= 0)
+            if(civilianManager.GetNumCurrentCivilians() <= 0)
             {
                 //Lost wave/game.
                 Debug.Log("Lost Game!");
-                //Set lostGameData in GameManager. This data will be used to display in game over scene.
+                //Set lostGameData in GameManager. This data will be used to display data in game over scene.
                 SceneManager.LoadScene("EndScene");//MAYBE: Consider using number of scene?
-                waveActive = false;
+                lostGame = true;
             }
         }
+    }
+
+    public void SetLostGame()
+    {
+        lostGame = true;
+    }
+    public bool GetLostGame()
+    {
+        return lostGame;
     }
 
     public void SetWaveActive()
