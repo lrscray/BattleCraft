@@ -9,16 +9,16 @@ public class Collect : MonoBehaviour
     private GameObject target;
     GameObject home;
     //keep track of whether collector is collecting or depositting
-    [SerializeField] private GameObject CollectionCheck;
-    [SerializeField] private bool isCollecting;
-    [SerializeField] private bool isDepositing;
+    [SerializeField] private GameObject CollectionCheck = null;
+    [SerializeField] private bool isCollecting = false;
+    [SerializeField] private bool isDepositing = false;
     private bool isWaiting = false;
     private bool isAtDestination = false;
 
     [SerializeField] private float startWait = 5.0f;
     private PlayerResourceManager resourceManager = null;
 
-    [SerializeField] private float bePatient;
+    [SerializeField] private float bePatient = -1f;
     [SerializeField] private int maxNumResourcesCarryable = 5;
     [SerializeField] private int numResourcesCarrying;
     [SerializeField] private int numResourcesPerCollect = 5;

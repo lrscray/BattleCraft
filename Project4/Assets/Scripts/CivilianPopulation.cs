@@ -7,9 +7,9 @@ using UnityEngine;
 public class CivilianPopulation : MonoBehaviour
 {
     //Store spawn locations for civilians
-    [SerializeField] private GameObject[] spawnLocations;
+    [SerializeField] private GameObject[] spawnLocations = null;
     //Stores our new civilian
-    [SerializeField] private GameObject tempCivilian;
+    [SerializeField] private GameObject tempCivilian = null;
 
     //Population size. This acts as the health for the base (Civilian)
     private int maxPopSize;
@@ -17,8 +17,7 @@ public class CivilianPopulation : MonoBehaviour
 
     [SerializeField] private int numStartingCivilians = 5;
 
-    [SerializeField]
-    private HealthBarScript healthBar;
+    [SerializeField] private HealthBarScript healthBar = null;
 
     private void Start()
     {

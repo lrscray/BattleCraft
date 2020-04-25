@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
 {
     //The key used to place buildings. Probably left mouse button.
-    [SerializeField] private KeyCode placingKey;
+    [SerializeField] private KeyCode placingKey = 0;
 
-    [SerializeField] private GameObject worldUp;
+    [SerializeField] private GameObject worldUp = null;
     [SerializeField] private PlayerBuildingToolSelectionBehavior buildingToolSelector = null;
     [SerializeField] private PlayerResourceManager resourceManager = null;
 
