@@ -5,15 +5,18 @@ using UnityEngine.AI;
 
 public class Civilian : MonoBehaviour
 {
-    //TODO: Need to implement health, and decrementing from the CivilianManager.
     //TODO: Change hiding method to use SetActive(false); and change manager/house they are assigned to, to set that active again.
 
     //list of points to patrol through
     public GameObject[] wanderPoints;
     //list of houses
-    public GameObject[] houses;
+    //public GameObject[] houses;
 
     private CivilianPopulation civilianManager;
+
+    private BuildingManager civilianBuildingManager = null;
+
+    private List<GameObject> civilianHouses;
 
     //Distance in which the Civilian locates their new point to wonder to
     //Solves issue with civilians bumping into each other at a point
@@ -31,8 +34,12 @@ public class Civilian : MonoBehaviour
         setInAHouse(false);
         //find all of the wander points when the object is created
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
+        civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
+
         wanderPoints = GameObject.FindGameObjectsWithTag("CivilianWanderPoint");
-        houses = GameObject.FindGameObjectsWithTag("House");
+
+        //houses = GameObject.FindGameObjectsWithTag("House");
+        civilianHouses = civilianBuildingManager.GetAllBuildings();
 
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
@@ -47,12 +54,16 @@ public class Civilian : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(state == 1)
+        //TODO: Make sure this doesnt kill performance!
+        civilianHouses = civilianBuildingManager.GetAllBuildings();
+
+        if (state == 1)
             Wander();
         if (state == 2)
             Escort();
-        if (state == 3)
-            Hide();
+        //if (state == 3)
+            //Hide();
+        
     }
     //state 1
     void Wander()
@@ -68,15 +79,14 @@ public class Civilian : MonoBehaviour
     void Escort()
     {
         //locate nearest house to go to
-        //locate nearest house to bring the sitizen to
         float closestHouseDist = Mathf.Infinity;//Vector3.Distance(transform.position, houses[0].transform.position);
         float nextDistance;
         int closestHouse = -1;
-        for (int i = 0; i < houses.Length; i++)
+        for (int i = 0; i < civilianHouses.Count; i++)
         {
-            if (houses[i] != null) //TODO: See if this works as a patch. Really we need a better solution than this.
+            if (civilianHouses[i] != null )//&& GetBuildingBehavior(i).HouseHasRoom()) //TODO: Think about enabling this! Would have to change defender behavior too. So they all dont go in the same house!
             {
-                nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
+                nextDistance = Vector3.Distance(transform.position, civilianHouses[i].transform.position);
                 if (nextDistance < closestHouseDist)
                 {
                     closestHouseDist = nextDistance;
@@ -85,21 +95,24 @@ public class Civilian : MonoBehaviour
             }
         }
 
-        //move towards the closest civilian
-        if (closestHouse != -1 && houses[closestHouse] != null)
+        //move towards the closest civilian building.
+        if (closestHouse != -1 && civilianHouses[closestHouse] != null)
         {
-            transform.LookAt(houses[closestHouse].transform);
+            transform.LookAt(civilianHouses[closestHouse].transform);
             GetComponent<Rigidbody>().AddForce(transform.forward * 10);
         }
-        //Once contact is made with the citizen. move them to the nearest house
     }
     //state 3
-    void Hide()
+    void HideInBuilding(GameObject building)
     {
-        //GetComponent(MeshRenderer).enabled = false;
-        //renderer.enabled = false;
-        gameObject.GetComponent<Renderer>().enabled = false;
+        building.GetComponentInChildren<BuildingBehavior>().StoreTroop(gameObject);
         setInAHouse(true);
+        gameObject.SetActive(false);
+    }
+
+    private BuildingBehavior GetBuildingBehavior(int i)
+    {
+        return civilianHouses[i].GetComponentInChildren<BuildingBehavior>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -117,13 +130,15 @@ public class Civilian : MonoBehaviour
         }
         if (collision.gameObject.tag == "Enemy2")
         {
-            civilianManager.DecrementNumCurrentCivilians();
+            civilianManager.DestroyCivilian(gameObject);
             Destroy(gameObject);
         }
         //collision with house while in state 1. Change to state 2
+        //TODO: Make it so that the civilians can only go in the civilian buildings?
         if (collision.gameObject.tag == "House" && state == 2)
         {
             state = 3;
+            HideInBuilding(collision.gameObject);
         }
     }
     public void setHasADefender(bool val)
@@ -140,5 +155,10 @@ public class Civilian : MonoBehaviour
     public void setInAHouse(bool val)
     {
         inAHouse = val;
+    }
+
+    public void SetState(int stateNum)
+    {
+        state = stateNum;
     }
 }
