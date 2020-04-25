@@ -8,10 +8,15 @@ public class BuildingManager : MonoBehaviour
 
     private List<GameObject> buildings;
 
+    private void Awake()
+    {
+        buildings = new List<GameObject>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        buildings = new List<GameObject>();
+        
     }
 
     public List<GameObject> GetAllBuildings()
@@ -21,6 +26,8 @@ public class BuildingManager : MonoBehaviour
 
     public void MakeBuilding(GameObject newBuilding)
     {
+        //Debug.Log("NewBuilding: " + newBuilding);
+        //Debug.Log("Buildings: " + buildings);
         buildings.Add(newBuilding);
     }
 
