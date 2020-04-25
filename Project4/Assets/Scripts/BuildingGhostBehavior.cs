@@ -6,24 +6,38 @@ public class BuildingGhostBehavior : MonoBehaviour
 {
     private bool isCollidingWBuilding = false; //Whether the building is currently colliding with another building. For placing purposes.
 
-    //Consider using OnTriggerEnter if having collision issues.
-    private void OnCollisionEnter(Collision collision)
+    private bool OtherHasBuildingTags(string otherTag)
     {
-        if (collision.transform.tag == "Building")
+        if (otherTag == "Building" || otherTag == "House" || otherTag == "Home" || otherTag == "MiningSpot" || otherTag == "Crystal" || otherTag == "Deposite")
         {
-            Debug.Log("Colliding!");
-            if (isCollidingWBuilding == false)
-            {
-                isCollidingWBuilding = true;
-            }
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
-    private void OnCollisionExit(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (isCollidingWBuilding == true)
+        //TODO: Should probably get consistent with our tags to avoid confusion.
+        if (OtherHasBuildingTags(other.transform.tag))
         {
-            isCollidingWBuilding = false;
+            Debug.Log("Colliding!");
+            isCollidingWBuilding = true;
         }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (OtherHasBuildingTags(other.transform.tag))
+        {
+            Debug.Log("Colliding!");
+            isCollidingWBuilding = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        isCollidingWBuilding = false;
     }
 
     public bool IsCollidingWBuilding()
