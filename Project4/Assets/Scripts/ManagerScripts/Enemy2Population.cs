@@ -7,13 +7,13 @@ using UnityEngine;
 public class Enemy2Population : MonoBehaviour
 {
     //Store spawn locations for civilians
-    public GameObject[] spawnLocations;
+    [SerializeField] private GameObject[] spawnLocations = null;
     //Stores our new civilian
-    public GameObject Enemy2;
+    [SerializeField] private GameObject Enemy2 = null;
 
     //Population size. This acts as the health for the base (Civilian)
-    int popSize;
-    int currentPop;
+    private int popSize;
+    private int currentPop;
 
     [SerializeField] private int numEnemiesInWave = 1;
 
@@ -30,12 +30,11 @@ public class Enemy2Population : MonoBehaviour
         {
             //update population
             currentPop++;
-            //find the prefab in resources
-            Enemy2 = (GameObject)Resources.Load("Enemy2", typeof(GameObject));
             //Create a random spawn location for the new civilian
             int spawn = Random.Range(0, spawnLocations.Length);
             //Instantiate
-            GameObject.Instantiate(Enemy2, spawnLocations[spawn].transform.position, Quaternion.identity);
+            GameObject troop = Instantiate(Enemy2, spawnLocations[spawn].transform.position, Quaternion.identity);
+            troop.transform.SetParent(transform);
         }
     }
 
