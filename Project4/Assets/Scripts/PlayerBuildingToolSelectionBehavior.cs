@@ -12,7 +12,7 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
     [SerializeField] private List<GameObject> buildingTypeGhostPrefabs = null;
     //Fill this list with all keys for selecting the appropriate(same index) building type.
     [SerializeField] private List<KeyCode> buildingTypeKeyCodeSelectors = null;
-    [SerializeField] private KeyCode unSelectBuildingKey;
+    [SerializeField] private KeyCode unSelectBuildingKey = 0;
 
     //TODO - PERF IMPR: Consider another way of not running through each possible key selector to check if placed.
     private void Update()

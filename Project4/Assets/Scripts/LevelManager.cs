@@ -10,8 +10,7 @@ public class LevelManager : MonoBehaviour
     //Tick down time for 3 minutes.
 
     [SerializeField] private WaveManager waveManager = null;
-    [SerializeField] private EnemyBasicPopulation enemyManager = null;
-    [SerializeField] private Enemy2Population enemyManager2 = null;
+     
     [SerializeField] private CivilianPopulation civilianManager = null;
 
     private bool inStartingPeriod = true;

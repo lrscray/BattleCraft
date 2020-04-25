@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawn : MonoBehaviour
 {
-    [SerializeField] private GameObject Collector;
+    [SerializeField] private GameObject Collector = null;
     [SerializeField] private float spawnDelay = 10.0f;
     //[SerializeField] private bool stopSpawn = false;
 

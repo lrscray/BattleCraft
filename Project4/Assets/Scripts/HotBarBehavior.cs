@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HotBarBehavior : MonoBehaviour
 {
-    [SerializeField] private PlayerBuildingToolSelectionBehavior buildingSelector;
+    [SerializeField] private PlayerBuildingToolSelectionBehavior buildingSelector = null;
 
     [SerializeField] private List<Button> hotBarButtons;
 
