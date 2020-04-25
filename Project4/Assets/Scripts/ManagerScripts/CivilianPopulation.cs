@@ -36,7 +36,8 @@ public class CivilianPopulation : MonoBehaviour
             //Create a random spawn location for the new civilian
             int spawn = Random.Range(0, spawnLocations.Length);
             //Instantiate
-            GameObject.Instantiate(tempCivilian, spawnLocations[spawn].transform.position, Quaternion.identity);
+            GameObject troop = Instantiate(tempCivilian, spawnLocations[spawn].transform.position, Quaternion.identity);
+            troop.transform.SetParent(transform);
         }
     }
 

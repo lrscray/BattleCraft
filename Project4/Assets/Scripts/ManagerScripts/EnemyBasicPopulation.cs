@@ -7,9 +7,9 @@ using UnityEngine;
 public class EnemyBasicPopulation : MonoBehaviour
 {
     //Store spawn locations for civilians
-    public GameObject[] spawnLocations;
+    [SerializeField] private GameObject[] spawnLocations = null;
     //Stores our new civilian
-    public GameObject tempEnemyBasic;
+    [SerializeField] private GameObject tempEnemyBasic = null;
 
     //Enemy Population size. 
     private int maxPopSize; //DESIGN: Do we want to cap the number of enemies that can come at once?
@@ -28,12 +28,12 @@ public class EnemyBasicPopulation : MonoBehaviour
         {
             //update population
             numCurrentEnemies++;
-            //find the prefab in resources
-            tempEnemyBasic = (GameObject)Resources.Load("EnemyBasic", typeof(GameObject));
             //Create a random spawn location for the new civilian
             int spawn = Random.Range(0, spawnLocations.Length);
             //Instantiate
-            GameObject.Instantiate(tempEnemyBasic, spawnLocations[spawn].transform.position, Quaternion.identity);
+            GameObject troop = Instantiate(tempEnemyBasic, spawnLocations[spawn].transform.position, Quaternion.identity);
+            troop.transform.SetParent(transform);
+
         }
     }
 

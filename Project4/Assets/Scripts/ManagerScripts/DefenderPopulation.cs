@@ -9,8 +9,8 @@ public class DefenderPopulation : MonoBehaviour
     //Sotres our new defender
     [SerializeField] private GameObject tempDefender = null;
     //Population size (Defenders)
-    int DpopSize;
-    int DcurrentPop;
+    private int DpopSize;
+    private int DcurrentPop;
 
     void Start()
     {
@@ -24,12 +24,11 @@ public class DefenderPopulation : MonoBehaviour
         {
             //update population
             DcurrentPop++;
-            //find the prefab in resources
-            //tempDefender = (GameObject)Resources.Load("Defender", typeof(GameObject));
             //Create a random spawn location for the new civilian
             int spawn = Random.Range(0, DspawnLocations.Length);
             //Instantiate
-            GameObject.Instantiate(tempDefender, DspawnLocations[spawn].transform.position, Quaternion.identity);
+            GameObject troop = Instantiate(tempDefender, DspawnLocations[spawn].transform.position, Quaternion.identity);
+            troop.transform.SetParent(transform);
         }
     }
 }
