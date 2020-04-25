@@ -24,8 +24,7 @@ public class Defender: MonoBehaviour
     int health = 100;
     int maxHealth = 100;
 
-    [SerializeField]
-    private HealthBarScript healthBar;
+    [SerializeField] private HealthBarScript healthBar = null;
 
     public int currentCivilian = 0;
 

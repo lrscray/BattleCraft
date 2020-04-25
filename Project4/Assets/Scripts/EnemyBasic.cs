@@ -14,8 +14,7 @@ public class EnemyBasic : MonoBehaviour
     int maxHealth = 100;
 
     
-    [SerializeField]
-    private HealthBarScript healthBar;
+    [SerializeField] private HealthBarScript healthBar = null;
 
 
     // Start is called before the first frame update

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpawnCollector : MonoBehaviour
 {
-    [SerializeField] private GameObject Collectors;
+    [SerializeField] private GameObject Collectors = null;
     [SerializeField] private float Delay = 5.0f;
-    [SerializeField] private GameObject CollectionCheck;
+    [SerializeField] private GameObject CollectionCheck = null;
     //[SerializeField] private bool stopSpawn = false;
 
     //set limit for how many will be spawned
