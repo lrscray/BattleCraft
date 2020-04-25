@@ -4111,6 +4111,7 @@ GameObject:
   - component: {fileID: 1693655288}
   - component: {fileID: 1693655287}
   - component: {fileID: 1693655286}
+  - component: {fileID: 1693655291}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4221,6 +4222,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 44.53, y: 0, z: 0}
+--- !u!114 &1693655291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693655285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10510537484089942ace4998dd9e7027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  position:
+    invertPan: 1
+    panSmooth: 7
+    distanceFromGround: 40
+    allowZoom: 1
+    zoomSmooth: 20
+    zoomStep: 20
+    maxZoom: 25
+    minZoom: 80
+    newDistance: 40
+  orbit:
+    ogRotation: 50
+    xRotation: 50
+    yRotation: 0
+    allowOrbit: 1
+    RotationSpeed: 10
+  input:
+    PAN: MousePan
+    ORBIT_Y: MouseTurn
+    ZOOM: Mouse ScrollWheel
 --- !u!1 &1694528164
 GameObject:
   m_ObjectHideFlags: 0
