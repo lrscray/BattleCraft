@@ -23,7 +23,7 @@ public class BuildingGhostBehavior : MonoBehaviour
         //TODO: Should probably get consistent with our tags to avoid confusion.
         if (OtherHasBuildingTags(other.transform.tag))
         {
-            Debug.Log("Colliding!");
+            //Debug.Log("Colliding!");
             isCollidingWBuilding = true;
         }
     }
@@ -31,7 +31,7 @@ public class BuildingGhostBehavior : MonoBehaviour
     {
         if (OtherHasBuildingTags(other.transform.tag))
         {
-            Debug.Log("Colliding!");
+            //Debug.Log("Colliding!");
             isCollidingWBuilding = true;
         }
     }

@@ -19,7 +19,7 @@ public class Civilian : MonoBehaviour
     //Solves issue with civilians bumping into each other at a point
     [SerializeField] private float minRemainingDistance = 0.5f;
 
-    private int destinationPoint = 0;
+    //private int destinationPoint = 0;
     private NavMeshAgent agent;
     bool hasADefender;
     bool inAHouse;

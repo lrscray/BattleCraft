@@ -11,13 +11,12 @@ public class Enemy2 : MonoBehaviour
 
     //list of houses
     public GameObject[] houses;
-    public GameObject[] civilians;
+    public GameObject[] civilians; 
     int state = 1;
     int health = 100;
     int maxHealth = 100;
 
-    [SerializeField]
-    private HealthBarScript healthBar;
+    [SerializeField] private HealthBarScript healthBar = null;
 
     // Start is called before the first frame update
     void Start()
