@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BuildingBehavior : MonoBehaviour
 {
+    [SerializeField] private string buildingManagerType = "";
+
     [SerializeField] private int buildingMaxHealth = -1;
     [SerializeField] private int buildingCurrentHealth = -1;
     [SerializeField] private int healAmount = -1; //The amount that the building heals, when it does heal.
@@ -14,15 +16,21 @@ public class BuildingBehavior : MonoBehaviour
     [SerializeField] private int buildingUpKeepCost = -1; //The number of resources it takes to upkeep this building.
     [SerializeField] private int upKeepDamageAmount = -1; //The amount of damage the building takes if the upkeep cannot be met.
 
-    [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be assigned to this building.
-    [SerializeField] private int currentNumTroops = -1; //The current number of troops assigned to this building.
+    //TODO: If we ever get to the point of selecting buildings and making troops that way, remove these spawning variables.
+    [SerializeField] private int maxNumTroopSpawn = -1; //The total number of troops that can be spawned from this building.
+    [SerializeField] private int numTroopsSpawned = -1; //The current number of troops spawned from this building.
 
     private bool spawningEnabled = true;
     [SerializeField] private float spawningWaitPeriod = -1f; //The time to wait before attempting to spawn troops.
     [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
-    //TODO Prepare this futher for game.
-    //private List<GameObject> troopsArray;
+    
+    //The troops currently inside this building.
+    private List<GameObject> insideTroops;
+    [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
+    //[SerializeField] private int currentNumTroops = -1; //The current number of troops assigned to this building.
+
+
 
     //TODO Consider changing how this is found.
     private DefenderPopulation defenderManager = null;
@@ -30,14 +38,22 @@ public class BuildingBehavior : MonoBehaviour
     private GameObject collectorManager = null;
     private CivilianPopulation civilianManager = null;
     private PlayerResourceManager resourceManager = null;
+    private BuildingManager buildingManager = null;
 
     private void Start()
     {
+        numTroopsSpawned = 0;
+
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
         collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
-        //troopsArray = new List<GameObject>();
+        buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
+        transform.SetParent(buildingManager.gameObject.transform);
+        buildingManager.MakeBuilding(gameObject);
+
+        insideTroops = new List<GameObject>();
+
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());
     }
@@ -62,7 +78,7 @@ public class BuildingBehavior : MonoBehaviour
 
     private void AttemptSpawnTroops()
     {
-        if(currentNumTroops < maxTroopCapacity)
+        if(numTroopsSpawned < maxNumTroopSpawn)
         {
             if(spawningEnabled)
             {
@@ -72,14 +88,13 @@ public class BuildingBehavior : MonoBehaviour
         }
     }
 
-    //TODO Add troops to troopsArray list of building to keep track of them?
     private void SpawnTroop()
     {
         GameObject troop = Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
         if(troopTypePrefab.tag == "Civilian")
         {
             troop.transform.SetParent(civilianManager.transform);
-            civilianManager.IncrementNumCurrentCivilians();
+            civilianManager.AddAnotherCivilian(troop);
         }
         else if(troopTypePrefab.tag == "Collector")
         {
@@ -89,7 +104,7 @@ public class BuildingBehavior : MonoBehaviour
         {
             troop.transform.SetParent(defenderManager.transform);
         }
-        currentNumTroops++;
+        numTroopsSpawned++;
     }
 
     private void AttemptCollectUpKeep()
@@ -142,11 +157,34 @@ public class BuildingBehavior : MonoBehaviour
         }
     }
 
-    //TODO Maybe change this to force out all troops!
+    public void StoreTroop(GameObject troop)
+    {
+        insideTroops.Add(troop);
+    }
+
     //What happens when the building is destroyed.
     private void Die()
     {
+        KickOutInsideTroops();
+        buildingManager.DestroyBuilding(gameObject);
         Destroy(gameObject);
+    }
+
+    private void KickOutInsideTroops()
+    {
+        //Go through all inside troops.
+        //Change position to center of this gameobject?
+        //SetActive again.
+        for(int i = 0; i < insideTroops.Count; i++)
+        {
+            GameObject troop = insideTroops[i];
+            troop.transform.position = gameObject.transform.position;
+            troop.SetActive(true);
+            Civilian civilian = troop.GetComponentInChildren<Civilian>();
+            civilian.setInAHouse(false);
+            civilian.setHasADefender(false);
+            civilian.SetState(1);//Make them wander.
+        }
     }
 
     public int GetBuildingCreationCost()
@@ -159,6 +197,18 @@ public class BuildingBehavior : MonoBehaviour
         return buildingUpKeepCost;
     }
 
+    public bool HouseHasRoom()
+    {
+        if(GetCurrentNumTroops() < maxTroopCapacity)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public int GetMaxTroopCapacity()
     {
         return maxTroopCapacity;
@@ -166,7 +216,12 @@ public class BuildingBehavior : MonoBehaviour
 
     public int GetCurrentNumTroops()
     {
-        return currentNumTroops;
+        return insideTroops.Count;
+    }
+
+    public string GetBuildingManagerType()
+    {
+        return buildingManagerType;
     }
 
     //TODO: Consider changing how attacking works with enemies and buildings. Maybe use a distance system?

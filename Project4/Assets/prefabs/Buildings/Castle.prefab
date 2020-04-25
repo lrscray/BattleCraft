@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446aa3c64a810564883320368fe0df20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingManagerType: CollectorBuildingManager
   buildingMaxHealth: 10
   buildingCurrentHealth: 10
   healAmount: 1
@@ -249,12 +250,13 @@ MonoBehaviour:
   upKeepWaitPeriod: 7
   buildingUpKeepCost: 2
   upKeepDamageAmount: 1
-  maxTroopCapacity: 4
-  currentNumTroops: 0
+  maxNumTroopSpawn: 4
+  numTroopsSpawned: -1
   spawningWaitPeriod: 2
   spawnPlacementObject: {fileID: 6089364932452909739}
   troopTypePrefab: {fileID: 3419640903934524307, guid: 1551371764eeff34ca422425a34291de,
     type: 3}
+  maxTroopCapacity: 4
 --- !u!54 &6380851931206210903
 Rigidbody:
   m_ObjectHideFlags: 0
