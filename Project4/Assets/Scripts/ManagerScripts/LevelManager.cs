@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private WaveManager waveManager = null;
      
-    [SerializeField] private CivilianPopulation civilianManager = null;
+    [SerializeField] private TroopManager civilianManager = null;
 
     private bool inStartingPeriod = true;
     //The amount of time before enemies spawn, when the level begins.
@@ -23,6 +23,8 @@ public class LevelManager : MonoBehaviour
 
     //Whether a wave is currently active.
     private bool waveActive = false;
+
+    [SerializeField] private HealthBarScript healthBar = null;
 
     private void Start()
     {
@@ -63,7 +65,7 @@ public class LevelManager : MonoBehaviour
             yield return 0; //MAYBE: Consider waiting a certain number of time before checking win/lose conditions? Would save some performance.
             //Check lose conditions. Lose = all civilians dead.
             //Check civilian manager for number of alive civilians.
-            if(civilianManager.GetNumCurrentCivilians() <= 0)
+            if(civilianManager.GetNumTroops() <= 0)
             {
                 //Lost wave/game.
                 Debug.Log("Lost Game!");
@@ -72,6 +74,16 @@ public class LevelManager : MonoBehaviour
                 lostGame = true;
             }
         }
+    }
+
+    public void SetPlayerBaseMaxHealth(int numStartingCivilians)
+    {
+        healthBar.SetMaxHealth(numStartingCivilians + 1);
+        UpdatePlayerBaseHealth();
+    }
+    public void UpdatePlayerBaseHealth()
+    {
+        healthBar.SetHealth(civilianManager.GetNumTroops());
     }
 
     public void SetLostGame()

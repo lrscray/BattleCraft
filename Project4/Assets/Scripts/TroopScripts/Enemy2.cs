@@ -6,12 +6,23 @@ using UnityEngine;
 //Priorities: attack civilians -> defenders -> structures
 public class Enemy2 : MonoBehaviour
 {
+    private string troopManagerType = "Enemy2Manager";
+    private TroopManager enemyManager;
+    private TroopManager civilianManager;
 
-    private Enemy2Population enemyManager;
+    private BuildingManager civilianBuildingManager;
+    private BuildingManager defenderBuildingManager;
+    private BuildingManager collectorBuildingManager;
 
     //list of houses
-    public GameObject[] houses;
-    public GameObject[] civilians; 
+    private List<GameObject> civilianBuildings = null;
+    private List<GameObject> collectorBuildings = null;
+    private List<GameObject> defenderBuildings = null;
+    private List<GameObject> allBuildings = null;
+
+    //list of civilians
+    private List<GameObject> civilians = null;
+
     int state = 1;
     int health = 100;
     int maxHealth = 100;
@@ -21,15 +32,36 @@ public class Enemy2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyManager = GameObject.FindGameObjectWithTag("Enemy2Manager").GetComponentInChildren<Enemy2Population>();
-        houses = GameObject.FindGameObjectsWithTag("House");
-        civilians = GameObject.FindGameObjectsWithTag("Civilian");
+        enemyManager = GameObject.FindGameObjectWithTag(troopManagerType).GetComponentInChildren<TroopManager>();
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+
+        civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
+        defenderBuildingManager = GameObject.FindGameObjectWithTag("DefenderBuildingManager").GetComponentInChildren<BuildingManager>();
+        collectorBuildingManager = GameObject.FindGameObjectWithTag("CollectorBuildingManager").GetComponentInChildren<BuildingManager>();
+
+        civilianBuildings = civilianBuildingManager.GetAllBuildings();
+        defenderBuildings = defenderBuildingManager.GetAllBuildings();
+        collectorBuildings = collectorBuildingManager.GetAllBuildings();
+        allBuildings = new List<GameObject>();
+        allBuildings.AddRange(civilianBuildings);
+        allBuildings.AddRange(defenderBuildings);
+        allBuildings.AddRange(collectorBuildings);
+
         healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
+        civilianBuildings = civilianBuildingManager.GetAllBuildings();
+        defenderBuildings = defenderBuildingManager.GetAllBuildings();
+        collectorBuildings = collectorBuildingManager.GetAllBuildings();
+        allBuildings.Clear();
+        allBuildings.AddRange(civilianBuildings);
+        allBuildings.AddRange(defenderBuildings);
+        allBuildings.AddRange(collectorBuildings);
+        civilians = civilianManager.GetAllTroops();
+
         if (state == 1)
             civilianEngageBattle();
     }
@@ -40,9 +72,9 @@ public class Enemy2 : MonoBehaviour
 
         checkHealth();
         bool searchCivilian = false;
+
         //There must me a civilian outside of a house.Loop through all of them to see
-        civilians = GameObject.FindGameObjectsWithTag("Civilian");
-        for (int i = 0; i < civilians.Length; i++)
+        for (int i = 0; i < civilians.Count; i++)
         {
             if (!civilians[i].GetComponent<Civilian>().getInAHouse())
             {
@@ -52,76 +84,82 @@ public class Enemy2 : MonoBehaviour
 
         if (searchCivilian)
         {
-            float closestCivilianDist = 0;
-            int closestCivilian = 0;
-            float nextDistance;
-            for (int j = 0; j < civilians.Length; j++)
+            //Looking for a civilian without a defender.
+
+            float closestCivilianDist = Mathf.Infinity;
+            int closestCivilianIndex = -1;
+            float distance;
+            for (int j = 0; j < civilians.Count; j++)
             {
-                if (civilians[j].gameObject.GetComponent<Renderer>().enabled == true) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
+                if (civilians[j].activeInHierarchy) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
                 {
-                    if (!civilians[j].GetComponent<Civilian>().getHasADefender())
+                    if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
                     {
-                        closestCivilianDist = Vector3.Distance(transform.position, civilians[j].transform.position);
-                        closestCivilian = j;
+                        distance = Vector3.Distance(transform.position, civilians[j].transform.position);
+                        if (distance < closestCivilianDist)
+                        {
+                            closestCivilianDist = distance;
+                            closestCivilianIndex = j;
+                        }
                     }
                 }
             }
 
-            for (int i = 1; i < civilians.Length; i++)
-            {
-                nextDistance = Vector3.Distance(transform.position, civilians[i].transform.position);
-                if (nextDistance < closestCivilianDist && civilians[i].gameObject.GetComponent<Renderer>().enabled == true)   //&& civilians[j].GetComponent<Civilian>().getHasADefender() == false
-                {
-                    if (!civilians[i].GetComponent<Civilian>().getHasADefender())
-                    {
-                        closestCivilianDist = nextDistance;
-                        closestCivilian = i;
-                    }
-                }
-            }
             //move towards the closest civilian
-            transform.LookAt(civilians[closestCivilian].transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            if (closestCivilianIndex != -1 && civilians[closestCivilianIndex] != null)
+            {
+                transform.LookAt(civilians[closestCivilianIndex].transform);
+                GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            }
             //Once contact is made with the citizen. move them to the nearest house
         }
 
 
         //If there are no Civilians, attack the houses
-        int closestHouse = -1;
-        if (!searchCivilian)
+        GameObject nearestHouse = FindClosestThing(allBuildings);
+
+        //move towards the closest civilian
+        if (nearestHouse != null)
         {
-
-            //locate nearest house to bring the sitizen to
-            float closestHouseDist = Mathf.Infinity;//Vector3.Distance(transform.position, houses[0].transform.position);
-            float nextDistance;
-            
-            for (int i = 0; i < houses.Length; i++)
-            {
-                if (houses[i] != null) //TODO: See if this works as a patch. Really we need a better solution than this.
-                {
-                    nextDistance = Vector3.Distance(transform.position, houses[i].transform.position);
-                    if (nextDistance < closestHouseDist)
-                    {
-                        closestHouseDist = nextDistance;
-                        closestHouse = i;
-                    }
-                }
-            }
-
-            //move towards the closest civilian
-            if (closestHouse != -1 && houses[closestHouse] != null)
-            {
-                transform.LookAt(houses[closestHouse].transform);
-                GetComponent<Rigidbody>().AddForce(transform.forward * 3);
-            }
+            transform.LookAt(nearestHouse.transform);
+            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
         }
+        
     }
     void checkHealth()
     {
         if (health <= 0)
         {
-            enemyManager.DestroyAnEnemy(gameObject);
+            enemyManager.DestroyTroop(gameObject);
             Destroy(gameObject);
+        }
+    }
+
+    private GameObject FindClosestThing(List<GameObject> thingList)
+    {
+        float closestDistance = Mathf.Infinity;
+        float distance;
+        int closestThingIndex = -1;
+        for (int i = 0; i < thingList.Count; i++)
+        {
+            if (thingList[i] != null)
+            {
+                distance = Vector3.Distance(transform.position, thingList[i].transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestThingIndex = i;
+                }
+            }
+        }
+
+        if (closestThingIndex != -1 && thingList[closestThingIndex] != null)
+        {
+            return thingList[closestThingIndex];
+        }
+        else
+        {
+            return null;
         }
     }
 
