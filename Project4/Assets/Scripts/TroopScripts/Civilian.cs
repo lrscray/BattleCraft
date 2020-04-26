@@ -36,10 +36,11 @@ public class Civilian : MonoBehaviour
         civilianHouses = civilianBuildingManager.GetAllBuildings();
 
         agent = GetComponent<NavMeshAgent>();
-        agent.autoBraking = false;
+        //agent.autoBraking = false;
 
         int nextPoint = Random.Range(0, wanderPoints.Length);
-        agent.destination = wanderPoints[nextPoint].transform.position;
+        //agent.destination = wanderPoints[nextPoint].transform.position;
+        agent.SetDestination(wanderPoints[nextPoint].transform.position);
 
         hasADefender = false;
 
@@ -66,7 +67,8 @@ public class Civilian : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
             int nextPoint = Random.Range(0, wanderPoints.Length);
-            agent.destination = wanderPoints[nextPoint].transform.position;
+            //agent.destination = wanderPoints[nextPoint].transform.position;
+            agent.SetDestination(wanderPoints[nextPoint].transform.position);
         }
     }
     //state 2
@@ -92,8 +94,9 @@ public class Civilian : MonoBehaviour
         //move towards the closest civilian building.
         if (closestHouse != -1 && civilianHouses[closestHouse] != null)
         {
-            transform.LookAt(civilianHouses[closestHouse].transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 10);
+            //transform.LookAt(civilianHouses[closestHouse].transform);
+            //GetComponent<Rigidbody>().AddForce(transform.forward * 10);
+            agent.SetDestination(civilianHouses[closestHouse].transform.position);
         }
     }
     //state 3
