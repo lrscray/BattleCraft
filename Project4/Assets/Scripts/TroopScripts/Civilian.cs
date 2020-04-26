@@ -5,16 +5,11 @@ using UnityEngine.AI;
 
 public class Civilian : MonoBehaviour
 {
-    //TODO: Change hiding method to use SetActive(false); and change manager/house they are assigned to, to set that active again.
+    private BuildingManager civilianBuildingManager = null;
+    private TroopManager civilianManager;
 
     //list of points to patrol through
     public GameObject[] wanderPoints;
-    //list of houses
-    //public GameObject[] houses;
-
-    private CivilianPopulation civilianManager;
-
-    private BuildingManager civilianBuildingManager = null;
 
     private List<GameObject> civilianHouses;
 
@@ -33,12 +28,11 @@ public class Civilian : MonoBehaviour
     {
         setInAHouse(false);
         //find all of the wander points when the object is created
-        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
-
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+        
         wanderPoints = GameObject.FindGameObjectsWithTag("CivilianWanderPoint");
 
-        //houses = GameObject.FindGameObjectsWithTag("House");
         civilianHouses = civilianBuildingManager.GetAllBuildings();
 
         agent = GetComponent<NavMeshAgent>();
@@ -130,7 +124,7 @@ public class Civilian : MonoBehaviour
         }
         if (collision.gameObject.tag == "Enemy2")
         {
-            civilianManager.DestroyCivilian(gameObject);
+            civilianManager.DestroyTroop(gameObject);
             Destroy(gameObject);
         }
         //collision with house while in state 1. Change to state 2

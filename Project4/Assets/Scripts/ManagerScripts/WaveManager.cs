@@ -5,8 +5,8 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private LevelManager levelManager = null;
-    [SerializeField] private EnemyBasicPopulation enemyManager = null;
-    [SerializeField] private Enemy2Population enemyManager2 = null;
+    [SerializeField] private TroopManager enemyManager = null;
+    [SerializeField] private TroopManager enemyManager2 = null;
 
     private int waveNumber = 0;
 
@@ -44,8 +44,8 @@ public class WaveManager : MonoBehaviour
     private void SpawnEnemies()
     {
         levelManager.SetWaveActive();
-        enemyManager.SpawnWaveEnemies();
-        enemyManager2.SpawnEnemy2();
+        enemyManager.SpawnTroops();
+        enemyManager2.SpawnTroops();
     }
 
     public int GetWaveNumber()

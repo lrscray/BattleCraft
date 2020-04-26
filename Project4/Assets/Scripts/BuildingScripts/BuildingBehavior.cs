@@ -33,10 +33,10 @@ public class BuildingBehavior : MonoBehaviour
 
     private BuildingManager buildingManager = null;
     //TODO Consider changing how this is found.
-    private DefenderPopulation defenderManager = null;
+    private TroopManager defenderManager = null;
     //MAYBE: Make a collector manager script?
     private GameObject collectorManager = null;
-    private CivilianPopulation civilianManager = null;
+    private TroopManager civilianManager = null;
     private PlayerResourceManager resourceManager = null;   
 
     private void Start()
@@ -47,8 +47,8 @@ public class BuildingBehavior : MonoBehaviour
         transform.SetParent(buildingManager.gameObject.transform);
         buildingManager.MakeBuilding(this.gameObject);
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
-        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
-        defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+        defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<TroopManager>();
         collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
 
         insideTroops = new List<GameObject>();
@@ -93,7 +93,7 @@ public class BuildingBehavior : MonoBehaviour
         if(troopTypePrefab.tag == "Civilian")
         {
             troop.transform.SetParent(civilianManager.transform);
-            civilianManager.AddAnotherCivilian(troop);
+            civilianManager.AddTroop(troop);
         }
         else if(troopTypePrefab.tag == "Collector")
         {
