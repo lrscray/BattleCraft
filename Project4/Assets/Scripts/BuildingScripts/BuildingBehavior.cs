@@ -24,7 +24,7 @@ public class BuildingBehavior : MonoBehaviour
     [SerializeField] private float spawningWaitPeriod = -1f; //The time to wait before attempting to spawn troops.
     [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
-    
+
     //The troops currently inside this building.
     private List<GameObject> insideTroops;
     [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
@@ -37,12 +37,12 @@ public class BuildingBehavior : MonoBehaviour
     //MAYBE: Make a collector manager script?
     private GameObject collectorManager = null;
     private CivilianPopulation civilianManager = null;
-    private PlayerResourceManager resourceManager = null;   
+    private PlayerResourceManager resourceManager = null;
+    private NavMeshManager navMeshManager = null;
 
     private void Start()
     {
         numTroopsSpawned = 0;
-
         buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
         transform.SetParent(buildingManager.gameObject.transform);
         buildingManager.MakeBuilding(this.gameObject);
@@ -50,6 +50,7 @@ public class BuildingBehavior : MonoBehaviour
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
         defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<DefenderPopulation>();
         collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
+        navMeshManager = GameObject.FindGameObjectWithTag("NavMesh").GetComponentInChildren<NavMeshManager>();
 
         insideTroops = new List<GameObject>();
 
@@ -167,6 +168,8 @@ public class BuildingBehavior : MonoBehaviour
         KickOutInsideTroops();
         buildingManager.DestroyBuilding(gameObject);
         Destroy(gameObject);
+        print("building broken");
+        navMeshManager.UpdateNavMesh();
     }
 
     private void KickOutInsideTroops()

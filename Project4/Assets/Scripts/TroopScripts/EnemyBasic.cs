@@ -16,6 +16,8 @@ public class EnemyBasic : MonoBehaviour
     
     [SerializeField] private HealthBarScript healthBar = null;
 
+    private Rigidbody enemyRigidBody;
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,7 @@ public class EnemyBasic : MonoBehaviour
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<EnemyBasicPopulation>();
         houses = GameObject.FindGameObjectsWithTag("House");
         healthBar.SetMaxHealth(maxHealth);
+        enemyRigidBody = gameObject.GetComponentInChildren<Rigidbody>(); 
     }
 
     // Update is called once per frame
@@ -59,7 +62,7 @@ public class EnemyBasic : MonoBehaviour
         if (closestHouse != -1 && houses[closestHouse] != null)
         {
             transform.LookAt(houses[closestHouse].transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+            enemyRigidBody.AddForce(transform.forward * 3);
         }
         //Once contact is made with the citizen. move them to the nearest house
     }
@@ -73,13 +76,29 @@ public class EnemyBasic : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+   void OnCollisionEnter(Collision collision)
     {
         //Attacked by defender
         if (collision.gameObject.tag == "Defender")
         {
             health = health - 10;
             healthBar.SetHealth(health);
+            Vector3 dir = collision.contacts[0].point - transform.position;
+            dir = -dir.normalized;
+            for(int i = 0; i < 100; i++)
+            {
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+                enemyRigidBody.AddForce(dir * 10000000000);
+            }
         }
     }
 

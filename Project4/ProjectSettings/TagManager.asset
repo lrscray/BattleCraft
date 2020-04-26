@@ -29,6 +29,7 @@ TagManager:
   - CollectorBuildingManager
   - DefenderBuildingManager
   - CivilianBuildingManager
+  - NavMesh
   layers:
   - Default
   - TransparentFX

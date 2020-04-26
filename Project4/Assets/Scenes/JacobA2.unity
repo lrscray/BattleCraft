@@ -5413,6 +5413,11 @@ PrefabInstance:
       propertyPath: m_Carve
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1583325522483269964, guid: 8b0eeadb6ffc46041a64ec262a9e2796,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7630610423355941888, guid: 8b0eeadb6ffc46041a64ec262a9e2796,
         type: 3}
       propertyPath: m_Name
