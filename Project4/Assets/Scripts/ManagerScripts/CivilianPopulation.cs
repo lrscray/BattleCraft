@@ -6,6 +6,7 @@ using UnityEngine;
 //This class spawns civilians
 public class CivilianPopulation : MonoBehaviour
 {
+
     //Store spawn locations for civilians
     [SerializeField] private GameObject[] spawnLocations = null;
     //Stores our new civilian

@@ -250,18 +250,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 32191989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09840c47db38c3e499f3b2fd9c8ae4e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b37970ef1d6ac14d99655b9ffdf4fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DspawnLocations:
+  levelManager: {fileID: 659316805}
+  troopManagerType: DefenderManager
+  spawnLocations:
   - {fileID: 1872292068}
   - {fileID: 1290135086}
   - {fileID: 895960168}
   - {fileID: 471653249}
   - {fileID: 2289787}
   - {fileID: 1064063141}
-  tempDefender: {fileID: 6369453456955245694, guid: dec436ee0ff558b4a83818c864e7aed3,
+  troopPrefab: {fileID: 6369453456955245694, guid: dec436ee0ff558b4a83818c864e7aed3,
     type: 3}
+  numTroopsInWave: 5
 --- !u!1 &37933464
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,8 +568,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1436077368}
+  m_Children: []
   m_Father: {fileID: 54533689}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -579,13 +581,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 154468447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40fd9e0883de3204dbb25e09e667a284, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b37970ef1d6ac14d99655b9ffdf4fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 659316805}
+  troopManagerType: CivilianManager
   spawnLocations:
   - {fileID: 974067358}
   - {fileID: 1628429352}
-  - {fileID: 1628429352}
+  - {fileID: 274330026}
   - {fileID: 1242745554}
   - {fileID: 1189403632}
   - {fileID: 944364889}
@@ -593,10 +597,9 @@ MonoBehaviour:
   - {fileID: 455868729}
   - {fileID: 1508004851}
   - {fileID: 1458610622}
-  tempCivilian: {fileID: 4153700141558374214, guid: be6b3a39ff829704687e081b5d340f2f,
+  troopPrefab: {fileID: 4153700141558374214, guid: be6b3a39ff829704687e081b5d340f2f,
     type: 3}
-  numStartingCivilians: 5
-  healthBar: {fileID: 116672402}
+  numTroopsInWave: 5
 --- !u!1 &189840984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,12 +1745,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 494757552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7f5af61e4282494aab2c3dd71e98e6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b37970ef1d6ac14d99655b9ffdf4fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 659316805}
+  troopManagerType: EnemyManager
   spawnLocations:
   - {fileID: 1180459541}
   - {fileID: 903674144}
+  - {fileID: 846880607}
   - {fileID: 1289611810}
   - {fileID: 1425415710}
   - {fileID: 22952459}
@@ -1761,10 +1767,9 @@ MonoBehaviour:
   - {fileID: 382568951}
   - {fileID: 2042680912}
   - {fileID: 739684803}
-  tempEnemyBasic: {fileID: 2625363918254141735, guid: e2b82811e51273343b1e1ad30ed32d7c,
+  troopPrefab: {fileID: 2625363918254141735, guid: e2b82811e51273343b1e1ad30ed32d7c,
     type: 3}
-  numCurrentEnemies: 0
-  numEnemiesInWave: 10
+  numTroopsInWave: 10
 --- !u!1 &499618870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2233,6 +2238,7 @@ MonoBehaviour:
   waveManager: {fileID: 1824535547}
   civilianManager: {fileID: 154468449}
   startPeriodTime: 1
+  healthBar: {fileID: 116672402}
 --- !u!4 &659316806
 Transform:
   m_ObjectHideFlags: 0
@@ -2243,7 +2249,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1436077368}
   m_Father: {fileID: 1181696550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3547,7 +3554,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 116672401}
-  m_Father: {fileID: 154468448}
+  m_Father: {fileID: 659316806}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4757,9 +4764,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2022274984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59dc470bc6987db4c9b6ad9f3e8d95fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b37970ef1d6ac14d99655b9ffdf4fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 659316805}
+  troopManagerType: Enemy2Manager
   spawnLocations:
   - {fileID: 410446908}
   - {fileID: 656984551}
@@ -4768,8 +4777,9 @@ MonoBehaviour:
   - {fileID: 619391451}
   - {fileID: 37933464}
   - {fileID: 353239036}
-  Enemy2: {fileID: 3522325891949992774, guid: 89410d32bea947646adf8e30b1f79bcf, type: 3}
-  numEnemiesInWave: 10
+  troopPrefab: {fileID: 3522325891949992774, guid: 89410d32bea947646adf8e30b1f79bcf,
+    type: 3}
+  numTroopsInWave: 10
 --- !u!1 &2023537711
 GameObject:
   m_ObjectHideFlags: 0
