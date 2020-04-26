@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//This class spawns civilians
+//NOTE: This class is deprecated! Use the ENEMY MANAGER script instead!
 public class EnemyBasicPopulation : MonoBehaviour
 {
     //Store spawn locations for civilians
@@ -12,8 +12,9 @@ public class EnemyBasicPopulation : MonoBehaviour
     [SerializeField] private GameObject tempEnemyBasic = null;
 
     //Enemy Population size. 
-    private int maxPopSize; //DESIGN: Do we want to cap the number of enemies that can come at once?
+    //private int maxPopSize; //DESIGN: Do we want to cap the number of enemies that can come at once?
     [SerializeField] private int numCurrentEnemies = 0;
+    private List<GameObject> enemies = null;
 
     [SerializeField] private int numEnemiesInWave = 1; //The number of enemies in a wave. TODO: Change this to increase/change over time with difficulty.
 
