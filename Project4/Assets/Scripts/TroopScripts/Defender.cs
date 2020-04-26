@@ -64,7 +64,8 @@ public class Defender: MonoBehaviour
         //agent.autoBraking = false;
 
         int nextPoint = Random.Range(0, wanderPoints.Length);
-        agent.destination = wanderPoints[nextPoint].transform.position;
+        //agent.destination = wanderPoints[nextPoint].transform.position;
+        agent.SetDestination(wanderPoints[nextPoint].transform.position);
         healthBar.SetMaxHealth(maxHealth);
     }
 
@@ -98,7 +99,8 @@ public class Defender: MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
             int nextPoint = Random.Range(0, wanderPoints.Length);
-            agent.destination = wanderPoints[nextPoint].transform.position;
+            //agent.destination = wanderPoints[nextPoint].transform.position;
+            agent.SetDestination(wanderPoints[nextPoint].transform.position);
         }
 
         //If an enemy is spotted within a certain distance while in the wandering state, enter the escort state.
@@ -158,8 +160,9 @@ public class Defender: MonoBehaviour
             //move towards the closest civilian
             if (closestCivilian != -1 && civilians[closestCivilian] != null)
             {
-                transform.LookAt(civilians[closestCivilian].transform);
-                GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+                //transform.LookAt(civilians[closestCivilian].transform);
+                //GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+                agent.SetDestination(civilians[closestCivilian].transform.position);
             }
             //Once contact is made with the citizen. move them to the nearest house
         }
@@ -173,8 +176,9 @@ public class Defender: MonoBehaviour
         //move towards the closest civilian
         if (nearestHouse != null)
         {
-            transform.LookAt(nearestHouse.transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+            //transform.LookAt(nearestHouse.transform);
+            //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+            agent.SetDestination(nearestHouse.transform.position);
         }
         //Once contact is made with the citizen. move them to the nearest house
     }
@@ -188,8 +192,9 @@ public class Defender: MonoBehaviour
         //attack the enemy
         if (nearestEnemy != null)
         {
-            transform.LookAt(nearestEnemy.transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            //transform.LookAt(nearestEnemy.transform);
+            //GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            agent.SetDestination(nearestEnemy.transform.position);
         }
         
     }
@@ -207,8 +212,9 @@ public class Defender: MonoBehaviour
         //attack the enemy
         if (nearestEnemy != null)
         {
-            transform.LookAt(nearestEnemy.transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            //transform.LookAt(nearestEnemy.transform);
+            //GetComponent<Rigidbody>().AddForce(transform.forward * 9);
+            agent.SetDestination(nearestEnemy.transform.position);
         }
         
     }
