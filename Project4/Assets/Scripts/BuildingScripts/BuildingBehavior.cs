@@ -169,7 +169,7 @@ public class BuildingBehavior : MonoBehaviour
         KickOutInsideTroops();
         buildingManager.DestroyBuilding(gameObject);
         Destroy(gameObject);
-        print("building broken");
+        //print("building broken");
         navMeshManager.UpdateNavMesh();
     }
 
