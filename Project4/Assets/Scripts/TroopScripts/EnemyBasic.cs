@@ -126,22 +126,15 @@ public class EnemyBasic : MonoBehaviour
         {
             health = health - 10;
             healthBar.SetHealth(health);
+            
+        }
+        if (collision.gameObject.tag == "House" || collision.gameObject.tag == "Home")
+        {
             Vector3 dir = collision.contacts[0].point - transform.position;
             dir = -dir.normalized;
-            for (int i = 0; i < 100; i++)
-            {
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-                enemyRigidBody.AddForce(dir * 10000000000);
-            }
+            
+            enemyRigidBody.AddForce(dir * 500);
+            
         }
     }
 
