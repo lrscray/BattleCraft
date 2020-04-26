@@ -8,24 +8,23 @@ public class Defender: MonoBehaviour
     //TODO: Consider adding a detection collider for finding enemies.
 
     private BuildingManager civilianBuildingManager;
-    private CivilianPopulation civilianManager;
-    //private EnemyBasicPopulation enemyManager;
-    private Enemy2Population enemy2Manager;
+    private TroopManager civilianManager;
+    private TroopManager enemyManager;
+    private TroopManager enemy2Manager;
 
     //list of points to patrol through
     public GameObject[] wanderPoints;
-    //list of basic enemies
-    public GameObject[] enemiesBasic;
-    //public GameObject[] enemies2;
+    
+    //list of enemies
+    public List<GameObject> enemies;
     private List<GameObject> enemies2;
 
     //list of houses
-    //public GameObject[] houses;
     private List<GameObject> civilianHouses = null;
 
     //list of civilians
-    //public GameObject[] civilians;
     private List<GameObject> civilians = null;
+    
     //list of defenders
     //public GameObject[] defenders;
 
@@ -49,17 +48,17 @@ public class Defender: MonoBehaviour
     void Start()
     {
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
-        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<CivilianPopulation>();
-        //enemyManager = 
-        enemy2Manager = GameObject.FindGameObjectWithTag("Enemy2Manager").GetComponentInChildren<Enemy2Population>();
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+        enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<TroopManager>();
+        enemy2Manager = GameObject.FindGameObjectWithTag("Enemy2Manager").GetComponentInChildren<TroopManager>();
 
         //find all of the wander points when the object is created
         wanderPoints = GameObject.FindGameObjectsWithTag("DefenderWanderPoint");
         
         civilianHouses = civilianBuildingManager.GetAllBuildings();
-        civilians = civilianManager.GetAllCivilians();
-        //enemiesBasic = 
-        enemies2 = enemy2Manager.GetAllEnemies();
+        civilians = civilianManager.GetAllTroops();
+        enemies = enemyManager.GetAllTroops();
+        enemies2 = enemy2Manager.GetAllTroops();
 
         agent = GetComponent<NavMeshAgent>();
         //agent.autoBraking = false;
@@ -73,9 +72,9 @@ public class Defender: MonoBehaviour
     void Update()
     {
         civilianHouses = civilianBuildingManager.GetAllBuildings();
-        civilians = civilianManager.GetAllCivilians();
-        enemiesBasic = GameObject.FindGameObjectsWithTag("EnemyBasic");
-        enemies2 = enemy2Manager.GetAllEnemies();
+        civilians = civilianManager.GetAllTroops();
+        enemies = enemyManager.GetAllTroops();
+        enemies2 = enemy2Manager.GetAllTroops();
 
         if (state == 1)
             Wander();
@@ -103,10 +102,10 @@ public class Defender: MonoBehaviour
         }
 
         //If an enemy is spotted within a certain distance while in the wandering state, enter the escort state.
-        for (int i = 0; i < enemiesBasic.Length; i++)
+        for (int i = 0; i < enemies.Count; i++)
         {
             //calculate distance between the defender and the enemy
-            distance = Vector3.Distance(transform.position, enemiesBasic[i].transform.position);
+            distance = Vector3.Distance(transform.position, enemies[i].transform.position);
 
             if (distance < 65)
             {
@@ -184,7 +183,7 @@ public class Defender: MonoBehaviour
     void Attack()
     {
         //find the nearest enemy to attack
-        GameObject nearestEnemy = FindClosestThing(new List<GameObject>(enemiesBasic));
+        GameObject nearestEnemy = FindClosestThing(enemies);
 
         //attack the enemy
         if (nearestEnemy != null)
@@ -198,7 +197,7 @@ public class Defender: MonoBehaviour
     void Attack2()
     {
 
-        if (enemy2Manager.GetComponent<Enemy2Population>().GetNumCurrentTroops() == 0)
+        if (enemy2Manager.GetNumTroops() == 0)
         {
             state = 5;
         }
