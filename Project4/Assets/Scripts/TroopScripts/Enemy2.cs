@@ -29,6 +29,8 @@ public class Enemy2 : MonoBehaviour
 
     [SerializeField] private HealthBarScript healthBar = null;
 
+    private Rigidbody enemyRigidBody;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,7 @@ public class Enemy2 : MonoBehaviour
         allBuildings.AddRange(collectorBuildings);
 
         healthBar.SetMaxHealth(maxHealth);
+        enemyRigidBody = GetComponentInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -93,15 +96,15 @@ public class Enemy2 : MonoBehaviour
             {
                 if (civilians[j].activeInHierarchy) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
                 {
-                    if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
-                    {
+                    //if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
+                    //{
                         distance = Vector3.Distance(transform.position, civilians[j].transform.position);
                         if (distance < closestCivilianDist)
                         {
                             closestCivilianDist = distance;
                             closestCivilianIndex = j;
                         }
-                    }
+                    //}
                 }
             }
 
@@ -170,6 +173,15 @@ public class Enemy2 : MonoBehaviour
         {
             health = health - 10;
             healthBar.SetHealth(health);
+        }
+        if (collision.gameObject.tag == "House" || collision.gameObject.tag == "Home")
+        {
+            Vector3 dir = collision.contacts[0].point - transform.position;
+            dir = -dir.normalized;
+            for (int i = 0; i < 1; i++)
+            {
+                enemyRigidBody.AddForce(dir * 500);
+            }
         }
     }
 
