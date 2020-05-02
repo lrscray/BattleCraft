@@ -10,6 +10,8 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
     [SerializeField] private GameObject worldUp = null;
     [SerializeField] private PlayerBuildingToolSelectionBehavior buildingToolSelector = null;
     [SerializeField] private PlayerResourceManager resourceManager = null;
+    [SerializeField] private NavMeshManager navMeshManager = null;
+
 
     private GameObject ghostObject;
     private bool ghostObjectAlreadyCreated;
@@ -48,6 +50,9 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
                     placingEnabled = false;
                     CallGhostBuster();
                     buildingToolSelector.PlaceBuilding();
+
+                    //update the navMesh when a building is spawned
+                    navMeshManager.UpdateNavMesh();
                 }
             }
         }

@@ -15,7 +15,7 @@ public class DefenderPopulation : MonoBehaviour
     void Start()
     {
         DpopSize = 0;
-        DpopSize = 5;
+        DpopSize = 0;
         SpawnDefenders();
     }
     public void SpawnDefenders()

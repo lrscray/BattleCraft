@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class EnemyBasic : MonoBehaviour
@@ -22,8 +23,11 @@ public class EnemyBasic : MonoBehaviour
     int health = 100;
     int maxHealth = 100;
 
-    
+
     [SerializeField] private HealthBarScript healthBar = null;
+
+    private Rigidbody enemyRigidBody;
+    private NavMeshAgent agent;
 
 
     // Start is called before the first frame update
@@ -41,13 +45,16 @@ public class EnemyBasic : MonoBehaviour
         allBuildings.AddRange(civilianBuildings);
         allBuildings.AddRange(defenderBuildings);
         allBuildings.AddRange(collectorBuildings);
-        
+
         healthBar.SetMaxHealth(maxHealth);
+        enemyRigidBody = gameObject.GetComponentInChildren<Rigidbody>();
+        agent = gameObject.GetComponentInChildren<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //TODO: Find way to make this check less for performance? Only when a building is destroyed? 
         civilianBuildings = civilianBuildingManager.GetAllBuildings();
         defenderBuildings = defenderBuildingManager.GetAllBuildings();
         collectorBuildings = collectorBuildingManager.GetAllBuildings();
@@ -65,16 +72,17 @@ public class EnemyBasic : MonoBehaviour
     //state 1. Enemies move towards the nearest structures
     void enemyEngageBattle()
     {
-        checkHealth();
 
         //locate nearest house to bring the sitizen to
         GameObject nearestBuilding = FindClosestThing(allBuildings);
 
         //move towards the closest civilian
-        if (nearestBuilding != null)
+        //TODO: Find way of making this calc less? //IDK if this would work. We want to recalc the path often so that if we place things in front of them, they dont get stuck..
+        if (nearestBuilding != null) //&& CheckDestinationSame(nearestBuilding.transform.position) == false) 
         {
-            transform.LookAt(nearestBuilding.transform);
-            GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+            //transform.LookAt(nearestBuilding.transform);
+            //enemyRigidBody.AddForce(transform.forward * 3);
+            agent.SetDestination(nearestBuilding.transform.position);
         }
         //Once contact is made with the citizen. move them to the nearest house
     }
@@ -82,9 +90,21 @@ public class EnemyBasic : MonoBehaviour
     {
         if (health <= 0)
         {
-            //Update enemy manager to subtract total num enemies.
+            //Update enemy manager.
             enemyManager.DestroyTroop(gameObject);
             Destroy(gameObject);
+        }
+    }
+
+    private bool CheckDestinationSame(Vector3 newPos)
+    {
+        if (agent.destination == newPos)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -123,17 +143,17 @@ public class EnemyBasic : MonoBehaviour
         {
             health = health - 10;
             healthBar.SetHealth(health);
+            checkHealth();
+        }
+        if (collision.gameObject.tag == "House" || collision.gameObject.tag == "Home")
+        {
+            Vector3 dir = collision.contacts[0].point - transform.position;
+            dir = -dir.normalized;
+            
+            enemyRigidBody.AddForce(dir * 500);
+            
         }
     }
 
 
 }
-
-
-
-
-
-
-
-
-
