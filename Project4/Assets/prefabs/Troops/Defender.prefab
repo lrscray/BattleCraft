@@ -368,7 +368,7 @@ Rigidbody:
   m_Drag: 1.6
   m_AngularDrag: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -382,8 +382,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
-  m_Acceleration: 1000000
+  m_Speed: 7
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -392,7 +392,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
 --- !u!114 &4736703461596457781
 MonoBehaviour:
@@ -407,11 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wanderPoints: []
-  enemiesBasic: []
-  enemies2: []
-  houses: []
-  civilians: []
-  defenders: []
+  enemies: []
   healthBar: {fileID: 350511129616051078}
   currentCivilian: 0
   minRemainingDistance: 0.5
