@@ -16,6 +16,7 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
     private GameObject ghostObject;
     private bool ghostObjectAlreadyCreated;
     private bool placingEnabled;
+    private GameObject prevSelectedGhostBuilding = null;
 
     //[SerializeField] private Transform createdBuildingsFolder = null;
 
@@ -45,8 +46,9 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
                 {
                     //Spawn building.
                     resourceManager.BuildBuilding(buildingToolSelector.GetCurrentSelectedBuilding().GetComponentInChildren<BuildingBehavior>().GetBuildingCreationCost());
-                    GameObject building = Instantiate(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
-                    //building.transform.SetParent(createdBuildingsFolder);
+                    //GameObject building = Instantiate(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
+                    ObjectPoolManager.instance.GetNextObject(buildingToolSelector.GetCurrentSelectedBuilding(), ghostObject.transform.position, ghostObject.transform.rotation);
+
                     placingEnabled = false;
                     CallGhostBuster();
                     buildingToolSelector.PlaceBuilding();
@@ -68,14 +70,15 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
             if (ghostObjectAlreadyCreated == false)
             {
                 //Debug.Log("Attempting to instantiate ghost...");
-                ghostObject = Instantiate(buildingToolSelector.GetCurrentSelectedGhostBuilding(), hit.point, worldUp.transform.rotation);
+                //Instantiate(buildingToolSelector.GetCurrentSelectedGhostBuilding(), hit.point, worldUp.transform.rotation);
+                ghostObject = ObjectPoolManager.instance.GetNextObject(buildingToolSelector.GetCurrentSelectedGhostBuilding(), hit.point, worldUp.transform.rotation);
+                prevSelectedGhostBuilding = buildingToolSelector.GetCurrentSelectedGhostBuilding();
                 //Debug.Log("Instantiated ghost!");
                 ghostObjectAlreadyCreated = true;
             }
 
             ghostObject.transform.position = hit.point;
 
-            //TODO This isnt working. Can still place within other buildings.
             if (ghostObject.GetComponentInChildren<BuildingGhostBehavior>().IsCollidingWBuilding() == true)
             {
                 //Debug.Log("Cannot place here!");
@@ -94,7 +97,9 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
     {
         if (ghostObject != null)
         {
-            Destroy(ghostObject);
+            //Destroy(ghostObject);
+            ghostObject.SetActive(false);
+            ObjectPoolManager.instance.DeactivateObject(prevSelectedGhostBuilding, ghostObject);
             ghostObject = null;
             ghostObjectAlreadyCreated = false;
         }

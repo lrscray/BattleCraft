@@ -30,7 +30,6 @@ public class BuildingBehavior : MonoBehaviour
     [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
     //[SerializeField] private int currentNumTroops = -1; //The current number of troops assigned to this building.
 
-
     private BuildingManager buildingManager = null;
     //TODO Consider changing how this is found.
     private TroopManager defenderManager = null;
@@ -104,6 +103,7 @@ public class BuildingBehavior : MonoBehaviour
         else if(troopTypePrefab.tag == "Defender")
         {
             troop.transform.SetParent(defenderManager.transform);
+            defenderManager.AddTroop(troop);
         }
         numTroopsSpawned++;
     }
@@ -168,7 +168,7 @@ public class BuildingBehavior : MonoBehaviour
     {
         KickOutInsideTroops();
         buildingManager.DestroyBuilding(gameObject);
-        Destroy(gameObject);
+        //Destroy(gameObject);
         //print("building broken");
         navMeshManager.UpdateNavMesh();
     }

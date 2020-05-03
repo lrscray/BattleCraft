@@ -6,6 +6,8 @@ public class BuildingManager : MonoBehaviour
 {
     [SerializeField] private string buildingManagerType = null; //What type of buildings are stored here?
 
+    [SerializeField] private GameObject buildingTypePrefab = null; //Only added for object pooling.
+
     private List<GameObject> buildings;
 
     private void Awake()
@@ -33,6 +35,7 @@ public class BuildingManager : MonoBehaviour
 
     public void DestroyBuilding(GameObject destroyedBuilding)
     {
+        ObjectPoolManager.instance.DeactivateObject(buildingTypePrefab, destroyedBuilding);
         buildings.Remove(destroyedBuilding);
     }
 
