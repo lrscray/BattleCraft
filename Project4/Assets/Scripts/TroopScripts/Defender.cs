@@ -236,6 +236,8 @@ public class Defender: MonoBehaviour
         
     }
 
+
+    //will not return anything if the closest thing is too far away.
     private GameObject FindClosestThing(List<GameObject> thingList)
     {
         float closestDistance = Mathf.Infinity;
@@ -252,6 +254,12 @@ public class Defender: MonoBehaviour
                     closestThingIndex = i;
                 }
             }
+        }
+
+        if (closestDistance > 100)
+        {
+            state = 5;
+            return null;
         }
 
         if (closestThingIndex != -1 && thingList[closestThingIndex] != null)
