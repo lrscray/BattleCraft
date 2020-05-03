@@ -16,7 +16,6 @@ public class Collect : MonoBehaviour
     private bool isAtDestination = false;
 
     [SerializeField] private float startWait = 5.0f;
-    private PlayerResourceManager resourceManager = null;
 
     [SerializeField] private float bePatient = -1f;
     [SerializeField] private int maxNumResourcesCarryable = 5;
@@ -33,8 +32,7 @@ public class Collect : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         home = GameObject.FindGameObjectWithTag("Deposite");
         spotmanager = home.GetComponentInChildren<SpotManager>();
-        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
-
+        
         isCollecting = true;
         isDepositing = false;
         numResourcesCarrying = 0;
@@ -171,7 +169,7 @@ public class Collect : MonoBehaviour
     IEnumerator Deposited()
     {
         yield return new WaitForSeconds(3);
-        resourceManager.IncrementNumResources(numResourcesCarrying);
+        PlayerResourceManager.instance.IncrementNumResources(numResourcesCarrying);
         numResourcesCarrying = 0;
         CollectionCheck.SetActive(false);
         isCollecting = true;

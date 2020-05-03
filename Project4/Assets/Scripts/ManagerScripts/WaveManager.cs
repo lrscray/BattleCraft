@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private LevelManager levelManager = null;
+    static WaveManager _instance;
+
+    public static WaveManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<WaveManager>();
+            }
+            return _instance;
+        }
+    }
+
     [SerializeField] private TroopManager enemyManager = null;
     [SerializeField] private TroopManager enemyManager2 = null;
 
@@ -43,7 +56,7 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        levelManager.SetWaveActive();
+        LevelManager.instance.SetWaveActive();
         enemyManager.SpawnTroops();
         enemyManager2.SpawnTroops();
     }
@@ -72,7 +85,7 @@ public class WaveManager : MonoBehaviour
 
     IEnumerator TimeBetweenWavesTickDown()
     {
-        while(levelManager.GetLostGame() != true) //As long as player hasnt lost.
+        while(LevelManager.instance.GetLostGame() != true) //As long as player hasnt lost.
         {
             if(!inBreakPeriod) //If not in a break, tick down to next wave.
             {

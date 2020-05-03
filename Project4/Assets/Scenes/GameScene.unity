@@ -996,6 +996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 283429792}
+  - component: {fileID: 283429793}
   m_Layer: 0
   m_Name: CollectorManager
   m_TagString: CollectorManager
@@ -1017,6 +1018,34 @@ Transform:
   m_Father: {fileID: 54533689}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &283429793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283429791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b37970ef1d6ac14d99655b9ffdf4fcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelManager: {fileID: 659316805}
+  troopManagerType: CollectorManager
+  spawnLocations:
+  - {fileID: 974067358}
+  - {fileID: 1628429352}
+  - {fileID: 274330026}
+  - {fileID: 1242745554}
+  - {fileID: 1189403632}
+  - {fileID: 944364889}
+  - {fileID: 520972376}
+  - {fileID: 455868729}
+  - {fileID: 1508004851}
+  - {fileID: 1458610622}
+  troopPrefab: {fileID: 3419640903934524307, guid: 1551371764eeff34ca422425a34291de,
+    type: 3}
+  numTroopsInWave: 5
 --- !u!1001 &301581196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4109,6 +4138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a344394a8ea6c5d4cbf9b7c36fca0bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inDebugMode: 1
   numResources: -1
   numResourceLabel: {fileID: 105228365}
 --- !u!1 &1603500065

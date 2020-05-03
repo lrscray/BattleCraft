@@ -18,7 +18,7 @@ public class Defender: MonoBehaviour
     public GameObject[] wanderPoints;
     
     //list of enemies
-    public List<GameObject> enemies;
+    private List<GameObject> enemies;
     private List<GameObject> enemies2;
 
     //list of houses
@@ -26,14 +26,8 @@ public class Defender: MonoBehaviour
 
     //list of civilians
     private List<GameObject> civilians = null;
-    
-    //list of defenders
-    //public GameObject[] defenders;
 
-    int health = 100;
-    int maxHealth = 100;
-
-    [SerializeField] private HealthBarScript healthBar = null;
+    [SerializeField] private TroopBehavior troopBehavior = null;
 
     public int currentCivilian = 0;
 
@@ -71,7 +65,7 @@ public class Defender: MonoBehaviour
         int nextPoint = Random.Range(0, wanderPoints.Length);
         //agent.destination = wanderPoints[nextPoint].transform.position;
         agent.SetDestination(wanderPoints[nextPoint].transform.position);
-        healthBar.SetMaxHealth(maxHealth);
+        
 	agent.speed = 7;
     }
 
@@ -96,12 +90,13 @@ public class Defender: MonoBehaviour
         if (state == 4)
             Attack2();
 
-        checkHealth();
+        
 
         //we do need this ask jacob
-        if(checkStuff){
-            print("hrtrtr");
-        checkMoreCivilians();
+        if(checkStuff)
+        {
+            //print("hrtrtr");
+            checkMoreCivilians();
         }
     }
     //state 1
@@ -289,10 +284,9 @@ public class Defender: MonoBehaviour
 
     void checkHealth()
     {
-        if (health <= 0)
+        if (troopBehavior.GetCurrentHealth() <= 0)
         {
             defenderManager.DestroyTroop(gameObject);
-            //Destroy(gameObject);
         }
     }
 
@@ -311,13 +305,13 @@ public class Defender: MonoBehaviour
         //Attacked by Enemy
         if (collision.gameObject.tag == "Enemy2")
         {
-            health = health - 5;
-            healthBar.SetHealth(health);
+            troopBehavior.TakeDamage(5);
+            checkHealth();
         }
         if (collision.gameObject.tag == "EnemyBasic")
         {
-            health = health - 5;
-            healthBar.SetHealth(health);
+            troopBehavior.TakeDamage(5);
+            checkHealth();
         }
     }
     public int getState()
