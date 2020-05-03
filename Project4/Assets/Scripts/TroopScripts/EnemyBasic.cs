@@ -8,6 +8,7 @@ public class EnemyBasic : MonoBehaviour
 {
     private string troopManagerType = "EnemyManager";
     private TroopManager enemyManager;
+    private TroopManager civilianManager;
 
     private BuildingManager civilianBuildingManager;
     private BuildingManager defenderBuildingManager;
@@ -18,6 +19,9 @@ public class EnemyBasic : MonoBehaviour
     private List<GameObject> collectorBuildings = null;
     private List<GameObject> defenderBuildings = null;
     private List<GameObject> allBuildings = null;
+
+    private List<GameObject> civilians = null;
+
 
     int state = 1;
     int health = 100;
@@ -33,6 +37,9 @@ public class EnemyBasic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+
         enemyManager = GameObject.FindGameObjectWithTag(troopManagerType).GetComponentInChildren<TroopManager>();
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
         defenderBuildingManager = GameObject.FindGameObjectWithTag("DefenderBuildingManager").GetComponentInChildren<BuildingManager>();
@@ -41,10 +48,12 @@ public class EnemyBasic : MonoBehaviour
         civilianBuildings = civilianBuildingManager.GetAllBuildings();
         defenderBuildings = defenderBuildingManager.GetAllBuildings();
         collectorBuildings = collectorBuildingManager.GetAllBuildings();
+        civilians = civilianManager.GetAllTroops();
         allBuildings = new List<GameObject>();
         allBuildings.AddRange(civilianBuildings);
         allBuildings.AddRange(defenderBuildings);
         allBuildings.AddRange(collectorBuildings);
+
 
         healthBar.SetMaxHealth(maxHealth);
         enemyRigidBody = gameObject.GetComponentInChildren<Rigidbody>();
@@ -54,6 +63,7 @@ public class EnemyBasic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        civilians = civilianManager.GetAllTroops();
         //TODO: Find way to make this check less for performance? Only when a building is destroyed? 
         civilianBuildings = civilianBuildingManager.GetAllBuildings();
         defenderBuildings = defenderBuildingManager.GetAllBuildings();
@@ -83,6 +93,10 @@ public class EnemyBasic : MonoBehaviour
             //transform.LookAt(nearestBuilding.transform);
             //enemyRigidBody.AddForce(transform.forward * 3);
             agent.SetDestination(nearestBuilding.transform.position);
+        }
+        else
+        {
+            FindCivilian();
         }
         //Once contact is made with the citizen. move them to the nearest house
     }
@@ -134,6 +148,35 @@ public class EnemyBasic : MonoBehaviour
         {
             return null;
         }
+    }
+
+    void FindCivilian()
+    {
+        GetComponent<NavMeshAgent>().speed = 6;
+            float closestCivilianDist = Mathf.Infinity;
+            int closestCivilian = -1;
+            float distance;
+            for (int j = 0; j < civilians.Count; j++)
+            {
+                if (civilians[j].activeInHierarchy == true) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
+                {
+                    if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
+                    {
+                        distance = Vector3.Distance(transform.position, civilians[j].transform.position);
+                        if (distance < closestCivilianDist)
+                        {
+                            closestCivilianDist = distance;
+                            closestCivilian = j;
+                        }
+                    }
+                }
+            }
+
+            //move towards the closest civilian
+            if (closestCivilian != -1 && civilians[closestCivilian] != null)
+            {
+                agent.SetDestination(civilians[closestCivilian].transform.position);
+            }
     }
 
     void OnCollisionEnter(Collision collision)
