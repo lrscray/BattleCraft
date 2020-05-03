@@ -25,21 +25,14 @@ public class BuildingBehavior : MonoBehaviour
     [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
 
-    //The troops currently inside this building.
-    private List<GameObject> insideTroops;
     [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
-    //[SerializeField] private int currentNumTroops = -1; //The current number of troops assigned to this building.
-
+    [SerializeField] private int currentNumInsideTroops = -1; //The current number of troops inside this building.
 
     private BuildingManager buildingManager = null;
     //TODO Consider changing how this is found.
     private TroopManager defenderManager = null;
-    //MAYBE: Make a collector manager script?
-    private GameObject collectorManager = null;
+    private TroopManager collectorManager = null;
     private TroopManager civilianManager = null;
-    private PlayerResourceManager resourceManager = null;   
-    private NavMeshManager navMeshManager = null;
-
 
     private void Start()
     {
@@ -47,13 +40,12 @@ public class BuildingBehavior : MonoBehaviour
         buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
         transform.SetParent(buildingManager.gameObject.transform);
         buildingManager.MakeBuilding(this.gameObject);
-        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponentInChildren<PlayerResourceManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
         defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<TroopManager>();
-        collectorManager = GameObject.FindGameObjectWithTag("CollectorManager");
-        navMeshManager = GameObject.FindGameObjectWithTag("NavMesh").GetComponentInChildren<NavMeshManager>();
+        collectorManager = GameObject.FindGameObjectWithTag("CollectorManager").GetComponentInChildren<TroopManager>();
+        
+        currentNumInsideTroops = 0;
 
-        insideTroops = new List<GameObject>();
 
         StartCoroutine(WaitSpawnTroops());
         StartCoroutine(WaitTakeUpKeep());
@@ -91,7 +83,12 @@ public class BuildingBehavior : MonoBehaviour
 
     private void SpawnTroop()
     {
-        GameObject troop = Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
+        //GameObject troop = Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
+        GameObject troop = ObjectPoolManager.instance.GetNextObject(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
+        if(troop == null)
+        {
+            Debug.LogError("ERROR in HOUSINGBEHAVIOR!");
+        }
         if(troopTypePrefab.tag == "Civilian")
         {
             troop.transform.SetParent(civilianManager.transform);
@@ -100,19 +97,21 @@ public class BuildingBehavior : MonoBehaviour
         else if(troopTypePrefab.tag == "Collector")
         {
             troop.transform.SetParent(collectorManager.transform);
+            collectorManager.AddTroop(troop);
         }
         else if(troopTypePrefab.tag == "Defender")
         {
             troop.transform.SetParent(defenderManager.transform);
+            defenderManager.AddTroop(troop);
         }
         numTroopsSpawned++;
     }
 
     private void AttemptCollectUpKeep()
     {
-        if(resourceManager.GetNumResources() > buildingUpKeepCost)
+        if(PlayerResourceManager.instance.GetNumResources() > buildingUpKeepCost)
         {
-            resourceManager.TakeUpKeep(buildingUpKeepCost);
+            PlayerResourceManager.instance.TakeUpKeep(buildingUpKeepCost);
             spawningEnabled = true;
             if(buildingCurrentHealth < buildingMaxHealth)
             {
@@ -160,7 +159,10 @@ public class BuildingBehavior : MonoBehaviour
 
     public void StoreTroop(GameObject troop)
     {
-        insideTroops.Add(troop);
+        //insideTroops.Add(troop);
+        troop.SetActive(false);
+        ObjectPoolManager.instance.DeactivateObject(civilianManager.GetTroopPrefab(), troop);
+        currentNumInsideTroops += 1;
     }
 
     //What happens when the building is destroyed.
@@ -168,21 +170,18 @@ public class BuildingBehavior : MonoBehaviour
     {
         KickOutInsideTroops();
         buildingManager.DestroyBuilding(gameObject);
-        Destroy(gameObject);
         //print("building broken");
-        navMeshManager.UpdateNavMesh();
+        NavMeshManager.instance.UpdateNavMesh();
     }
 
     private void KickOutInsideTroops()
     {
         //Go through all inside troops.
-        //Change position to center of this gameobject?
+        //Change position to center of this gameobject.
         //SetActive again.
-        for(int i = 0; i < insideTroops.Count; i++)
+        for(int i = 0; i < currentNumInsideTroops; i++)
         {
-            GameObject troop = insideTroops[i];
-            troop.transform.position = gameObject.transform.position;
-            troop.SetActive(true);
+            GameObject troop = ObjectPoolManager.instance.GetNextObject(civilianManager.GetTroopPrefab(), gameObject.transform.position, gameObject.transform.rotation);
             Civilian civilian = troop.GetComponentInChildren<Civilian>();
             civilian.setInAHouse(false);
             civilian.setHasADefender(false);
@@ -202,7 +201,7 @@ public class BuildingBehavior : MonoBehaviour
 
     public bool HouseHasRoom()
     {
-        if(GetCurrentNumTroops() < maxTroopCapacity)
+        if(GetCurrentNumInsideTroops() < maxTroopCapacity)
         {
             return true;
         }
@@ -217,9 +216,9 @@ public class BuildingBehavior : MonoBehaviour
         return maxTroopCapacity;
     }
 
-    public int GetCurrentNumTroops()
+    public int GetCurrentNumInsideTroops()
     {
-        return insideTroops.Count;
+        return currentNumInsideTroops;
     }
 
     public string GetBuildingManagerType()

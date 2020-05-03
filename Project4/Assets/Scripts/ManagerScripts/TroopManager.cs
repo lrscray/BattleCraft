@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TroopManager : MonoBehaviour
 {
-    [SerializeField] private LevelManager levelManager = null;
 
     [SerializeField] private string troopManagerType = null; //What type of troops are stored here?
 
@@ -20,6 +19,7 @@ public class TroopManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        ObjectPoolManager.instance.CreateNewObjectPool(troopPrefab, 15);
         troops = new List<GameObject>();
     }
 
@@ -51,21 +51,28 @@ public class TroopManager : MonoBehaviour
         troops.Add(newEnemy);
         if(troopManagerType == "CivilianManager")
         {
-            levelManager.SetPlayerBaseMaxHealth(numTroopsInWave + 1);
+            LevelManager.instance.SetPlayerBaseMaxHealth(numTroopsInWave + 1);
         }
     }
 
     public void DestroyTroop(GameObject destroyedEnemy)
     {
+        destroyedEnemy.SetActive(false);
+        ObjectPoolManager.instance.DeactivateObject(troopPrefab, destroyedEnemy);
         troops.Remove(destroyedEnemy);
         if (troopManagerType == "CivilianManager")
         {
-            levelManager.UpdatePlayerBaseHealth();
+            LevelManager.instance.UpdatePlayerBaseHealth();
         }
     }
 
     public string GetTroopManagerType()
     {
         return troopManagerType;
+    }
+
+    public GameObject GetTroopPrefab()
+    {
+        return troopPrefab;
     }
 }
