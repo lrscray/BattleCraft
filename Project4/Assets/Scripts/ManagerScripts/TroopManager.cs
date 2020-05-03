@@ -20,6 +20,7 @@ public class TroopManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        ObjectPoolManager.instance.CreateNewObjectPool(troopPrefab, 15);
         troops = new List<GameObject>();
     }
 
@@ -57,6 +58,7 @@ public class TroopManager : MonoBehaviour
 
     public void DestroyTroop(GameObject destroyedEnemy)
     {
+        ObjectPoolManager.instance.DeactivateObject(troopPrefab, destroyedEnemy);
         troops.Remove(destroyedEnemy);
         if (troopManagerType == "CivilianManager")
         {

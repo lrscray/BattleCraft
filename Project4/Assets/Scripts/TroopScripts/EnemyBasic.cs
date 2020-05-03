@@ -92,7 +92,7 @@ public class EnemyBasic : MonoBehaviour
         {
             //Update enemy manager.
             enemyManager.DestroyTroop(gameObject);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 

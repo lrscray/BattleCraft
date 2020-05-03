@@ -142,7 +142,7 @@ public class Enemy2 : MonoBehaviour
         if (health <= 0)
         {
             enemyManager.DestroyTroop(gameObject);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 

@@ -7,6 +7,8 @@ public class Defender: MonoBehaviour
 {
     //TODO: Consider adding a detection collider for finding enemies.
 
+    [SerializeField]private TroopManager defenderManager = null;
+
     private BuildingManager civilianBuildingManager;
     private TroopManager civilianManager;
     private TroopManager enemyManager;
@@ -47,6 +49,7 @@ public class Defender: MonoBehaviour
 
     void Start()
     {
+        defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<TroopManager>();
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<TroopManager>();
@@ -251,7 +254,8 @@ public class Defender: MonoBehaviour
     {
         if (health <= 0)
         {
-            Destroy(gameObject);
+            defenderManager.DestroyTroop(gameObject);
+            //Destroy(gameObject);
         }
     }
 

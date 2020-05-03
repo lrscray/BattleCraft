@@ -104,7 +104,7 @@ public class Civilian : MonoBehaviour
     {
         building.GetComponentInChildren<BuildingBehavior>().StoreTroop(gameObject);
         setInAHouse(true);
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); //TODO: OBJECT POOLING: Get this to work with object pooling.
     }
 
     private BuildingBehavior GetBuildingBehavior(int i)
@@ -128,7 +128,7 @@ public class Civilian : MonoBehaviour
         if (collision.gameObject.tag == "Enemy2")
         {
             civilianManager.DestroyTroop(gameObject);
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
         //collision with house while in state 1. Change to state 2
         //TODO: Make it so that the civilians can only go in the civilian buildings?
