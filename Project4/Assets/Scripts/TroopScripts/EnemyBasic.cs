@@ -8,6 +8,7 @@ public class EnemyBasic : MonoBehaviour
 {
     private string troopManagerType = "EnemyManager";
     private TroopManager enemyManager;
+    private TroopManager civilianManager;
 
     private BuildingManager civilianBuildingManager;
     private BuildingManager defenderBuildingManager;
@@ -18,6 +19,8 @@ public class EnemyBasic : MonoBehaviour
     private List<GameObject> collectorBuildings = null;
     private List<GameObject> defenderBuildings = null;
     private List<GameObject> allBuildings = null;
+
+    private List<GameObject> civilians = null;
 
 
     int state = 1;
@@ -34,6 +37,9 @@ public class EnemyBasic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
+
         enemyManager = GameObject.FindGameObjectWithTag(troopManagerType).GetComponentInChildren<TroopManager>();
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
         defenderBuildingManager = GameObject.FindGameObjectWithTag("DefenderBuildingManager").GetComponentInChildren<BuildingManager>();
@@ -42,6 +48,7 @@ public class EnemyBasic : MonoBehaviour
         civilianBuildings = civilianBuildingManager.GetAllBuildings();
         defenderBuildings = defenderBuildingManager.GetAllBuildings();
         collectorBuildings = collectorBuildingManager.GetAllBuildings();
+        civilians = civilianManager.GetAllTroops();
         allBuildings = new List<GameObject>();
         allBuildings.AddRange(civilianBuildings);
         allBuildings.AddRange(defenderBuildings);
@@ -56,6 +63,7 @@ public class EnemyBasic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        civilians = civilianManager.GetAllTroops();
         //TODO: Find way to make this check less for performance? Only when a building is destroyed? 
         civilianBuildings = civilianBuildingManager.GetAllBuildings();
         defenderBuildings = defenderBuildingManager.GetAllBuildings();
@@ -144,33 +152,31 @@ public class EnemyBasic : MonoBehaviour
 
     void FindCivilian()
     {
-        float distanceToClosestspot = Mathf.Infinity;
-        CivilianManager closestSpot = null;
-        CivilianManager[] allSpots = GameObject.FindObjectsOfType<CivilianManager>();
-
-        foreach (CivilianManager currentSpot in allSpots)
-        {
-            //spotmanager = currentSpot.GetComponentInChildren<SpotManager>();
-            float distanceTospot = (currentSpot.transform.position - this.transform.position).sqrMagnitude;
-            if ((distanceTospot < distanceToClosestspot))
+        GetComponent<NavMeshAgent>().speed = 6;
+            float closestCivilianDist = Mathf.Infinity;
+            int closestCivilian = -1;
+            float distance;
+            for (int j = 0; j < civilians.Count; j++)
             {
-
-                distanceToClosestspot = distanceTospot;
-                closestSpot = currentSpot;
-
-                //target = currentSpot.gameObject;
-                agent.SetDestination(currentSpot.transform.position);
+                if (civilians[j].activeInHierarchy == true) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
+                {
+                    if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
+                    {
+                        distance = Vector3.Distance(transform.position, civilians[j].transform.position);
+                        if (distance < closestCivilianDist)
+                        {
+                            closestCivilianDist = distance;
+                            closestCivilian = j;
+                        }
+                    }
+                }
             }
 
-        }
-        if (closestSpot == null)
-        {
-            enemyEngageBattle();
-        }
-        else
-        {
-            return;
-        }
+            //move towards the closest civilian
+            if (closestCivilian != -1 && civilians[closestCivilian] != null)
+            {
+                agent.SetDestination(civilians[closestCivilian].transform.position);
+            }
     }
 
     void OnCollisionEnter(Collision collision)

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 2869122044568380558}
   - component: {fileID: -7214501316615388583}
   - component: {fileID: 1572157760231387480}
-  - component: {fileID: 5970582919599100467}
   m_Layer: 0
   m_Name: Civilian
   m_TagString: Civilian
@@ -160,15 +159,3 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   minRemainingDistance: 0.2
---- !u!114 &5970582919599100467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153700141558374214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bcfa13fde99a2a4ca9cfb70b94fea80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
