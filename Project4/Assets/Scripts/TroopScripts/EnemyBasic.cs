@@ -152,7 +152,7 @@ public class EnemyBasic : MonoBehaviour
 
     void FindCivilian()
     {
-        GetComponent<NavMeshAgent>().speed = 12;
+        GetComponent<NavMeshAgent>().speed = 6;
             float closestCivilianDist = Mathf.Infinity;
             int closestCivilian = -1;
             float distance;
