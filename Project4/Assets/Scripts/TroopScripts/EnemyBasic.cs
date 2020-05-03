@@ -19,6 +19,7 @@ public class EnemyBasic : MonoBehaviour
     private List<GameObject> defenderBuildings = null;
     private List<GameObject> allBuildings = null;
 
+
     int state = 1;
     int health = 100;
     int maxHealth = 100;
@@ -45,6 +46,7 @@ public class EnemyBasic : MonoBehaviour
         allBuildings.AddRange(civilianBuildings);
         allBuildings.AddRange(defenderBuildings);
         allBuildings.AddRange(collectorBuildings);
+
 
         healthBar.SetMaxHealth(maxHealth);
         enemyRigidBody = gameObject.GetComponentInChildren<Rigidbody>();
@@ -83,6 +85,10 @@ public class EnemyBasic : MonoBehaviour
             //transform.LookAt(nearestBuilding.transform);
             //enemyRigidBody.AddForce(transform.forward * 3);
             agent.SetDestination(nearestBuilding.transform.position);
+        }
+        else
+        {
+            FindCivilian();
         }
         //Once contact is made with the citizen. move them to the nearest house
     }
@@ -133,6 +139,37 @@ public class EnemyBasic : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    void FindCivilian()
+    {
+        float distanceToClosestspot = Mathf.Infinity;
+        CivilianManager closestSpot = null;
+        CivilianManager[] allSpots = GameObject.FindObjectsOfType<CivilianManager>();
+
+        foreach (CivilianManager currentSpot in allSpots)
+        {
+            //spotmanager = currentSpot.GetComponentInChildren<SpotManager>();
+            float distanceTospot = (currentSpot.transform.position - this.transform.position).sqrMagnitude;
+            if ((distanceTospot < distanceToClosestspot))
+            {
+
+                distanceToClosestspot = distanceTospot;
+                closestSpot = currentSpot;
+
+                //target = currentSpot.gameObject;
+                agent.SetDestination(currentSpot.transform.position);
+            }
+
+        }
+        if (closestSpot == null)
+        {
+            enemyEngageBattle();
+        }
+        else
+        {
+            return;
         }
     }
 
