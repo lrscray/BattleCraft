@@ -47,6 +47,7 @@ public class Defender: MonoBehaviour
 
     void Start()
     {
+        GetComponent<NavMeshAgent>().speed = 7;
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<TroopManager>();
@@ -95,6 +96,7 @@ public class Defender: MonoBehaviour
     //state 1
     void Wander()
     {
+        GetComponent<NavMeshAgent>().speed = 7;
         //if we are close to our destination point, go to the next point
         if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
@@ -121,16 +123,28 @@ public class Defender: MonoBehaviour
     //state 2
     void searchForCitizens()
     {
+        GetComponent<NavMeshAgent>().speed = 12;
         //if all of the citizens are taken care of. go to state 4. Attack state
+        //also go to state 4 if there are citizens but no houses to put them in
         bool noMoreCitizens = true;
         for (int j = 0; j < civilians.Count; j++)
         {
-            if (civilians[j].activeInHierarchy == true) //&& civilians[j].GetComponent<Civilian>().getHasADefender() == false)
+            if (civilians[j].activeInHierarchy == true)
             {
                 noMoreCitizens = false;
             }
         }
-        if (noMoreCitizens)
+
+        bool noMoreHouses = true;
+        for (int j = 0; j < civilianHouses.Count; j++)
+        {
+            if (civilianHouses[j].activeInHierarchy == true)
+            {
+                noMoreHouses = false;
+            }
+        }
+
+        if (noMoreCitizens || noMoreHouses)
         {
             state = 4;
         }
@@ -170,6 +184,7 @@ public class Defender: MonoBehaviour
     //state 3
     void Escort()
     {
+        GetComponent<NavMeshAgent>().speed = 12;
         //locate nearest house to bring the sitizen to
         GameObject nearestHouse = FindClosestThing(civilianHouses);
 
@@ -186,6 +201,7 @@ public class Defender: MonoBehaviour
     //state 4
     void Attack()
     {
+        GetComponent<NavMeshAgent>().speed = 10;
         //find the nearest enemy to attack
         GameObject nearestEnemy = FindClosestThing(enemies);
 
@@ -201,6 +217,7 @@ public class Defender: MonoBehaviour
 
     void Attack2()
     {
+        GetComponent<NavMeshAgent>().speed = 10;
 
         if (enemy2Manager.GetNumTroops() == 0)
         {

@@ -15,7 +15,7 @@ public class TroopManager : MonoBehaviour
 
     private List<GameObject> troops;
 
-    [SerializeField] private int numTroopsInWave = 1; //The number of troops to spawn in 1 wave or the number of starting troops to spawn.
+    [SerializeField] private int numTroopsInWave = 0; //The number of troops to spawn in 1 wave or the number of starting troops to spawn.
 
     // Start is called before the first frame update
     private void Start()
