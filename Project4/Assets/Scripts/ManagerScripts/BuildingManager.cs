@@ -35,6 +35,7 @@ public class BuildingManager : MonoBehaviour
 
     public void DestroyBuilding(GameObject destroyedBuilding)
     {
+        destroyedBuilding.SetActive(false);
         ObjectPoolManager.instance.DeactivateObject(buildingTypePrefab, destroyedBuilding);
         buildings.Remove(destroyedBuilding);
     }

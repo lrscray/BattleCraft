@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
 {
+    static PlayerBuildingToolSelectionBehavior _instance;
+
+    public static PlayerBuildingToolSelectionBehavior instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PlayerBuildingToolSelectionBehavior>();
+            }
+            return _instance;
+        }
+    }
+
     private bool buildingEnabled = false;
     private GameObject currentSelectedBuilding = null; //The building type to be built.
     

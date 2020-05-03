@@ -19,7 +19,6 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     //Used to store and find the specific object pool for a specific object.
-    //TODO: Consider using string for type of pool instead.
     Dictionary<int, Queue<GameObject>> objectPoolDictionary = new Dictionary<int, Queue<GameObject>>();
 
     public void CreateNewObjectPool(GameObject prefab, int poolSize)
@@ -76,6 +75,12 @@ public class ObjectPoolManager : MonoBehaviour
             }
 
             //Get object ready to be reused.
+            TroopBehavior troop = newObject.GetComponentInChildren<TroopBehavior>();
+            if (troop != null)
+            {
+                troop.InitializeTroop();
+            }
+
             newObject.transform.position = position;
             newObject.transform.rotation = rotation;
             newObject.SetActive(true);
@@ -84,6 +89,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else //ERROR! NOT SUPPOSED TO REACH HERE.
         {
+            Debug.LogError("Error getting new object from Object Pool. Pool key: " + poolKey.ToString() + " not in dictionary. Please contact your developer...");
             return null;
         }
     }

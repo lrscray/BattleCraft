@@ -5,6 +5,22 @@ using UnityEngine.UI;
 
 public class PlayerResourceManager : MonoBehaviour
 {
+    static PlayerResourceManager _instance;
+
+    public static PlayerResourceManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PlayerResourceManager>();
+            }
+            return _instance;
+        }
+    }
+
+    [SerializeField] private bool inDebugMode = false;
+
     [SerializeField] private int numResources = -1;
 
     [SerializeField] private Text numResourceLabel = null;
@@ -12,7 +28,14 @@ public class PlayerResourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        numResources = 0;
+        if (!inDebugMode)
+        {
+            numResources = 0;
+        }
+        else
+        {
+            numResources = 100000;
+        }
         //StartCoroutine(IncrementResourcesAfterTime());
     }
     /*

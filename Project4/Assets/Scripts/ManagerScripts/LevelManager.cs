@@ -5,11 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    static LevelManager _instance;
+
+    public static LevelManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<LevelManager>();
+            }
+            return _instance;
+        }
+    }
+
     //Set starting resources to 0.
     //Have starting troops.
     //Tick down time for 3 minutes.
-
-    [SerializeField] private WaveManager waveManager = null;
      
     [SerializeField] private TroopManager civilianManager = null;
 
@@ -51,7 +63,7 @@ public class LevelManager : MonoBehaviour
             {
                 inStartingPeriod = false;
                 //End warmup period. Wave starts.
-                waveManager.StartWaves();
+                WaveManager.instance.StartWaves();
                 yield return new WaitForSeconds(3); //Allow some time for enemies to spawn.
                 StartCoroutine(CheckWinLoseConditions());
             }

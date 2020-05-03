@@ -22,13 +22,9 @@ public class EnemyBasic : MonoBehaviour
 
     private List<GameObject> civilians = null;
 
+    [SerializeField] private TroopBehavior troop = null;
 
     int state = 1;
-    int health = 100;
-    int maxHealth = 100;
-
-
-    [SerializeField] private HealthBarScript healthBar = null;
 
     private Rigidbody enemyRigidBody;
     private NavMeshAgent agent;
@@ -54,8 +50,6 @@ public class EnemyBasic : MonoBehaviour
         allBuildings.AddRange(defenderBuildings);
         allBuildings.AddRange(collectorBuildings);
 
-
-        healthBar.SetMaxHealth(maxHealth);
         enemyRigidBody = gameObject.GetComponentInChildren<Rigidbody>();
         agent = gameObject.GetComponentInChildren<NavMeshAgent>();
     }
@@ -102,11 +96,10 @@ public class EnemyBasic : MonoBehaviour
     }
     void checkHealth()
     {
-        if (health <= 0)
+        if (troop.GetCurrentHealth() <= 0)
         {
             //Update enemy manager.
             enemyManager.DestroyTroop(gameObject);
-            //Destroy(gameObject);
         }
     }
 
@@ -184,8 +177,7 @@ public class EnemyBasic : MonoBehaviour
         //Attacked by defender
         if (collision.gameObject.tag == "Defender")
         {
-            health = health - 10;
-            healthBar.SetHealth(health);
+            troop.TakeDamage(10);
             checkHealth();
         }
         if (collision.gameObject.tag == "House" || collision.gameObject.tag == "Home")
