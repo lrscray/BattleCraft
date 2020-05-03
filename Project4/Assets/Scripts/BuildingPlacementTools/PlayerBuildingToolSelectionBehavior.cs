@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
 {
+    static PlayerBuildingToolSelectionBehavior _instance;
+
+    public static PlayerBuildingToolSelectionBehavior instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PlayerBuildingToolSelectionBehavior>();
+            }
+            return _instance;
+        }
+    }
+
     private bool buildingEnabled = false;
     private GameObject currentSelectedBuilding = null; //The building type to be built.
     
@@ -13,6 +27,16 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
     //Fill this list with all keys for selecting the appropriate(same index) building type.
     [SerializeField] private List<KeyCode> buildingTypeKeyCodeSelectors = null;
     [SerializeField] private KeyCode unSelectBuildingKey = 0;
+
+    private void Start()
+    {
+        //Setup object pools for each building type and ghost type.
+        for(int i = 0; i < buildingTypePrefabs.Count; i++)
+        {
+            ObjectPoolManager.instance.CreateNewObjectPool(buildingTypePrefabs[i], 15);
+            ObjectPoolManager.instance.CreateNewObjectPool(buildingTypeGhostPrefabs[i], 1); //Only 1 on screen at the same time.
+        }
+    }
 
     //TODO - PERF IMPR: Consider another way of not running through each possible key selector to check if placed.
     private void Update()
@@ -31,9 +55,9 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
         }
         if(Input.GetKeyDown(unSelectBuildingKey)) //If the player clicked the button for unselecting the build tool.
         {
+            buildingEnabled = false;
             currentSelectedBuilding = null;
             //Debug.Log("Pressed unselect button.");
-            buildingEnabled = false;
         }   
     }
 
