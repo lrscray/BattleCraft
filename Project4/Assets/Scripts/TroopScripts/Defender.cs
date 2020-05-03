@@ -44,6 +44,8 @@ public class Defender: MonoBehaviour
     private float distance;
 
     int state = 1;
+    public bool stutter = false;
+    public bool checkStuff = false;
 
     void Start()
     {
@@ -91,7 +93,13 @@ public class Defender: MonoBehaviour
         if (state == 4)
             Attack2();
 
-         checkHealth();
+        checkHealth();
+
+        //we do need this ask jacob
+        if(checkStuff){
+            print("hrtrtr");
+        checkMoreCivilians();
+        }
     }
     //state 1
     void Wander()
@@ -114,8 +122,6 @@ public class Defender: MonoBehaviour
             if (distance < 65)
             {
                 state = 2;
-                //transform.LookAt(EnemiesBasic[i].transform);
-                //GetComponent<Rigidbody>().AddForce(transform.forward * 10);
             }
         }
     }
@@ -123,7 +129,9 @@ public class Defender: MonoBehaviour
     //state 2
     void searchForCitizens()
     {
-        GetComponent<NavMeshAgent>().speed = 12;
+        checkStuff = true;
+
+        GetComponent<NavMeshAgent>().speed = 16;
         //if all of the citizens are taken care of. go to state 4. Attack state
         //also go to state 4 if there are citizens but no houses to put them in
         bool noMoreCitizens = true;
@@ -184,18 +192,22 @@ public class Defender: MonoBehaviour
     //state 3
     void Escort()
     {
-        GetComponent<NavMeshAgent>().speed = 12;
-        //locate nearest house to bring the sitizen to
-        GameObject nearestHouse = FindClosestThing(civilianHouses);
+       // if (!stutter)
+       // {
+            GetComponent<NavMeshAgent>().speed = 16;
+            //locate nearest house to bring the sitizen to
+            GameObject nearestHouse = FindClosestThing(civilianHouses);
 
-        //move towards the closest civilian
-        if (nearestHouse != null)
-        {
-            //transform.LookAt(nearestHouse.transform);
-            //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
-            agent.SetDestination(nearestHouse.transform.position);
-        }
-        //Once contact is made with the citizen. move them to the nearest house
+            //move towards the closest civilian
+            if (nearestHouse != null)
+            {
+                //transform.LookAt(nearestHouse.transform);
+                //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+                agent.SetDestination(nearestHouse.transform.position);
+            }
+            stutter = false;
+            //Once contact is made with the citizen. move them to the nearest house
+       // }
     }
 
     //state 4
@@ -311,5 +323,22 @@ public class Defender: MonoBehaviour
     public int getCurrentCivilian()
     {
         return currentCivilian;
+    }
+
+    public void checkMoreCivilians()
+    {
+        bool noMoreCitizens = true;
+        for (int j = 0; j < civilians.Count; j++)
+        {
+            if (civilians[j].activeInHierarchy == true)
+            {
+                noMoreCitizens = false;
+            }
+        }
+
+        if (noMoreCitizens == false)
+        {
+            state = 2;
+        }
     }
 }
