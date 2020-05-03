@@ -256,7 +256,7 @@ public class Defender: MonoBehaviour
             }
         }
 
-        if (closestDistance > 100)
+        if (closestDistance > 50)
         {
             state = 5;
             return null;
