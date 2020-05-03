@@ -129,7 +129,7 @@ public class Civilian : MonoBehaviour
                 state = 2;
             }
         }
-        if (collision.gameObject.tag == "Enemy2")
+        if (collision.gameObject.tag == "Enemy2" || collision.gameObject.tag == "EnemyBasic")
         {
             civilianManager.DestroyTroop(gameObject);
             Destroy(gameObject);
