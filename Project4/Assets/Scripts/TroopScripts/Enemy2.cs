@@ -76,66 +76,63 @@ public class Enemy2 : MonoBehaviour
     void civilianEngageBattle()
     {
         //Is this part necessary? Any way to have its function without looping through all civilians twice?
-        
+
         bool searchCivilian = false;
 
-        //There must me a civilian outside of a house.Loop through all of them to see
+        //There must be a civilian outside of a house. Loop through all of them to see
         int i = 0;
         while (searchCivilian == false && i < civilians.Count)
         {
             if (!civilians[i].GetComponent<Civilian>().getInAHouse())
             {
                 searchCivilian = true;
+                // print(searchCivilian);
             }
             i++;
         }
-        
+
 
         if (searchCivilian)
         {
-        //Looking for a civilian.
+            //Looking for a civilian.
 
-        float closestCivilianDist = Mathf.Infinity;
-        int closestCivilianIndex = -1;
-        float distance;
-        for (int j = 0; j < civilians.Count; j++)
-        {
-            if (civilians[j].activeInHierarchy) // && civilians[j].GetComponent<Civilian>().getHasADefender() == false
+            float closestCivilianDist = Mathf.Infinity;
+            int closestCivilianIndex = -1;
+            float distance;
+            for (int j = 0; j < civilians.Count; j++)
             {
-                //if (civilians[j].GetComponent<Civilian>().getHasADefender() == false)
-                //{
+                if (civilians[j].activeInHierarchy)
+                {
                     distance = Vector3.Distance(transform.position, civilians[j].transform.position);
                     if (distance < closestCivilianDist)
                     {
                         closestCivilianDist = distance;
                         closestCivilianIndex = j;
                     }
-                //}
+                }
+            }
+
+            //move towards the closest civilian
+            if (closestCivilianIndex != -1 && civilians[closestCivilianIndex] != null)
+            {
+                //  print("herererere");
+                agent.SetDestination(civilians[closestCivilianIndex].transform.position);
+            }
+        }
+        else if (!searchCivilian)
+        {
+            //If there are no Civilians, attack the houses
+            GameObject nearestHouse = FindClosestThing(allBuildings);
+
+            //move towards the closest civilian
+            if (nearestHouse != null)
+            {
+                //transform.LookAt(nearestHouse.transform);
+                //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+                agent.SetDestination(nearestHouse.transform.position);
             }
         }
 
-        //move towards the closest civilian
-        if (closestCivilianIndex != -1 && civilians[closestCivilianIndex] != null)
-        {
-            //transform.LookAt(civilians[closestCivilianIndex].transform);
-            //GetComponent<Rigidbody>().AddForce(transform.forward * 9);
-            agent.SetDestination(civilians[closestCivilianIndex].transform.position);
-        }
-        //Once contact is made with the citizen. move them to the nearest house
-        }
-
-
-        //If there are no Civilians, attack the houses
-        GameObject nearestHouse = FindClosestThing(allBuildings);
-
-        //move towards the closest civilian
-        if (nearestHouse != null)
-        {
-            //transform.LookAt(nearestHouse.transform);
-            //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
-            agent.SetDestination(nearestHouse.transform.position);
-        }
-        
     }
     void checkHealth()
     {
@@ -189,7 +186,7 @@ public class Enemy2 : MonoBehaviour
             dir = -dir.normalized;
 
             enemyRigidBody.AddForce(dir * 500);
-            
+
         }
     }
 
