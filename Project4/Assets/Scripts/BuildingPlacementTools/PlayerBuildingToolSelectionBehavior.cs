@@ -18,6 +18,8 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
         }
     }
 
+    private bool buildingPlacementSelectionEnabled = true;
+
     private bool buildingEnabled = false;
     private GameObject currentSelectedBuilding = null; //The building type to be built.
     
@@ -41,24 +43,33 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
     //TODO - PERF IMPR: Consider another way of not running through each possible key selector to check if placed.
     private void Update()
     {
-        for (int i = 0; i < buildingTypeKeyCodeSelectors.Count; i++)
-        { 
-            if (Input.GetKeyDown(buildingTypeKeyCodeSelectors[i])) //If player pressed input button/key for that building type.
+        if(buildingPlacementSelectionEnabled == true)
+        {
+            for (int i = 0; i < buildingTypeKeyCodeSelectors.Count; i++)
             {
-                //TODO Design: Get it so that you dont have to deselect a house before you can place a different type.
+                if (Input.GetKeyDown(buildingTypeKeyCodeSelectors[i])) //If player pressed input button/key for that building type.
+                {
+                    //TODO Design: Get it so that you dont have to deselect a house before you can place a different type.
 
-                currentSelectedBuilding = buildingTypePrefabs[i];
-                //Debug.Log("Pressed button: " + buildingTypeKeyCodeSelectors[i]);
-                buildingEnabled = true;
-                //Have hotbar button look selected!
+                    currentSelectedBuilding = buildingTypePrefabs[i];
+                    //Debug.Log("Pressed button: " + buildingTypeKeyCodeSelectors[i]);
+                    buildingEnabled = true;
+                    //Have hotbar button look selected!
+                }
             }
         }
+       
         if(Input.GetKeyDown(unSelectBuildingKey)) //If the player clicked the button for unselecting the build tool.
         {
             buildingEnabled = false;
             currentSelectedBuilding = null;
             //Debug.Log("Pressed unselect button.");
         }   
+    }
+
+    public void SetBuildingPlacementSelectionEnabled(bool newValue)
+    {
+        buildingPlacementSelectionEnabled = newValue;
     }
 
     public GameObject GetCurrentSelectedBuilding()
@@ -73,6 +84,7 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
 
     public GameObject GetCurrentSelectedGhostBuilding()
     {
+        Debug.Log("Current Building: " + currentSelectedBuilding);
         return buildingTypeGhostPrefabs[buildingTypePrefabs.IndexOf(currentSelectedBuilding)];
     }
     
@@ -81,9 +93,9 @@ public class PlayerBuildingToolSelectionBehavior : MonoBehaviour
         return buildingEnabled;
     }
 
-    public void SetBuildingEnabled()
+    public void SetBuildingEnabled(bool newValue)
     {
-        buildingEnabled = true;
+        buildingEnabled = newValue;
     }
 
     //Deselects the building tool after an object is placed.

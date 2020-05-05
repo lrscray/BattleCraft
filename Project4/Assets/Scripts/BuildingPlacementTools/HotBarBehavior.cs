@@ -12,7 +12,7 @@ public class HotBarBehavior : MonoBehaviour
     public void SelectBuilding(int buttonKeyValue)
     {
         buildingSelector.SetCurrentSelectedBuilding(buttonKeyValue-1);
-        buildingSelector.SetBuildingEnabled();
+        buildingSelector.SetBuildingEnabled(true);
     }
 
     /*
