@@ -18,6 +18,8 @@ public class DefenderPopulation : MonoBehaviour
         DpopSize = 0;
         SpawnDefenders();
     }
+
+
     public void SpawnDefenders()
     {
         while (DcurrentPop < DpopSize)
