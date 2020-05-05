@@ -38,13 +38,13 @@ public class Global_Selection : MonoBehaviour
     void Update()
     {
         //1. when scroll mouse button clicked (but not released)
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(0))
         {
             p1 = Input.mousePosition;
         }
 
         //2. while scroll mouse button held
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(0))
         {
             if ((p1 - Input.mousePosition).magnitude > 40)
             {
@@ -53,7 +53,7 @@ public class Global_Selection : MonoBehaviour
         }
 
         //3. when mouse button comes up
-        if (Input.GetMouseButtonUp(2))
+        if (Input.GetMouseButtonUp(0))
         {
             if (dragSelect == false) //single select
             {
