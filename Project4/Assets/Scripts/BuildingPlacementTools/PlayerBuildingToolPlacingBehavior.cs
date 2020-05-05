@@ -38,10 +38,12 @@ public class PlayerBuildingToolPlacingBehavior : MonoBehaviour
             CreateUpdateGhost();
             
             CheckPlaceButtonPressed();
+            PlayerSelectionToolBehavior.instance.SetSelectingEnabled(false);
         }
         else
         {
             CallGhostBuster();
+            PlayerSelectionToolBehavior.instance.SetSelectingEnabled(true);
         }
     }
 
