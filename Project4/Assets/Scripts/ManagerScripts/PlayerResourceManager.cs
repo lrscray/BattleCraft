@@ -66,6 +66,12 @@ public class PlayerResourceManager : MonoBehaviour
         numResourceLabel.text = numResources.ToString();
     }
 
+    public void UseResources(int amountOfResources)
+    {
+        numResources -= amountOfResources;
+        numResourceLabel.text = numResources.ToString();
+    }
+
     public void TakeUpKeep(int upKeepCost)
     {
         numResources -= upKeepCost;
