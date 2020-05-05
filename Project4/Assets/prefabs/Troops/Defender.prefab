@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 688394241731187840}
   - component: {fileID: 4852678520585164586}
   - component: {fileID: 43834980038415593}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,8 +86,8 @@ GameObject:
   - component: {fileID: 3946601569193675715}
   - component: {fileID: 5229864794330883686}
   - component: {fileID: 6240474925058674722}
-  m_Layer: 5
-  m_Name: Canvas
+  m_Layer: 0
+  m_Name: Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 4284248876530573460}
   - component: {fileID: 282803107007864042}
   - component: {fileID: 8130058434701961116}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 102870866078657628}
   - component: {fileID: 56736005631369312}
   - component: {fileID: 3031220195394032164}
-  - component: {fileID: 6374588422629879264}
+  - component: {fileID: 5241872216050891277}
   - component: {fileID: 4736703461596457781}
   m_Layer: 0
   m_Name: Defender
@@ -369,7 +369,7 @@ Rigidbody:
   m_Drag: 1.6
   m_AngularDrag: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -383,7 +383,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 14
+  m_Speed: 7
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -395,7 +395,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
---- !u!114 &6374588422629879264
+--- !u!114 &5241872216050891277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -425,7 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defenderManager: {fileID: 0}
   wanderPoints: []
-  troopBehavior: {fileID: 6374588422629879264}
+  troopBehavior: {fileID: 5241872216050891277}
   currentCivilian: 0
   minRemainingDistance: 0.5
   stutter: 0
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 7792977645711040903}
   - component: {fileID: 8789368580238604798}
   - component: {fileID: 350511129616051078}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
