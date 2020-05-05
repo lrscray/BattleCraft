@@ -12,18 +12,19 @@ public class BuildingBehavior : MonoBehaviour
 
     [SerializeField] private int buildingCreationCost = -1; //The amount of resources it takes to build this building.
 
-    [SerializeField] private float upKeepWaitPeriod = -1f; //The time to wait before attempting to take upkeep.
-    [SerializeField] private int buildingUpKeepCost = -1; //The number of resources it takes to upkeep this building.
-    [SerializeField] private int upKeepDamageAmount = -1; //The amount of damage the building takes if the upkeep cannot be met.
+    //[SerializeField] private float upKeepWaitPeriod = -1f; //The time to wait before attempting to take upkeep.
+    //[SerializeField] private int buildingUpKeepCost = -1; //The number of resources it takes to upkeep this building.
+    //[SerializeField] private int upKeepDamageAmount = -1; //The amount of damage the building takes if the upkeep cannot be met.
 
-    //TODO: If we ever get to the point of selecting buildings and making troops that way, remove these spawning variables.
-    [SerializeField] private int maxNumTroopSpawn = -1; //The total number of troops that can be spawned from this building.
-    [SerializeField] private int numTroopsSpawned = -1; //The current number of troops spawned from this building.
+    //[SerializeField] private int maxNumTroopSpawn = -1; //The total number of troops that can be spawned from this building.
+    //[SerializeField] private int numTroopsSpawned = -1; //The current number of troops spawned from this building.
 
-    private bool spawningEnabled = true;
+    private bool spawningEnabled = false;
+    [SerializeField] private int numTroopsToSpawn = 0;
     [SerializeField] private float spawningWaitPeriod = -1f; //The time to wait before attempting to spawn troops.
     [SerializeField] private GameObject spawnPlacementObject = null;
     [SerializeField] private GameObject troopTypePrefab = null;
+    [SerializeField] private int troopCreationCost = -1;
 
     [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
     [SerializeField] private int currentNumInsideTroops = -1; //The current number of troops inside this building.
@@ -36,7 +37,7 @@ public class BuildingBehavior : MonoBehaviour
 
     private void Start()
     {
-        numTroopsSpawned = 0;
+        //numTroopsSpawned = 0;
         buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
         transform.SetParent(buildingManager.gameObject.transform);
         buildingManager.MakeBuilding(this.gameObject);
@@ -47,19 +48,45 @@ public class BuildingBehavior : MonoBehaviour
         currentNumInsideTroops = 0;
 
 
-        StartCoroutine(WaitSpawnTroops());
-        StartCoroutine(WaitTakeUpKeep());
+        //StartCoroutine(WaitSpawnTroops());
+        //StartCoroutine(WaitTakeUpKeep());
     }
-    
-    IEnumerator WaitSpawnTroops()
+
+    public void StartSpawningTroops()
     {
-        while (true)
+        if(spawningEnabled == false)
         {
-            yield return new WaitForSeconds(spawningWaitPeriod);
-            AttemptSpawnTroops();
+            spawningEnabled = true;
+            StartCoroutine(WaitSpawnTroops());
         }
     }
 
+    public void IncrementNumTroopsToSpawn()
+    {
+        numTroopsToSpawn++;
+    }
+    public void DecrementNumTroopsToSpawn()
+    {
+        if (numTroopsToSpawn > 0)
+        {
+            numTroopsToSpawn--;
+        }
+    }
+
+    IEnumerator WaitSpawnTroops()
+    {
+        while (numTroopsToSpawn > 0)
+        {
+            yield return new WaitForSeconds(spawningWaitPeriod);
+            if (numTroopsToSpawn > 0) //Make sure the player didnt decrement while waiting to spawn.
+            {
+                AttemptSpawnTroops();
+            }
+        }
+        spawningEnabled = false;
+    }
+
+    /*
     IEnumerator WaitTakeUpKeep()
     {
         while (true)
@@ -68,21 +95,21 @@ public class BuildingBehavior : MonoBehaviour
             AttemptCollectUpKeep();
         }
     }
+    */
 
     private void AttemptSpawnTroops()
     {
-        if(numTroopsSpawned < maxNumTroopSpawn)
+        //Check if there is enough resources to spawn troop.
+        if(PlayerResourceManager.instance.GetNumResources() > troopCreationCost)
         {
-            if(spawningEnabled)
-            {
-                //Spawn troop.
-                SpawnTroop();
-            }
+            //If so, spawn troop.
+            SpawnTroop();
         }
     }
 
     private void SpawnTroop()
     {
+        PlayerResourceManager.instance.UseResources(troopCreationCost);
         //GameObject troop = Instantiate(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
         GameObject troop = ObjectPoolManager.instance.GetNextObject(troopTypePrefab, spawnPlacementObject.transform.position, spawnPlacementObject.transform.rotation);
         if(troop == null)
@@ -104,9 +131,20 @@ public class BuildingBehavior : MonoBehaviour
             troop.transform.SetParent(defenderManager.transform);
             defenderManager.AddTroop(troop);
         }
-        numTroopsSpawned++;
+        DecrementNumTroopsToSpawn();
     }
 
+    public int GetNumTroopsToSpawn()
+    {
+        return numTroopsToSpawn;
+    }
+
+    public int GetTroopCreationCost()
+    {
+        return troopCreationCost;
+    }
+
+    /*
     private void AttemptCollectUpKeep()
     {
         if(PlayerResourceManager.instance.GetNumResources() > buildingUpKeepCost)
@@ -134,6 +172,7 @@ public class BuildingBehavior : MonoBehaviour
             Die();
         }
     }
+    */
 
     public void TakeDamage(int damageAmount)
     {
@@ -194,10 +233,12 @@ public class BuildingBehavior : MonoBehaviour
         return buildingCreationCost;
     }
 
+    /*
     public int GetBuildingUpKeepCost()
     {
         return buildingUpKeepCost;
     }
+    */
 
     public bool HouseHasRoom()
     {

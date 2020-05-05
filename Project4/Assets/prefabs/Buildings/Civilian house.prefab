@@ -82,17 +82,15 @@ MonoBehaviour:
   buildingMaxHealth: 100
   buildingCurrentHealth: 100
   healAmount: 1
-  buildingCreationCost: 15
-  upKeepWaitPeriod: 7
-  buildingUpKeepCost: 2
-  upKeepDamageAmount: 1
-  maxNumTroopSpawn: 4
-  numTroopsSpawned: -1
+  buildingCreationCost: 25
+  numTroopsToSpawn: 0
   spawningWaitPeriod: 2
   spawnPlacementObject: {fileID: 4162209026454467715}
   troopTypePrefab: {fileID: 4153700141558374214, guid: be6b3a39ff829704687e081b5d340f2f,
     type: 3}
+  troopCreationCost: 5
   maxTroopCapacity: 4
+  currentNumInsideTroops: -1
 --- !u!54 &4732545426666334014
 Rigidbody:
   m_ObjectHideFlags: 0
