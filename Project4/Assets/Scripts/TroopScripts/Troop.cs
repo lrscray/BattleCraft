@@ -31,6 +31,8 @@ public class Troop : MonoBehaviour
     private bool isSelected = false; //Whether or not the player has selected this troop.
     private bool selectedDestinationSet = false;
 
+    bool movingTowardsPresetDestination = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,27 +42,51 @@ public class Troop : MonoBehaviour
 
     private void Update()
     {
-        //If the troop hasnt had the player select it and set a destination, 
-        if(!selectedDestinationSet)
+        if (!movingTowardsPresetDestination)
         {
-            //Check if enemy nearby.
-            CheckForEnemies();
-            if(!hasDetectedEnemy)
+            //If the troop hasnt had the player select it and set a destination, 
+            if (!selectedDestinationSet)
             {
-                //If not, wander.
-                Wander();
+                //Check if enemy nearby.
+                CheckForEnemies();
+                if (!hasDetectedEnemy)
+                {
+                    //If not, wander.
+                    Wander();
+                }
+                else
+                {
+                    //Enemy is nearby, so react to them!
+                    ReactToEnemy();
+                }
             }
             else
             {
-                //Enemy is nearby, so react to them!
-                ReactToEnemy();
+                //Move to selected destination.
+                MoveToSelectedDestination();
             }
         }
         else
         {
-            //Move to selected destination.
-            MoveToSelectedDestination();
+            MoveToPreselectedDestination();
         }
+    }
+
+    protected void MoveToPreselectedDestination()
+    {
+        if (navAgent.remainingDistance < 0.5f)
+        {
+            //If at destination, go back to normal behavior.
+            wanderCircleCenter.position = gameObject.transform.position;
+            movingTowardsPresetDestination = false;
+
+        }
+    }
+
+    protected void SetPreselectedDestination(Transform newDestination)
+    {
+        movingTowardsPresetDestination = true;
+        navAgent.SetDestination(newDestination.position);
     }
 
     protected void MoveToSelectedDestination()
@@ -154,6 +180,7 @@ public class Troop : MonoBehaviour
         {
             Debug.Log(gameObject.name + " found enemy: " + other.gameObject.name);
             detectedObjects.Add(other.gameObject);
+            movingTowardsPresetDestination = false;
         }
     }
 

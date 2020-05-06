@@ -8,7 +8,6 @@ public class Global_Selection : MonoBehaviour
     RaycastHit hit;
     GameObject Defender;
    
-
     bool dragSelect;
 
     //Collider variables
@@ -122,6 +121,11 @@ public class Global_Selection : MonoBehaviour
             dragSelect = false;
 
         }
+
+    }
+
+    private void OnSelectButtonClicked()
+    {
 
     }
 

@@ -37,4 +37,9 @@ public class Selecting_Dictionary : MonoBehaviour
         }
         selectedTable.Clear();
     }
+
+    public List<GameObject> GetSelectedTroops()
+    {
+        return new List<GameObject>(selectedTable.Values);
+    }
 }
