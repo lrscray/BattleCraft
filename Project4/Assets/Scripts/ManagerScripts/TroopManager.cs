@@ -51,7 +51,7 @@ public class TroopManager : MonoBehaviour
         troops.Add(newEnemy);
         if(troopManagerType == "CivilianManager")
         {
-            Debug.Log("Created a civ!");
+            //Debug.Log("Created a civ!");
             LevelManager.instance.SetPlayerBaseMaxHealth(numTroopsInWave + 1);
         }
     }
