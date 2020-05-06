@@ -20,6 +20,7 @@ public class Defender: MonoBehaviour
     //list of enemies
     private List<GameObject> enemies;
     private List<GameObject> enemies2;
+    private List<GameObject> allEnemies;
 
     //list of houses
     private List<GameObject> civilianHouses = null;
@@ -58,6 +59,9 @@ public class Defender: MonoBehaviour
         civilians = civilianManager.GetAllTroops();
         enemies = enemyManager.GetAllTroops();
         enemies2 = enemy2Manager.GetAllTroops();
+        allEnemies = new List<GameObject>();
+        allEnemies.AddRange(enemies);
+        allEnemies.AddRange(enemies2);
 
         agent = GetComponent<NavMeshAgent>();
         //agent.autoBraking = false;
@@ -76,6 +80,9 @@ public class Defender: MonoBehaviour
         civilians = civilianManager.GetAllTroops();
         enemies = enemyManager.GetAllTroops();
         enemies2 = enemy2Manager.GetAllTroops();
+        allEnemies.Clear();
+        allEnemies.AddRange(enemies);
+        allEnemies.AddRange(enemies2);
 
         if (state == 1)
             Wander();
@@ -84,8 +91,8 @@ public class Defender: MonoBehaviour
         if (state == 3)
             Escort();
         //attacks regular enemies
-        if (state == 5)
-            Attack();
+        //if (state == 5)
+            //Attack();
         //attacks enemy2
         if (state == 4)
             Attack2();
@@ -208,6 +215,7 @@ public class Defender: MonoBehaviour
        // }
     }
 
+    /*
     //state 4
     void Attack()
     {
@@ -224,18 +232,20 @@ public class Defender: MonoBehaviour
         }
         
     }
-
+    */
     void Attack2()
     {
         GetComponent<NavMeshAgent>().speed = 10;
-
+        
+        /*
         if (enemy2Manager.GetNumTroops() == 0)
         {
             state = 5;
         }
+        */
 
         //find the nearest enemy to attack
-        GameObject nearestEnemy = FindClosestThing(enemies2);
+        GameObject nearestEnemy = FindClosestThing(allEnemies);
         //attack the enemy
         if (nearestEnemy != null)
         {
@@ -266,11 +276,13 @@ public class Defender: MonoBehaviour
             }
         }
 
+        /*
         if (closestDistance > 50)
         {
             state = 5;
             return null;
         }
+        */
 
         if (closestThingIndex != -1 && thingList[closestThingIndex] != null)
         {

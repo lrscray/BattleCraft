@@ -12,7 +12,7 @@ public class TroopManager : MonoBehaviour
 
     [SerializeField] private GameObject troopPrefab = null;
 
-    private List<GameObject> troops;
+    [SerializeField] private List<GameObject> troops;
 
     [SerializeField] private int numTroopsInWave = 0; //The number of troops to spawn in 1 wave or the number of starting troops to spawn.
 
@@ -51,15 +51,17 @@ public class TroopManager : MonoBehaviour
         troops.Add(newEnemy);
         if(troopManagerType == "CivilianManager")
         {
+            Debug.Log("Created a civ!");
             LevelManager.instance.SetPlayerBaseMaxHealth(numTroopsInWave + 1);
         }
     }
 
     public void DestroyTroop(GameObject destroyedEnemy)
     {
+        troops.Remove(destroyedEnemy);
         destroyedEnemy.SetActive(false);
         ObjectPoolManager.instance.DeactivateObject(troopPrefab, destroyedEnemy);
-        troops.Remove(destroyedEnemy);
+        
         if (troopManagerType == "CivilianManager")
         {
             LevelManager.instance.UpdatePlayerBaseHealth();
