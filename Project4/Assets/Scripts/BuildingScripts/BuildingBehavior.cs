@@ -28,6 +28,7 @@ public class BuildingBehavior : MonoBehaviour
 
     [SerializeField] private int maxTroopCapacity = -1; //The total number of troops that can be fit inside this building.
     [SerializeField] private int currentNumInsideTroops = -1; //The current number of troops inside this building.
+    private List<GameObject> insideTroops = null;
 
     private BuildingManager buildingManager = null;
     //TODO Consider changing how this is found.
@@ -37,6 +38,8 @@ public class BuildingBehavior : MonoBehaviour
 
     private void Start()
     {
+        insideTroops = new List<GameObject>();
+
         //numTroopsSpawned = 0;
         buildingManager = GameObject.FindGameObjectWithTag(buildingManagerType).GetComponentInChildren<BuildingManager>();
         transform.SetParent(buildingManager.gameObject.transform);
@@ -198,9 +201,9 @@ public class BuildingBehavior : MonoBehaviour
 
     public void StoreTroop(GameObject troop)
     {
-        //insideTroops.Add(troop);
+        insideTroops.Add(troop);
         troop.SetActive(false);
-        ObjectPoolManager.instance.DeactivateObject(civilianManager.GetTroopPrefab(), troop);
+        //ObjectPoolManager.instance.DeactivateObject(civilianManager.GetTroopPrefab(), troop);
         currentNumInsideTroops += 1;
     }
 
@@ -218,9 +221,12 @@ public class BuildingBehavior : MonoBehaviour
         //Go through all inside troops.
         //Change position to center of this gameobject.
         //SetActive again.
-        for(int i = 0; i < currentNumInsideTroops; i++)
+        for(int i = 0; i < insideTroops.Count; i++)
         {
-            GameObject troop = ObjectPoolManager.instance.GetNextObject(civilianManager.GetTroopPrefab(), gameObject.transform.position, gameObject.transform.rotation);
+            //GameObject troop = ObjectPoolManager.instance.GetNextObject(civilianManager.GetTroopPrefab(), gameObject.transform.position, gameObject.transform.rotation);
+            GameObject troop = insideTroops[i];
+            troop.transform.position = gameObject.transform.position;
+            troop.SetActive(true);
             Civilian civilian = troop.GetComponentInChildren<Civilian>();
             civilian.setInAHouse(false);
             civilian.setHasADefender(false);

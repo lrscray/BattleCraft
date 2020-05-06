@@ -433,6 +433,7 @@ MonoBehaviour:
   - {fileID: 1064063141}
   troopPrefab: {fileID: 6369453456955245694, guid: dec436ee0ff558b4a83818c864e7aed3,
     type: 3}
+  troops: []
   numTroopsInWave: 5
 --- !u!1 &37933464
 GameObject:
@@ -786,6 +787,7 @@ MonoBehaviour:
   - {fileID: 1458610622}
   troopPrefab: {fileID: 4153700141558374214, guid: be6b3a39ff829704687e081b5d340f2f,
     type: 3}
+  troops: []
   numTroopsInWave: 5
 --- !u!1 &189840984
 GameObject:
@@ -1316,6 +1318,7 @@ MonoBehaviour:
   - {fileID: 1458610622}
   troopPrefab: {fileID: 3419640903934524307, guid: 1551371764eeff34ca422425a34291de,
     type: 3}
+  troops: []
   numTroopsInWave: 5
 --- !u!1001 &301581196
 PrefabInstance:
@@ -2583,6 +2586,7 @@ MonoBehaviour:
   - {fileID: 739684803}
   troopPrefab: {fileID: 2625363918254141735, guid: e2b82811e51273343b1e1ad30ed32d7c,
     type: 3}
+  troops: []
   numTroopsInWave: 10
 --- !u!1 &499618870
 GameObject:
@@ -3332,7 +3336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilianManager: {fileID: 154468449}
-  startPeriodTime: 15
+  startPeriodTime: 5
   healthBar: {fileID: 116672402}
 --- !u!4 &659316806
 Transform:
@@ -7410,6 +7414,7 @@ MonoBehaviour:
   - {fileID: 353239036}
   troopPrefab: {fileID: 3522325891949992774, guid: 89410d32bea947646adf8e30b1f79bcf,
     type: 3}
+  troops: []
   numTroopsInWave: 10
 --- !u!1 &2023537711
 GameObject:

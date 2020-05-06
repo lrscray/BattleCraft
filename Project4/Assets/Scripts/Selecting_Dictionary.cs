@@ -15,7 +15,7 @@ public class Selecting_Dictionary : MonoBehaviour
         {
             selectedTable.Add(id, find);
             find.AddComponent<Selection_Component>();
-            Debug.Log("Added " + id + " to selected dict");
+            //Debug.Log("Added " + id + " to selected dict");
         }
     }
 
