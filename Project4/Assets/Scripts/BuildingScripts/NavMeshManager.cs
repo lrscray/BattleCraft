@@ -5,6 +5,20 @@ using UnityEngine.AI;
 
 public class NavMeshManager : MonoBehaviour
 {
+    static NavMeshManager _instance;
+
+    public static NavMeshManager instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<NavMeshManager>();
+            }
+            return _instance;
+        }
+    }
+
     public NavMeshSurface surface;
 
 
@@ -12,12 +26,6 @@ public class NavMeshManager : MonoBehaviour
     void Start()
     {
         surface.BuildNavMesh();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-     //  surface.BuildNavMesh();
     }
 
     public void UpdateNavMesh()

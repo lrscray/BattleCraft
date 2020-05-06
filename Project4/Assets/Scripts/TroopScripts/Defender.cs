@@ -7,6 +7,8 @@ public class Defender: MonoBehaviour
 {
     //TODO: Consider adding a detection collider for finding enemies.
 
+    [SerializeField]private TroopManager defenderManager = null;
+
     private BuildingManager civilianBuildingManager;
     private TroopManager civilianManager;
     private TroopManager enemyManager;
@@ -16,7 +18,7 @@ public class Defender: MonoBehaviour
     public GameObject[] wanderPoints;
     
     //list of enemies
-    public List<GameObject> enemies;
+    private List<GameObject> enemies;
     private List<GameObject> enemies2;
 
     //list of houses
@@ -24,14 +26,8 @@ public class Defender: MonoBehaviour
 
     //list of civilians
     private List<GameObject> civilians = null;
-    
-    //list of defenders
-    //public GameObject[] defenders;
 
-    int health = 100;
-    int maxHealth = 100;
-
-    [SerializeField] private HealthBarScript healthBar = null;
+    [SerializeField] private TroopBehavior troopBehavior = null;
 
     public int currentCivilian = 0;
 
@@ -44,9 +40,12 @@ public class Defender: MonoBehaviour
     private float distance;
 
     int state = 1;
+    public bool stutter = false;
+    public bool checkStuff = false;
 
     void Start()
     {
+        defenderManager = GameObject.FindGameObjectWithTag("DefenderManager").GetComponentInChildren<TroopManager>();
         civilianBuildingManager = GameObject.FindGameObjectWithTag("CivilianBuildingManager").GetComponentInChildren<BuildingManager>();
         civilianManager = GameObject.FindGameObjectWithTag("CivilianManager").GetComponentInChildren<TroopManager>();
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager").GetComponentInChildren<TroopManager>();
@@ -66,7 +65,8 @@ public class Defender: MonoBehaviour
         int nextPoint = Random.Range(0, wanderPoints.Length);
         //agent.destination = wanderPoints[nextPoint].transform.position;
         agent.SetDestination(wanderPoints[nextPoint].transform.position);
-        healthBar.SetMaxHealth(maxHealth);
+        
+	agent.speed = 7;
     }
 
     // Update is called once per frame
@@ -90,11 +90,19 @@ public class Defender: MonoBehaviour
         if (state == 4)
             Attack2();
 
-         checkHealth();
+        
+
+        //we do need this ask jacob
+        if(checkStuff)
+        {
+            //print("hrtrtr");
+            checkMoreCivilians();
+        }
     }
     //state 1
     void Wander()
     {
+        GetComponent<NavMeshAgent>().speed = 7;
         //if we are close to our destination point, go to the next point
         if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
@@ -112,8 +120,6 @@ public class Defender: MonoBehaviour
             if (distance < 65)
             {
                 state = 2;
-                //transform.LookAt(EnemiesBasic[i].transform);
-                //GetComponent<Rigidbody>().AddForce(transform.forward * 10);
             }
         }
     }
@@ -121,16 +127,30 @@ public class Defender: MonoBehaviour
     //state 2
     void searchForCitizens()
     {
+        checkStuff = true;
+
+        GetComponent<NavMeshAgent>().speed = 16;
         //if all of the citizens are taken care of. go to state 4. Attack state
+        //also go to state 4 if there are citizens but no houses to put them in
         bool noMoreCitizens = true;
         for (int j = 0; j < civilians.Count; j++)
         {
-            if (civilians[j].activeInHierarchy == true) //&& civilians[j].GetComponent<Civilian>().getHasADefender() == false)
+            if (civilians[j].activeInHierarchy == true)
             {
                 noMoreCitizens = false;
             }
         }
-        if (noMoreCitizens)
+
+        bool noMoreHouses = true;
+        for (int j = 0; j < civilianHouses.Count; j++)
+        {
+            if (civilianHouses[j].activeInHierarchy == true)
+            {
+                noMoreHouses = false;
+            }
+        }
+
+        if (noMoreCitizens || noMoreHouses)
         {
             state = 4;
         }
@@ -170,22 +190,28 @@ public class Defender: MonoBehaviour
     //state 3
     void Escort()
     {
-        //locate nearest house to bring the sitizen to
-        GameObject nearestHouse = FindClosestThing(civilianHouses);
+       // if (!stutter)
+       // {
+            GetComponent<NavMeshAgent>().speed = 16;
+            //locate nearest house to bring the sitizen to
+            GameObject nearestHouse = FindClosestThing(civilianHouses);
 
-        //move towards the closest civilian
-        if (nearestHouse != null)
-        {
-            //transform.LookAt(nearestHouse.transform);
-            //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
-            agent.SetDestination(nearestHouse.transform.position);
-        }
-        //Once contact is made with the citizen. move them to the nearest house
+            //move towards the closest civilian
+            if (nearestHouse != null)
+            {
+                //transform.LookAt(nearestHouse.transform);
+                //GetComponent<Rigidbody>().AddForce(transform.forward * 3);
+                agent.SetDestination(nearestHouse.transform.position);
+            }
+            stutter = false;
+            //Once contact is made with the citizen. move them to the nearest house
+       // }
     }
 
     //state 4
     void Attack()
     {
+        GetComponent<NavMeshAgent>().speed = 10;
         //find the nearest enemy to attack
         GameObject nearestEnemy = FindClosestThing(enemies);
 
@@ -201,6 +227,7 @@ public class Defender: MonoBehaviour
 
     void Attack2()
     {
+        GetComponent<NavMeshAgent>().speed = 10;
 
         if (enemy2Manager.GetNumTroops() == 0)
         {
@@ -219,6 +246,8 @@ public class Defender: MonoBehaviour
         
     }
 
+
+    //will not return anything if the closest thing is too far away.
     private GameObject FindClosestThing(List<GameObject> thingList)
     {
         float closestDistance = Mathf.Infinity;
@@ -237,6 +266,12 @@ public class Defender: MonoBehaviour
             }
         }
 
+        if (closestDistance > 50)
+        {
+            state = 5;
+            return null;
+        }
+
         if (closestThingIndex != -1 && thingList[closestThingIndex] != null)
         {
             return thingList[closestThingIndex];
@@ -249,9 +284,9 @@ public class Defender: MonoBehaviour
 
     void checkHealth()
     {
-        if (health <= 0)
+        if (troopBehavior.GetCurrentHealth() <= 0)
         {
-            Destroy(gameObject);
+            defenderManager.DestroyTroop(gameObject);
         }
     }
 
@@ -270,13 +305,13 @@ public class Defender: MonoBehaviour
         //Attacked by Enemy
         if (collision.gameObject.tag == "Enemy2")
         {
-            health = health - 5;
-            healthBar.SetHealth(health);
+            troopBehavior.TakeDamage(5);
+            checkHealth();
         }
         if (collision.gameObject.tag == "EnemyBasic")
         {
-            health = health - 5;
-            healthBar.SetHealth(health);
+            troopBehavior.TakeDamage(5);
+            checkHealth();
         }
     }
     public int getState()
@@ -286,5 +321,22 @@ public class Defender: MonoBehaviour
     public int getCurrentCivilian()
     {
         return currentCivilian;
+    }
+
+    public void checkMoreCivilians()
+    {
+        bool noMoreCitizens = true;
+        for (int j = 0; j < civilians.Count; j++)
+        {
+            if (civilians[j].activeInHierarchy == true)
+            {
+                noMoreCitizens = false;
+            }
+        }
+
+        if (noMoreCitizens == false)
+        {
+            state = 2;
+        }
     }
 }

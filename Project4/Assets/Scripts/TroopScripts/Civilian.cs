@@ -55,7 +55,9 @@ public class Civilian : MonoBehaviour
         if (state == 1)
             Wander();
         if (state == 2)
+        {
             Escort();
+        }
         //if (state == 3)
             //Hide();
         
@@ -63,6 +65,7 @@ public class Civilian : MonoBehaviour
     //state 1
     void Wander()
     {
+        GetComponent<NavMeshAgent>().speed = 4;
         //if we are close to our destination point, go to the next point
         if (!agent.pathPending && agent.remainingDistance < minRemainingDistance)
         {
@@ -74,6 +77,7 @@ public class Civilian : MonoBehaviour
     //state 2
     void Escort()
     {
+        GetComponent<NavMeshAgent>().speed = 16;
         //locate nearest house to go to
         float closestHouseDist = Mathf.Infinity;//Vector3.Distance(transform.position, houses[0].transform.position);
         float nextDistance;
@@ -104,7 +108,6 @@ public class Civilian : MonoBehaviour
     {
         building.GetComponentInChildren<BuildingBehavior>().StoreTroop(gameObject);
         setInAHouse(true);
-        gameObject.SetActive(false);
     }
 
     private BuildingBehavior GetBuildingBehavior(int i)
@@ -125,10 +128,9 @@ public class Civilian : MonoBehaviour
                 state = 2;
             }
         }
-        if (collision.gameObject.tag == "Enemy2")
+        if (collision.gameObject.tag == "Enemy2" || collision.gameObject.tag == "EnemyBasic")
         {
             civilianManager.DestroyTroop(gameObject);
-            Destroy(gameObject);
         }
         //collision with house while in state 1. Change to state 2
         //TODO: Make it so that the civilians can only go in the civilian buildings?
