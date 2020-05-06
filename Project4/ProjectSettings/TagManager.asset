@@ -30,6 +30,8 @@ TagManager:
   - DefenderBuildingManager
   - CivilianBuildingManager
   - NavMesh
+  - DefenderSpawner
+  - Center
   layers:
   - Default
   - TransparentFX

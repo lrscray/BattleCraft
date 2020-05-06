@@ -81,6 +81,13 @@ public class ObjectPoolManager : MonoBehaviour
                 troop.InitializeTroop();
             }
 
+            Troop troopScript = newObject.GetComponentInChildren<Troop>();
+            if(troopScript != null)
+            {
+                troopScript.InitializeTroop();
+            }
+
+
             newObject.transform.position = position;
             newObject.transform.rotation = rotation;
             newObject.SetActive(true);

@@ -88,6 +88,7 @@ public class EnemyBasic : MonoBehaviour
             //enemyRigidBody.AddForce(transform.forward * 3);
             agent.SetDestination(nearestBuilding.transform.position);
         }
+        //state 2
         else
         {
             FindCivilian();

@@ -31,47 +31,79 @@ public class Troop : MonoBehaviour
     private bool isSelected = false; //Whether or not the player has selected this troop.
     private bool selectedDestinationSet = false;
 
+    bool movingTowardsPresetDestination = false;
+
     // Start is called before the first frame update
-    void Start()
+
+    protected void Awake()
+    {
+        detectedObjects = new List<GameObject>();
+    }
+
+    protected void Start()
     {
         //patrolList = new List<Transform>(); //Needed?
-        detectedObjects = new List<GameObject>();
+        //detectedObjects = new List<GameObject>();
     }
 
     private void Update()
     {
-        //If the troop hasnt had the player select it and set a destination, 
-        if(!selectedDestinationSet)
+        if (!movingTowardsPresetDestination)
         {
-            //Check if enemy nearby.
-            CheckForEnemies();
-            if(!hasDetectedEnemy)
+            //If the troop hasnt had the player select it and set a destination, 
+            if (!selectedDestinationSet)
             {
-                //If not, wander.
-                Wander();
+                //Check if enemy nearby.
+                CheckForEnemies();
+                if (!hasDetectedEnemy)
+                {
+                    //If not, wander.
+                    Wander();
+                }
+                else
+                {
+                    //Enemy is nearby, so react to them!
+                    ReactToEnemy();
+                }
             }
             else
             {
-                //Enemy is nearby, so react to them!
-                ReactToEnemy();
+                //Move to selected destination.
+                MoveToSelectedDestination();
             }
         }
         else
         {
-            //Move to selected destination.
-            MoveToSelectedDestination();
+            MoveToPreselectedDestination();
         }
+    }
+
+    protected void MoveToPreselectedDestination()
+    {
+        if (navAgent.remainingDistance < 0.5f)
+        {
+            //If at destination, go back to normal behavior.
+            wanderCircleCenter.position = gameObject.transform.position;
+            movingTowardsPresetDestination = false;
+
+        }
+    }
+
+    protected void SetPreselectedDestination(Transform newDestination)
+    {
+        movingTowardsPresetDestination = true;
+        navAgent.SetDestination(newDestination.position);
     }
 
     protected void MoveToSelectedDestination()
     {
         //Check if reached destination.
-        if(navAgent.remainingDistance < 0.5f)
+        if (navAgent.remainingDistance < 0.5f)
         {
             //If at destination, go back to normal behavior.
             wanderCircleCenter.position = gameObject.transform.position;
             selectedDestinationSet = false;
-            
+
         }
     }
 
@@ -90,7 +122,7 @@ public class Troop : MonoBehaviour
                 Vector2 nextWanderPoint = Random.insideUnitCircle.normalized;
                 //Navigate to the next wander point!                               //TODO: Check vector math!
                 navAgent.SetDestination(new Vector3(wanderCircleCenter.position.x + (wanderCircleRadius * nextWanderPoint.x), wanderCircleCenter.position.y, wanderCircleCenter.position.z + (wanderCircleRadius * nextWanderPoint.y)));
-                
+
             }
         }
     }
@@ -98,14 +130,14 @@ public class Troop : MonoBehaviour
     protected void CheckForEnemies()
     {
         int numEnemiesDetected = 0;
-        for(int i = 0; i < detectedObjects.Count; i++)
+        for (int i = 0; i < detectedObjects.Count; i++)
         {
-            if(enemyTags.Contains(detectedObjects[i].tag))
+            if (enemyTags.Contains(detectedObjects[i].tag))
             {
                 numEnemiesDetected++;
             }
         }
-        if(numEnemiesDetected > 0)
+        if (numEnemiesDetected > 0)
         {
             hasDetectedEnemy = true;
         }
@@ -117,6 +149,9 @@ public class Troop : MonoBehaviour
 
     //Should be defined by subclasses.
     protected virtual void ReactToEnemy() { }
+    public virtual void InitializeTroop() { }
+
+    
 
     protected GameObject FindClosestThing(List<GameObject> thingList)
     {
@@ -150,10 +185,11 @@ public class Troop : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         string otherTag = other.tag;
-        if(enemyTags.Contains(otherTag) && !detectedObjects.Contains(other.gameObject))
+        if (enemyTags.Contains(otherTag) && !detectedObjects.Contains(other.gameObject))
         {
             Debug.Log(gameObject.name + " found enemy: " + other.gameObject.name);
             detectedObjects.Add(other.gameObject);
+            movingTowardsPresetDestination = false;
         }
     }
 
