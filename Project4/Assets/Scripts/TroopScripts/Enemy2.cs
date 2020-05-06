@@ -172,7 +172,7 @@ public class Enemy2 : MonoBehaviour
         //Attacked by defender
         if (collision.gameObject.tag == "Defender")
         {
-            troop.TakeDamage(10);
+            troop.TakeDamage(15);
             checkHealth();
         }
         if (collision.gameObject.tag == "House" || collision.gameObject.tag == "Home")

@@ -20,6 +20,7 @@ public class BuildingBehavior : MonoBehaviour
     //[SerializeField] private int numTroopsSpawned = -1; //The current number of troops spawned from this building.
 
     private bool spawningEnabled = false;
+    [SerializeField] private bool shouldSpawnStartTroops = false;
     [SerializeField] private int numTroopsToSpawn = 0;
     [SerializeField] private float spawningWaitPeriod = -1f; //The time to wait before attempting to spawn troops.
     [SerializeField] private GameObject spawnPlacementObject = null;
@@ -50,7 +51,10 @@ public class BuildingBehavior : MonoBehaviour
         
         currentNumInsideTroops = 0;
 
-
+        if(shouldSpawnStartTroops)
+        {
+            StartSpawningTroops();
+        }
         //StartCoroutine(WaitSpawnTroops());
         //StartCoroutine(WaitTakeUpKeep());
     }
@@ -277,9 +281,9 @@ public class BuildingBehavior : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         //Attacked by defender
-        if (collision.gameObject.tag == "EnemyBasic")
+        if (collision.gameObject.tag == "EnemyBasic" || collision.gameObject.tag == "Enemy2")
         {
-            TakeDamage(10);
+            TakeDamage(2);
 
             //print("House health: " + buildingCurrentHealth);
         }

@@ -30,6 +30,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float startPeriodTime = 60f; //180f;//3 mins. //TODO: Make sure we change this back to 3 mins.
     private float startPeriodTimeLeft = 60f;
 
+    [SerializeField] private int numStartingResources = 60;
+
     //Whether the player has lost the game.
     private bool lostGame = false;
 
@@ -44,7 +46,9 @@ public class LevelManager : MonoBehaviour
         startPeriodTimeLeft = startPeriodTime;
 
         //Set starting resources to 0.
+        PlayerResourceManager.instance.SetStartingResources(numStartingResources);
         //Have starting troops.
+        //Spawned by houses.
 
         //Start tick down time for 3 minutes.
         StartCoroutine(StartPeriodTickDown());

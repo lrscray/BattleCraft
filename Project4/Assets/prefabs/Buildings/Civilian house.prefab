@@ -84,7 +84,8 @@ MonoBehaviour:
   buildingMaxHealth: 100
   buildingCurrentHealth: 100
   healAmount: 1
-  buildingCreationCost: 25
+  buildingCreationCost: 50
+  shouldSpawnStartTroops: 0
   numTroopsToSpawn: 0
   spawningWaitPeriod: 2
   spawnPlacementObject: {fileID: 4162209026454467715}

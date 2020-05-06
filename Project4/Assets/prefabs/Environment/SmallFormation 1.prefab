@@ -865,6 +865,7 @@ GameObject:
   - component: {fileID: 8901430814416590054}
   - component: {fileID: 8901430814416590055}
   - component: {fileID: 6806217999830471163}
+  - component: {fileID: 3654030181204630336}
   m_Layer: 0
   m_Name: SmallFormation 1
   m_TagString: Crystal
@@ -995,6 +996,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!135 &3654030181204630336
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901430814416590048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 15
+  m_Center: {x: -0.00000059604645, y: -3.1763736e-21, z: -4.9834086e-21}
 --- !u!1 &8901430814499266912
 GameObject:
   m_ObjectHideFlags: 0

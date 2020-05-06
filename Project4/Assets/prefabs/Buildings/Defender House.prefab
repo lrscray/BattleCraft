@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: -8286782133971856670}
   m_Layer: 0
   m_Name: Defender House
-  m_TagString: House
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,6 +85,7 @@ MonoBehaviour:
   buildingCurrentHealth: 100
   healAmount: 1
   buildingCreationCost: 10
+  shouldSpawnStartTroops: 0
   numTroopsToSpawn: 0
   spawningWaitPeriod: 2
   spawnPlacementObject: {fileID: 6763856068397000024}

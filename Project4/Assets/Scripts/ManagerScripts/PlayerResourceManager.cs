@@ -28,12 +28,8 @@ public class PlayerResourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!inDebugMode)
-        {
-            numResources = 0;
-        }
-        else
-        {
+        if(inDebugMode)
+        { 
             numResources = 100000;
         }
         //StartCoroutine(IncrementResourcesAfterTime());
@@ -78,5 +74,9 @@ public class PlayerResourceManager : MonoBehaviour
         numResourceLabel.text = numResources.ToString();
     }
 
-    
+    public void SetStartingResources(int numStartingResources)
+    {
+        numResources = numStartingResources;
+        numResourceLabel.text = numResources.ToString();
+    }
 }

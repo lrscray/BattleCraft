@@ -832,6 +832,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2059469214}
     m_Modifications:
+    - target: {fileID: 2194830462071195649, guid: 699a99f0f97c73a42b1e73da5b7c6cf8,
+        type: 3}
+      propertyPath: numTroopsToSpawn
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2194830462071195649, guid: 699a99f0f97c73a42b1e73da5b7c6cf8,
+        type: 3}
+      propertyPath: shouldSpawnStartTroops
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5138385755113740319, guid: 699a99f0f97c73a42b1e73da5b7c6cf8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2587,7 +2597,7 @@ MonoBehaviour:
   troopPrefab: {fileID: 2625363918254141735, guid: e2b82811e51273343b1e1ad30ed32d7c,
     type: 3}
   troops: []
-  numTroopsInWave: 10
+  numTroopsInWave: 7
 --- !u!1 &499618870
 GameObject:
   m_ObjectHideFlags: 0
@@ -3336,7 +3346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilianManager: {fileID: 154468449}
-  startPeriodTime: 5
+  startPeriodTime: 20
+  numStartingResources: 60
   healthBar: {fileID: 116672402}
 --- !u!4 &659316806
 Transform:
@@ -6300,7 +6311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a344394a8ea6c5d4cbf9b7c36fca0bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inDebugMode: 1
+  inDebugMode: 0
   numResources: -1
   numResourceLabel: {fileID: 105228365}
 --- !u!1 &1603500065
@@ -6500,6 +6511,7 @@ GameObject:
   - component: {fileID: 1693655286}
   - component: {fileID: 1693655291}
   - component: {fileID: 1693655292}
+  - component: {fileID: 1693655293}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6658,6 +6670,102 @@ MonoBehaviour:
   primarySelectKey: 323
   secondaryUnSelectKey: 324
   mainCamera: {fileID: 1693655289}
+--- !u!82 &1693655293
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693655285}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e7127dc33f613da45b1cf0d1ab577c0d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.2
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1694528164
 GameObject:
   m_ObjectHideFlags: 0
@@ -6754,6 +6862,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055449860326368522, guid: 0155134dd5f21234cbe8658c3033d878,
+        type: 3}
+      propertyPath: numTroopsToSpawn
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055449860326368522, guid: 0155134dd5f21234cbe8658c3033d878,
+        type: 3}
+      propertyPath: shouldSpawnStartTroops
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0155134dd5f21234cbe8658c3033d878, type: 3}
@@ -7009,8 +7127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 494757554}
   enemyManager2: {fileID: 2022274986}
-  timeBetweenWaves: 30
-  timeBetweenWavesLeft: 30
+  timeBetweenWaves: 45
+  timeBetweenWavesLeft: 45
   breakPeriodTime: 60
 --- !u!1001 &1863400160
 PrefabInstance:
@@ -7415,7 +7533,7 @@ MonoBehaviour:
   troopPrefab: {fileID: 3522325891949992774, guid: 89410d32bea947646adf8e30b1f79bcf,
     type: 3}
   troops: []
-  numTroopsInWave: 10
+  numTroopsInWave: 5
 --- !u!1 &2023537711
 GameObject:
   m_ObjectHideFlags: 0
@@ -8229,6 +8347,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.z
       value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234292409641151381, guid: 8b0eeadb6ffc46041a64ec262a9e2796,
+        type: 3}
+      propertyPath: numTroopsToSpawn
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234292409641151381, guid: 8b0eeadb6ffc46041a64ec262a9e2796,
+        type: 3}
+      propertyPath: shouldSpawnStartTroops
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7630610423355941888, guid: 8b0eeadb6ffc46041a64ec262a9e2796,
         type: 3}
