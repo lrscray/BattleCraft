@@ -20,7 +20,7 @@ public class Troop : MonoBehaviour
 
     private bool hasDetectedEnemy = false; //If this troop detects what it considers to be an enemy.
     [SerializeField] private List<string> enemyTags = null;
-    //[SerializeField] private int detectionRadius = 20; //TODO: Consider using OnTriggerEnter and using a collider.
+    [SerializeField] protected int detectionRadius = 20; //Make sure this value is same as detection collider radius.
     protected List<GameObject> detectedObjects = null;
 
     [SerializeField] protected int chaseOffset = 2; //The distance this troop will stand from things it chases.

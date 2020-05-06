@@ -18,7 +18,7 @@ public class TestEnemy : Troop
             //If not already chasing and attacking, do so.
             if(chasingOAttacking != true)
             {
-                Debug.Log(gameObject.name + " started chasing " + closestEnemy.name + "!");
+                //Debug.Log(gameObject.name + " started chasing " + closestEnemy.name + "!");
                 StartCoroutine(ChaseAndAttackEnemy(closestEnemy));
             }
         }
@@ -30,7 +30,7 @@ public class TestEnemy : Troop
         Vector3 distanceVectorNormalized = distanceVector.normalized;
         Vector3 targetDistance = (distanceVectorNormalized * chaseOffset);
         navAgent.SetDestination(enemyObject.transform.position + targetDistance);
-        Debug.Log(gameObject.name + " is chasing " + enemyObject.name + "!");
+        //Debug.Log(gameObject.name + " is chasing " + enemyObject.name + "!");
     }
 
     IEnumerator ChaseAndAttackEnemy(GameObject target)
@@ -41,8 +41,15 @@ public class TestEnemy : Troop
             yield return 0;
             ChaseEnemy(target);
 
+            //Debug.Log("Distance: " + distanceVector.magnitude);
+            //If too far. Lose it.
+            if (distanceVector.magnitude > detectionRadius)
+            {
+                target = null;
+                break;
+            }
+
             //If within attacking distance,
-            Debug.Log("Distance: " + distanceVector.magnitude);
             if (distanceVector.magnitude <= attackRadius)
             {
                 //Attack!

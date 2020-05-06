@@ -557,8 +557,9 @@ MonoBehaviour:
   - Civilian
   - Defender
   - House
+  detectionRadius: 20
   chaseOffset: 2
-  attackRadius: 2
+  attackRadius: 3
   attackTimeCooldown: 1
 --- !u!54 &8567197164367117911
 Rigidbody:
